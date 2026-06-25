@@ -1,0 +1,547 @@
+/* ============================================================
+   SIMULATORS.CSS
+   Simulator-specific styles for FinLAR financial platform.
+   Covers interactive calculators, charts, gauges, scenario
+   comparisons, and results tables.
+   ============================================================ */
+
+
+/* ------------------------------------------------------------
+   1. SIMULATOR SECTION
+   Top-level wrapper for each simulator page / block.
+   ------------------------------------------------------------ */
+
+.simulator-section {
+  padding: var(--space-12) 0;
+  position: relative;
+}
+
+.simulator-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(6, 182, 212, 0.02) 0%,
+    transparent 40%,
+    rgba(59, 130, 246, 0.02) 100%
+  );
+  pointer-events: none;
+}
+
+
+/* ------------------------------------------------------------
+   2. SIMULATOR GRID LAYOUT
+   Two-column layout: inputs (2fr) | results (3fr).
+   Collapses to single column on tablets.
+   ------------------------------------------------------------ */
+
+.simulator-grid {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: var(--space-8);
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .simulator-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* ------------------------------------------------------------
+   3. SIMULATOR INPUTS PANEL
+   Sticky sidebar with form controls for simulator parameters.
+   ------------------------------------------------------------ */
+
+.simulator-inputs {
+  background: var(--color-luxury-navy);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  position: sticky;
+  top: calc(72px + var(--space-6));
+}
+
+.simulator-inputs-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  color: var(--color-pure-white);
+  margin-bottom: var(--space-6);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.simulator-inputs-title svg {
+  width: 22px;
+  height: 22px;
+  color: var(--color-smart-cyan);
+}
+
+/* --- Form Groups & Labels --- */
+
+.form-group {
+  margin-bottom: var(--space-5);
+}
+
+.form-label {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-sm);
+  color: var(--color-slate-grey);
+  margin-bottom: var(--space-2);
+}
+
+.form-input,
+.form-select,
+.input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-slate);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-md);
+  color: var(--color-pure-white);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  transition: var(--transition-base);
+  outline: none;
+}
+
+.form-input:focus,
+.form-select:focus,
+.input:focus {
+  border-color: var(--color-smart-cyan);
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+}
+
+.form-input::placeholder,
+.input::placeholder {
+  color: var(--color-muted-slate);
+}
+
+.form-hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted-slate);
+  margin-top: var(--space-1);
+}
+
+/* --- Form Row (two-column sub-grid) --- */
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 480px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Input Group (prefix / suffix adornments) --- */
+
+.input-group {
+  position: relative;
+}
+
+.input-prefix {
+  position: absolute;
+  left: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted-slate);
+  font-size: var(--font-size-sm);
+  pointer-events: none;
+}
+
+.input-suffix {
+  position: absolute;
+  right: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted-slate);
+  font-size: var(--font-size-sm);
+  pointer-events: none;
+}
+
+.input-group .form-input.has-prefix,
+.input-group .input {
+  padding-left: var(--space-8);
+}
+
+.input-group .form-input.has-suffix {
+  padding-right: var(--space-8);
+}
+
+/* --- Range / Slider Input --- */
+
+.range-input {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  background: var(--color-surface-slate);
+  border-radius: var(--radius-full);
+  outline: none;
+}
+
+.range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-main);
+  cursor: pointer;
+  border: 2px solid var(--color-deep-obsidian);
+  box-shadow: var(--shadow-sm);
+}
+
+.range-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-main);
+  cursor: pointer;
+  border: 2px solid var(--color-deep-obsidian);
+  box-shadow: var(--shadow-sm);
+}
+
+.range-value {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--font-size-xs);
+  color: var(--color-muted-slate);
+  margin-top: var(--space-1);
+}
+
+
+/* ------------------------------------------------------------
+   4. SIMULATOR RESULTS PANEL
+   Main output area for charts, tables, and scenario cards.
+   ------------------------------------------------------------ */
+
+.simulator-results {
+  background: var(--color-luxury-navy);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  min-height: 500px;
+}
+
+.simulator-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.simulator-results-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-lg);
+  color: var(--color-pure-white);
+}
+
+
+/* ------------------------------------------------------------
+   5. CHART CONTAINER
+   Wrapper for Chart.js / Recharts canvases.
+   ------------------------------------------------------------ */
+
+.chart-container {
+  position: relative;
+  min-height: 400px;
+  margin-bottom: var(--space-6);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  padding: var(--space-4);
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+
+/* ------------------------------------------------------------
+   6. RESULTS TABLE
+   Inherits base .table styles; adds simulator-specific tweaks
+   such as highlighted rows for key data points.
+   ------------------------------------------------------------ */
+
+.results-table .highlight-row {
+  background: rgba(6, 182, 212, 0.06);
+  font-weight: var(--font-weight-semibold);
+}
+
+.results-table .highlight-row td {
+  color: var(--color-pure-white);
+}
+
+
+/* ------------------------------------------------------------
+   7. SCENARIO LEGEND
+   Colour-coded legend for multi-scenario chart lines.
+   ------------------------------------------------------------ */
+
+.scenario-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.scenario-legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-slate-grey);
+}
+
+.scenario-legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+
+
+/* ------------------------------------------------------------
+   8. SCENARIO CARDS
+   Grid of comparison cards (e.g. different rate / term combos).
+   ------------------------------------------------------------ */
+
+.scenario-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.scenario-card {
+  background: var(--color-surface-slate);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  transition: var(--transition-base);
+}
+
+@media (hover: hover) {
+  .scenario-card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.scenario-card-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-muted-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.scenario-card-value {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-xl);
+  color: var(--color-pure-white);
+}
+
+.scenario-card-detail {
+  font-size: var(--font-size-xs);
+  color: var(--color-slate-grey);
+  margin-top: var(--space-1);
+}
+
+/* --- Best Scenario Highlight --- */
+
+.best-scenario {
+  border-color: rgba(6, 182, 212, 0.4);
+  background: linear-gradient(
+    135deg,
+    rgba(6, 182, 212, 0.08),
+    rgba(59, 130, 246, 0.04)
+  );
+  position: relative;
+}
+
+.best-scenario::before {
+  content: 'MEJOR OPCIÓN';
+  position: absolute;
+  top: var(--space-2);
+  right: var(--space-2);
+  padding: 2px var(--space-3);
+  background: var(--gradient-main);
+  border-radius: var(--radius-full);
+  font-size: 10px;
+  font-weight: var(--font-weight-bold);
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+
+/* ------------------------------------------------------------
+   9. CANCELLATION MARKER
+   Inline badge showing positive / negative cancellation impact.
+   ------------------------------------------------------------ */
+
+.cancellation-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.cancellation-marker-positive {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-success);
+}
+
+.cancellation-marker-negative {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error);
+}
+
+
+/* ------------------------------------------------------------
+   10. GAUGE / METER STYLES
+   Horizontal bar gauge with safe / stress / danger zones and
+   a movable marker indicator.
+   ------------------------------------------------------------ */
+
+.gauge-container {
+  margin: var(--space-4) 0;
+  position: relative;
+}
+
+.gauge-bar {
+  width: 100%;
+  height: 12px;
+  border-radius: var(--radius-full);
+  background: var(--color-surface-slate);
+  overflow: hidden;
+  position: relative;
+}
+
+.gauge-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  transition: width var(--transition-slow);
+  position: relative;
+}
+
+.gauge-zone-safe {
+  background: var(--color-success);
+}
+
+.gauge-zone-stress {
+  background: var(--color-warning);
+}
+
+.gauge-zone-danger {
+  background: var(--color-error);
+}
+
+.gauge-zones {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.gauge-zones span {
+  height: 100%;
+}
+
+.gauge-zones .safe {
+  background: rgba(16, 185, 129, 0.3);
+  flex: 0 0 35%;
+}
+
+.gauge-zones .stress {
+  background: rgba(245, 158, 11, 0.3);
+  flex: 0 0 30%;
+}
+
+.gauge-zones .danger {
+  background: rgba(239, 68, 68, 0.3);
+  flex: 0 0 35%;
+}
+
+.gauge-marker {
+  position: absolute;
+  top: -4px;
+  width: 4px;
+  height: 20px;
+  background: var(--color-pure-white);
+  border-radius: 2px;
+  transform: translateX(-50%);
+  transition: left var(--transition-slow);
+}
+
+.gauge-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-1);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted-slate);
+}
+
+
+/* ------------------------------------------------------------
+   11. SUMMARY CARDS
+   Compact KPI cards displayed at the bottom of results.
+   ------------------------------------------------------------ */
+
+.summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.summary-card {
+  background: var(--color-surface-slate);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.summary-value {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-2xl);
+  color: var(--color-pure-white);
+  margin-bottom: var(--space-1);
+}
+
+.summary-value.positive {
+  color: var(--color-success);
+}
+
+.summary-value.negative {
+  color: var(--color-error);
+}
+
+.summary-label {
+  font-family: var(--font-body);
+  font-size: var(--font-size-xs);
+  color: var(--color-muted-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

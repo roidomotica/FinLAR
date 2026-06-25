@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiero Comprar — FinLAR</title>
+    <meta name="description" content="Guía completa paso a paso para la compra de una vivienda: arras, nota simple, notaría e impuestos.">
+    
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/simulators.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="index.html" class="nav-logo"><img src="assets/logo-finlar.svg" alt="FinLAR"></a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="educacion.html" class="nav-link">Educación</a></li>
+                <li><a href="comprar.html" class="nav-link active">Comprar</a></li>
+                <li><a href="vender.html" class="nav-link">Vender</a></li>
+                <li><a href="mercado.html" class="nav-link">Mercado</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="index.html" class="nav-link">Inicio</a>
+            <a href="educacion.html" class="nav-link">Educación</a>
+            <a href="comprar.html" class="nav-link active">Comprar</a>
+            <a href="vender.html" class="nav-link">Vender</a>
+            <a href="mercado.html" class="nav-link">Mercado</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header section container animate-on-scroll">
+            <h1 class="hero-title gradient-text mb-16">Guía Completa para Comprar tu Vivienda</h1>
+            <p class="hero-subtitle text-muted" style="margin: 0 auto;">Desde evaluar tu capacidad financiera hasta firmar en la notaría. Todo lo que debes saber antes de dar el gran paso.</p>
+        </section>
+
+        <section class="section container content-section pt-0 animate-on-scroll">
+            <div class="grid grid-2" style="align-items: start;">
+                <!-- Left: Timeline -->
+                <div>
+                    <h2 class="mb-32">El proceso paso a paso</h2>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">1. Analiza tu capacidad financiera</h4>
+                                <p class="timeline-text text-muted mb-16">Antes de buscar casas, debes saber qué precio te puedes permitir. Necesitarás tener ahorrado aproximadamente el 30% del valor (20% de entrada + 10% gastos).</p>
+                                <a href="index.html#simulator-capacity" class="btn btn-secondary btn-sm">Ir al simulador</a>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">2. Busca financiación</h4>
+                                <p class="timeline-text text-muted">Compara al menos 3 bancos diferentes. Fíjate siempre en la TAE y no solo en el TIN. Considera si prefieres hipoteca a tipo fijo, variable o mixto.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">3. Encuentra tu vivienda</h4>
+                                <p class="timeline-text text-muted">Busca en portales, visita inmuebles, revisa el estado estructural y la zona. Si te interesa, haz una oferta inicial negociando el precio.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">4. Contrato de Arras</h4>
+                                <p class="timeline-text text-muted">Es el compromiso legal de compra. Habitualmente entregarás el 10% del valor de la casa. Si te echas atrás, pierdes ese dinero.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">5. Nota Simple y Due Diligence</h4>
+                                <p class="timeline-text text-muted">Antes de firmar nada, comprueba en el Registro de la Propiedad que la casa está libre de cargas y pertenece realmente a quien te la vende.</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4 class="timeline-title">6. Escritura y Notaría</h4>
+                                <p class="timeline-text text-muted">Firma de la escritura pública de compraventa y de la hipoteca ante notario. Entrega de llaves y pago del resto del importe más impuestos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Detailed Accordions -->
+                <div>
+                    <h2 class="mb-32">Documentos y Conceptos Clave</h2>
+                    <div class="accordion">
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h4 class="m-0">¿Qué es el Contrato de Arras?</h4>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="p-16 text-muted">
+                                    <p class="mb-16">Es un documento privado donde las partes pactan la reserva de la compraventa, entregando como prueba una cantidad de dinero (normalmente el 10%).</p>
+                                    <p class="mb-8"><strong>Tipos de arras:</strong></p>
+                                    <ul class="pl-24 mb-16">
+                                        <li><strong>Penitenciales (las más comunes):</strong> Permiten desistir libremente del contrato. Si desiste el comprador, pierde la cantidad entregada. Si desiste el vendedor, debe devolverlas duplicadas.</li>
+                                        <li><strong>Confirmatorias:</strong> No permiten echarse atrás. Si una parte incumple, la otra puede exigir el cumplimiento forzoso o una indemnización por daños.</li>
+                                        <li><strong>Penales:</strong> Funcionan como indemnización prefijada en caso de incumplimiento, pero no impiden exigir además que se cumpla el contrato.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h4 class="m-0">¿Cómo leer una Nota Simple?</h4>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="p-16 text-muted">
+                                    <p class="mb-16">Se solicita en el Registro de la Propiedad y contiene 3 apartados fundamentales que debes revisar con lupa:</p>
+                                    <ol class="pl-24">
+                                        <li class="mb-8"><strong>Descripción de la finca:</strong> Comprueba que los metros cuadrados, la ubicación y los linderos coinciden con lo que te están vendiendo.</li>
+                                        <li class="mb-8"><strong>Titularidad:</strong> Verifica que la persona que te vende la casa es la misma que aparece aquí como propietario al 100%.</li>
+                                        <li class="mb-8"><strong>Cargas:</strong> La parte más importante. Aquí verás si la casa tiene embargos, hipotecas previas o afecciones fiscales. La casa debe venderse "libre de cargas".</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h4 class="m-0">Gastos e Impuestos de Compra (~10-12%)</h4>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="p-16 text-muted">
+                                    <p class="mb-16">El precio de la casa no es el total que pagarás. Debes sumar:</p>
+                                    <ul class="pl-24">
+                                        <li><strong>Vivienda Nueva:</strong> IVA (10% de forma general) + AJD (Actos Jurídicos Documentados, 0.5% - 1.5% según CCAA).</li>
+                                        <li><strong>Vivienda de 2ª Mano:</strong> ITP (Impuesto de Transmisiones Patrimoniales). Varía entre el 6% y el 10% dependiendo de la Comunidad Autónoma. Existen bonificaciones para menores de 35 años o familias numerosas.</li>
+                                        <li><strong>Notaría y Registro:</strong> Tarifas reguladas por ley (aranceles). Suele rondar los 1.000€ - 2.000€ en total.</li>
+                                        <li><strong>Gestoría:</strong> Si pides hipoteca, el banco impondrá su gestoría para tramitar el pago de impuestos e inscripción. (Aprox. 400€ - 600€).</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <div class="accordion-header">
+                                <h4 class="m-0">Checklist del Comprador</h4>
+                            </div>
+                            <div class="accordion-content">
+                                <div class="p-16 text-muted">
+                                    <ul class="pl-24" style="list-style-type: square;">
+                                        <li>Nota simple actualizada (menos de 1 mes)</li>
+                                        <li>Certificado de eficiencia energética (obligatorio para vender)</li>
+                                        <li>Último recibo del IBI pagado</li>
+                                        <li>Certificado de la comunidad de propietarios indicando que se está al corriente de pago y no hay derramas aprobadas pendientes</li>
+                                        <li>Cédula de habitabilidad (si es obligatoria en tu CCAA)</li>
+                                        <li>Estatutos de la comunidad (para saber si se permiten alquileres turísticos, etc.)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section footer-brand">
+                    <img src="assets/logo-finlar.svg" alt="FinLAR" style="height: 32px; margin-bottom: 16px;">
+                    <p class="card-text text-muted">Tu guía inteligente para decisiones financieras e inmobiliarias en España.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="footer-link">Inicio</a></li>
+                        <li><a href="educacion.html" class="footer-link">Educación Financiera</a></li>
+                        <li><a href="comprar.html" class="footer-link">Quiero Comprar</a></li>
+                        <li><a href="vender.html" class="footer-link">Quiero Vender</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

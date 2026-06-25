@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 60" fill="none">
+  <defs>
+    <linearGradient id="finlar-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="finlar-gradient-text" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="60%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Icon: Geometric house roof + ascending financial bars -->
+  <g transform="translate(4, 4)">
+    <!-- House roof chevron -->
+    <path d="M26 8L8 24H16L26 15L36 24H44L26 8Z" fill="url(#finlar-gradient)" opacity="0.9"/>
+    
+    <!-- Financial ascending bars underneath -->
+    <rect x="10" y="28" width="6" height="10" rx="1.5" fill="url(#finlar-gradient)" opacity="0.4"/>
+    <rect x="19" y="24" width="6" height="14" rx="1.5" fill="url(#finlar-gradient)" opacity="0.6"/>
+    <rect x="28" y="19" width="6" height="19" rx="1.5" fill="url(#finlar-gradient)" opacity="0.8"/>
+    <rect x="37" y="13" width="6" height="25" rx="1.5" fill="url(#finlar-gradient)" opacity="1"/>
+    
+    <!-- Ascending trend line -->
+    <path d="M13 33L22 28L31 22L40 15" stroke="url(#finlar-gradient)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+    <circle cx="40" cy="15" r="2" fill="#06b6d4"/>
+  </g>
+
+  <!-- Wordmark: "Fin" in gradient + "LAR" in current color -->
+  <text x="62" y="38" font-family="'Outfit', sans-serif" font-weight="700" font-size="30" letter-spacing="-0.5">
+    <tspan fill="url(#finlar-gradient-text)">Fin</tspan><tspan class="finlar-lar" fill="#f8fafc">LAR</tspan>
+  </text>
+  
+  <!-- Descriptor -->
+  <text x="63" y="50" font-family="'Inter', sans-serif" font-weight="600" font-size="8" letter-spacing="0.25em" class="finlar-descriptor" fill="#64748b">EDUCACIÓN FINANCIERA</text>
+</svg>

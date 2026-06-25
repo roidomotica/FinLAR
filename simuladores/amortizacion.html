@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategia de Amortización Hipotecaria — FinLAR</title>
+    <meta name="description" content="Compara 5 escenarios financieros si dispones de ahorro extra anual.">
+    
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/simulators.css">
+    <link rel="stylesheet" href="../css/theme.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/logo-finlar.svg" alt="FinLAR">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="../educacion.html" class="nav-link">Educación</a></li>
+                <li><a href="../comprar.html" class="nav-link">Comprar</a></li>
+                <li><a href="../vender.html" class="nav-link">Vender</a></li>
+                <li><a href="../mercado.html" class="nav-link">Mercado</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
+                    <i data-lucide="moon"></i>
+                </button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html" class="nav-link">Inicio</a>
+            <a href="../educacion.html" class="nav-link">Educación</a>
+            <a href="../comprar.html" class="nav-link">Comprar</a>
+            <a href="../vender.html" class="nav-link">Vender</a>
+            <a href="../mercado.html" class="nav-link">Mercado</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header section container animate-on-scroll">
+            <h1 class="hero-title gradient-text mb-16">Estrategia de Amortización</h1>
+            <p class="hero-subtitle text-muted" style="margin: 0 auto; max-width: 800px;">Compara 5 escenarios financieros si dispones de ahorro extra anual. ¿Es mejor amortizar hipoteca reduciendo cuota, reduciendo plazo, o invertir ese dinero?</p>
+        </section>
+
+        <section id="simulator-amortization" class="simulator-section section section-dark animate-on-scroll pt-0">
+            <div class="container">
+                <div class="simulator-grid">
+                    <div class="simulator-inputs card">
+                        <h3 class="card-title mb-24">Datos de tu Hipoteca</h3>
+                        
+                        <div class="form-group">
+                            <label for="capital">Capital pendiente</label>
+                            <div class="input-group">
+                                <span class="input-prefix">€</span>
+                                <input type="number" id="capital" class="input" value="180000" min="0" step="1000">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label for="interest">Interés actual (TIN %)</label>
+                                <input type="number" id="interest" class="input" value="2.5" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label for="term">Plazo restante (años)</label>
+                                <input type="number" id="term" class="input" value="25" min="1" max="40">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mt-24">
+                            <label for="extra-savings">Ahorro extra anual disponible</label>
+                            <div class="input-group">
+                                <span class="input-prefix">€</span>
+                                <input type="number" id="extra-savings" class="input" value="5000" min="0" step="500">
+                            </div>
+                            <p class="form-hint mt-8">Cantidad que destinarás cada año a amortizar o ahorrar/invertir.</p>
+                        </div>
+                        
+                        <hr class="mt-32 mb-32" style="border-color: rgba(255,255,255,0.06);">
+                        <h4 class="card-title mb-16" style="font-size: 1rem;">Parámetros Alternativos</h4>
+                        
+                        <div class="grid grid-2">
+                            <div class="form-group">
+                                <label for="savings-rate">Cuenta remunerada (%)</label>
+                                <input type="number" id="savings-rate" class="input" value="2.0" step="0.1">
+                                <p class="form-hint mt-4">Para Escenario 1B</p>
+                            </div>
+                            <div class="form-group">
+                                <label for="fund-return">Rentabilidad fondos (%)</label>
+                                <input type="number" id="fund-return" class="input" value="7.0" step="0.1">
+                                <p class="form-hint mt-4">Para Escenario 3</p>
+                            </div>
+                        </div>
+                        
+                        <button id="calculate-amortization" class="btn btn-primary btn-lg mt-32" style="width: 100%">Comparar Escenarios</button>
+                    </div>
+                    
+                    <div class="simulator-results card">
+                        <div id="amortization-summary" class="summary-cards grid grid-2 mb-32">
+                            <!-- Populated by JS -->
+                        </div>
+                        
+                        <div class="chart-container mb-32" style="height: 400px;">
+                            <canvas id="amortization-chart"></canvas>
+                        </div>
+                        
+                        <div id="amortization-results">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section footer-brand">
+                    <img src="../assets/logo-finlar.svg" alt="FinLAR" style="height: 32px; margin-bottom: 16px;">
+                    <p class="card-text text-muted">Tu guía inteligente para decisiones financieras e inmobiliarias en España.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html" class="footer-link">Inicio</a></li>
+                        <li><a href="../educacion.html" class="footer-link">Educación Financiera</a></li>
+                        <li><a href="../comprar.html" class="footer-link">Quiero Comprar</a></li>
+                        <li><a href="../vender.html" class="footer-link">Quiero Vender</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Herramientas</h4>
+                    <ul class="footer-links">
+                        <li><a href="capacidad.html" class="footer-link">Simulador de Capacidad</a></li>
+                        <li><a href="amortizacion.html" class="footer-link">Estrategia de Amortización</a></li>
+                        <li><a href="../mercado.html" class="footer-link">Mercado Hipotecario</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/charts-config.js"></script>
+    <script src="../js/simulator-amortization.js"></script>
+</body>
+</html>

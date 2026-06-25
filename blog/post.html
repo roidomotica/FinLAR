@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Artículo — FinLAR</title>
+    <meta name="description" id="page-description" content="Artículo del blog de FinLAR">
+    
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
+    <style>
+        /* Estilos específicos del artículo */
+        .article-body h2 {
+            color: var(--color-text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .article-body h3 {
+            color: var(--color-text);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 2rem;
+            margin-bottom: 0.75rem;
+        }
+        .article-body p {
+            margin-bottom: 1.25rem;
+            line-height: 1.85;
+        }
+        .article-body ul, .article-body ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--color-text-muted);
+        }
+        .article-body li {
+            margin-bottom: 0.5rem;
+            line-height: 1.7;
+        }
+        .article-body strong {
+            color: var(--color-text);
+            font-weight: 600;
+        }
+        .article-body blockquote {
+            border-left: 4px solid var(--color-cyan);
+            margin: 2rem 0;
+            padding: 1rem 1.5rem;
+            background: rgba(6, 182, 212, 0.05);
+            border-radius: 0 8px 8px 0;
+            color: var(--color-text-muted);
+            font-style: italic;
+        }
+        .article-body blockquote strong {
+            color: var(--color-cyan);
+            font-style: normal;
+        }
+        .article-body hr {
+            border: none;
+            border-top: 1px solid var(--color-glass-border);
+            margin: 2.5rem 0;
+        }
+        .article-body code {
+            font-family: monospace;
+            background: rgba(255,255,255,0.06);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .article-body pre {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+        .article-body table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .article-body table th {
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-family: 'Outfit', sans-serif;
+            text-align: left;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .article-body table td {
+            padding: 10px 16px;
+            border-bottom: 1px solid var(--color-glass-border);
+            color: var(--color-text-muted);
+        }
+        .article-body table tbody tr:hover {
+            background: rgba(255,255,255,0.02);
+        }
+
+        /* Esqueleto de carga */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
+        }
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Insignia de categoría */
+        .category-badge-ahorro    { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
+        .category-badge-hipotecas { background: rgba(59,130,246,0.15); color: #3b82f6; border: 1px solid rgba(59,130,246,0.3); }
+        .category-badge-inversion { background: rgba(245,158,11,0.15); color: #f59e0b; border: 1px solid rgba(245,158,11,0.3); }
+        .category-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            margin-bottom: 1rem;
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/logo-finlar.svg" alt="FinLAR">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="../educacion.html" class="nav-link active">Educación</a></li>
+                <li><a href="../comprar.html" class="nav-link">Comprar</a></li>
+                <li><a href="../vender.html" class="nav-link">Vender</a></li>
+                <li><a href="../mercado.html" class="nav-link">Mercado</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html" class="nav-link">Inicio</a>
+            <a href="../educacion.html" class="nav-link active">Educación</a>
+            <a href="../comprar.html" class="nav-link">Comprar</a>
+            <a href="../vender.html" class="nav-link">Vender</a>
+            <a href="../mercado.html" class="nav-link">Mercado</a>
+        </div>
+    </nav>
+
+    <main>
+        <article class="section container">
+            <div style="max-width: 800px; margin: 0 auto;">
+                <!-- Botón volver -->
+                <a href="../educacion.html#blog-section" 
+                   style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--color-text-muted); margin-bottom: 2rem; font-size: 0.9rem; transition: color 0.2s;"
+                   onmouseover="this.style.color='var(--color-cyan)'"
+                   onmouseout="this.style.color='var(--color-text-muted)'">
+                    <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i>
+                    Volver al Blog
+                </a>
+
+                <!-- Estado de carga -->
+                <div id="post-loading">
+                    <div class="skeleton" style="height: 24px; width: 80px; margin-bottom: 16px;"></div>
+                    <div class="skeleton" style="height: 56px; width: 90%; margin-bottom: 12px;"></div>
+                    <div class="skeleton" style="height: 56px; width: 70%; margin-bottom: 24px;"></div>
+                    <div class="skeleton" style="height: 20px; width: 40%; margin-bottom: 48px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 100%; margin-bottom: 10px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 100%; margin-bottom: 10px;"></div>
+                    <div class="skeleton" style="height: 18px; width: 85%; margin-bottom: 10px;"></div>
+                </div>
+
+                <!-- Contenido del artículo (inyectado por JS) -->
+                <div id="post-content" style="display: none;">
+                    <span id="post-category-badge" class="category-badge"></span>
+                    <h1 id="post-title" class="hero-title mb-16" style="font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15;"></h1>
+                    <p id="post-excerpt" class="text-muted mb-32" style="font-size: 1.1rem;"></p>
+
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 48px; padding-bottom: 24px; border-bottom: 1px solid var(--color-glass-border);">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--color-gradient-luxury); display: flex; align-items: center; justify-content: center; font-family: 'Outfit'; font-weight: 600; color: white; font-size: 0.85rem;">FL</div>
+                        <div>
+                            <div style="font-family: 'Outfit'; font-weight: 500; color: var(--color-text);">Equipo FinLAR</div>
+                            <div class="text-muted" style="font-size: 0.85rem;">
+                                Publicado el <span id="post-date"></span>
+                                &nbsp;•&nbsp;
+                                <span id="post-read-time"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="post-body" class="article-body text-muted" style="font-size: 1.05rem;"></div>
+                </div>
+
+                <!-- Error si no se encuentra el artículo -->
+                <div id="post-error" style="display: none; text-align: center; padding: 4rem 0;">
+                    <i data-lucide="file-x" style="width: 64px; height: 64px; color: var(--color-text-muted); margin-bottom: 1rem;"></i>
+                    <h2 style="color: var(--color-text);">Artículo no encontrado</h2>
+                    <p class="text-muted mb-32">El artículo que buscas no existe o ha sido eliminado.</p>
+                    <a href="../educacion.html#blog-section" class="btn btn-primary">Ver todos los artículos</a>
+                </div>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+                <p class="text-muted" style="font-size: 12px;">La información tiene carácter educativo y no constituye asesoramiento financiero profesional.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- marked.js: convierte el formato Markdown del artículo en HTML para el navegador -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        // ── Configuración de marked.js ──────────────────────────
+        marked.setOptions({
+            breaks: true,      // saltos de línea → <br>
+            gfm: true,         // GitHub Flavored Markdown
+        });
+
+        // ── Leer el parámetro "slug" de la URL ──────────────────
+        // Ejemplo: blog/post.html?slug=fondo-emergencia
+        const params = new URLSearchParams(window.location.search);
+        const slug = params.get('slug');
+
+        if (!slug) {
+            showError();
+            return;
+        }
+
+        // ── Cargar el archivo Markdown del artículo ─────────────
+        // Los archivos están en /blog/posts/<slug>.md
+        const postUrl = '../blog/posts/' + slug + '.md';
+
+        fetch(postUrl)
+            .then(function (res) {
+                if (!res.ok) throw new Error('Post not found');
+                return res.text();
+            })
+            .then(function (raw) {
+                renderPost(slug, raw);
+            })
+            .catch(function () {
+                showError();
+            });
+
+        // ── Parsear el frontmatter YAML del archivo Markdown ───
+        function parseFrontmatter(raw) {
+            const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+            if (!match) return { meta: {}, content: raw };
+
+            const meta = {};
+            match[1].split('\n').forEach(function (line) {
+                const [key, ...rest] = line.split(':');
+                if (key && rest.length) {
+                    meta[key.trim()] = rest.join(':').trim().replace(/^["']|["']$/g, '');
+                }
+            });
+
+            return { meta: meta, content: match[2].trim() };
+        }
+
+        // ── Mapear categoría → texto legible ───────────────────
+        const categoryLabels = {
+            ahorro: 'Ahorro',
+            hipotecas: 'Hipotecas',
+            inversion: 'Inversión'
+        };
+
+        // ── Formatear fecha ─────────────────────────────────────
+        function formatDate(dateStr) {
+            if (!dateStr) return '';
+            try {
+                const d = new Date(dateStr + 'T00:00:00');
+                return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch (e) {
+                return dateStr;
+            }
+        }
+
+        // ── Renderizar el artículo en la página ─────────────────
+        function renderPost(slug, raw) {
+            const { meta, content } = parseFrontmatter(raw);
+
+            // Título de la pestaña del navegador
+            document.getElementById('page-title').textContent = (meta.title || 'Artículo') + ' — FinLAR';
+            document.getElementById('page-description').setAttribute('content', meta.excerpt || '');
+
+            // Categoría
+            const cat = meta.category || 'ahorro';
+            const badge = document.getElementById('post-category-badge');
+            badge.textContent = categoryLabels[cat] || cat;
+            badge.className = 'category-badge category-badge-' + cat;
+
+            // Metadatos
+            document.getElementById('post-title').textContent = meta.title || '';
+            document.getElementById('post-excerpt').textContent = meta.excerpt || '';
+            document.getElementById('post-date').textContent = formatDate(meta.date);
+            document.getElementById('post-read-time').textContent = meta.read_time || '';
+
+            // Contenido (Markdown → HTML)
+            document.getElementById('post-body').innerHTML = marked.parse(content);
+
+            // Mostrar contenido, ocultar esqueleto
+            document.getElementById('post-loading').style.display = 'none';
+            document.getElementById('post-content').style.display = 'block';
+
+            // Re-inicializar Lucide para los iconos en el contenido
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        // ── Mostrar estado de error ─────────────────────────────
+        function showError() {
+            document.getElementById('post-loading').style.display = 'none';
+            document.getElementById('post-error').style.display = 'block';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    })();
+    </script>
+</body>
+</html>

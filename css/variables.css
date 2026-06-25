@@ -1,0 +1,151 @@
+/* ============================================================
+   FinLAR Design System — Custom Properties
+   ============================================================
+   Single source of truth for every visual token used across
+   the FinLAR platform. Import this file before all other
+   stylesheets so every component can reference these vars.
+   ============================================================ */
+
+:root {
+
+  /* ----------------------------------------------------------
+     Colors
+     ---------------------------------------------------------- */
+
+  /* Backgrounds */
+  --color-deep-obsidian:   #030307;                    /* main dark background          */
+  --color-luxury-navy:     #080812;                    /* cards, panels                 */
+  --color-surface-slate:   #0f172a;                    /* elevated elements, table heads */
+  --color-glass-border:    rgba(255, 255, 255, 0.06);  /* glassmorphic borders          */
+
+  /* Accents */
+  --color-smart-cyan:      #06b6d4;                    /* primary accent                */
+  --color-sapphire-blue:   #3b82f6;                    /* CTA buttons                   */
+  --color-electric-indigo: #6366f1;                    /* charts                        */
+
+  /* Typography palette */
+  --color-pure-white:      #f8fafc;                    /* titles                        */
+  --color-slate-grey:      #94a3b8;                    /* body text                     */
+  --color-muted-slate:     #64748b;                    /* notes, labels                 */
+
+  /* Semantic */
+  --color-success:         #10b981;
+  --color-warning:         #f59e0b;
+  --color-error:           #ef4444;
+
+
+  /* ----------------------------------------------------------
+     Fonts
+     ---------------------------------------------------------- */
+
+  /* Families */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body:    'Inter', sans-serif;
+
+  /* Sizes */
+  --font-size-xs:  0.75rem;   /*  12px */
+  --font-size-sm:  0.875rem;  /*  14px */
+  --font-size-base: 1rem;     /*  16px */
+  --font-size-md:  1.125rem;  /*  18px */
+  --font-size-lg:  1.25rem;   /*  20px */
+  --font-size-xl:  1.5rem;    /*  24px */
+  --font-size-2xl: 2rem;      /*  32px */
+  --font-size-3xl: 2.5rem;    /*  40px */
+  --font-size-4xl: 3rem;      /*  48px */
+  --font-size-5xl: 4rem;      /*  64px */
+
+  /* Weights */
+  --font-weight-light:    300;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+  --font-weight-bold:     700;
+
+  /* Line heights */
+  --line-height-tight:   1.2;
+  --line-height-normal:  1.5;
+  --line-height-relaxed: 1.75;
+
+
+  /* ----------------------------------------------------------
+     Spacing  (base unit = 4 px, converted to rem ÷ 16)
+     ---------------------------------------------------------- */
+
+  --space-1:   0.25rem;  /*   4px */
+  --space-2:   0.5rem;   /*   8px */
+  --space-3:   0.75rem;  /*  12px */
+  --space-4:   1rem;     /*  16px */
+  --space-5:   1.25rem;  /*  20px */
+  --space-6:   1.5rem;   /*  24px */
+  --space-8:   2rem;     /*  32px */
+  --space-12:  3rem;     /*  48px */
+  --space-16:  4rem;     /*  64px */
+  --space-24:  6rem;     /*  96px */
+
+
+  /* ----------------------------------------------------------
+     Border Radius
+     ---------------------------------------------------------- */
+
+  --radius-sm:   0.375rem;  /*   6px */
+  --radius-md:   0.5rem;    /*   8px */
+  --radius-lg:   0.75rem;   /*  12px */
+  --radius-xl:   1rem;      /*  16px */
+  --radius-2xl:  1.5rem;    /*  24px */
+  --radius-full: 9999px;
+
+
+  /* ----------------------------------------------------------
+     Shadows
+     ---------------------------------------------------------- */
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+
+  /* Glow accents */
+  --shadow-glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3);
+  --shadow-glow-blue: 0 0 20px rgba(59, 130, 246, 0.3);
+
+
+  /* ----------------------------------------------------------
+     Transitions
+     ---------------------------------------------------------- */
+
+  --transition-fast:   0.15s ease;
+  --transition-base:   0.3s ease;
+  --transition-slow:   0.5s ease;
+  --transition-spring: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+
+  /* ----------------------------------------------------------
+     Gradients
+     ---------------------------------------------------------- */
+
+  --gradient-main:      linear-gradient(135deg, #06b6d4, #3b82f6);
+  --gradient-luxury:    linear-gradient(135deg, #030307, #0f172a);
+  --gradient-text:      linear-gradient(90deg, #f8fafc, #06b6d4);
+  --gradient-hero-glow: radial-gradient(ellipse at 50% 0%, rgba(6, 182, 212, 0.15) 0%, transparent 70%);
+
+
+  /* ----------------------------------------------------------
+     Z-Index Scale
+     ---------------------------------------------------------- */
+
+  --z-dropdown:       10;
+  --z-sticky:         20;
+  --z-navbar:         30;
+  --z-modal-backdrop: 40;
+  --z-modal:          50;
+  --z-tooltip:        60;
+
+
+  /* ----------------------------------------------------------
+     Backdrop Blur
+     ---------------------------------------------------------- */
+
+  --blur-sm:  4px;
+  --blur-md: 12px;
+  --blur-lg: 24px;
+}

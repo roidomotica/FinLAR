@@ -1,0 +1,1053 @@
+/* ============================================================
+   FINLAR — COMPONENTS STYLESHEET
+   ============================================================
+   All reusable UI component styles for the FinLAR dark fintech
+   platform. Every value references CSS custom properties defined
+   in variables.css so the entire theme can be swapped by
+   changing a single file.
+   
+   TABLE OF CONTENTS
+   ------------------
+    1.  Navigation        (.navbar)
+    2.  Buttons           (.btn)
+    3.  Cards             (.card)
+    4.  Tables            (.table)
+    5.  Badges            (.badge)
+    6.  Timeline          (.timeline)
+    7.  Accordion         (.accordion)
+    8.  Tabs              (.tab-group / .tab-btn)
+    9.  Alerts            (.alert)
+   10.  Footer            (.footer)
+   11.  Hero              (.hero)
+   12.  Theme Toggle      (.theme-toggle)
+   13.  Stats Row         (.stats-row)
+   14.  Keyframe Animations
+   ============================================================ */
+
+
+/* =============================================================
+   1. NAVIGATION
+   =============================================================
+   Fixed top navigation bar with glass-morphism backdrop blur.
+   Gains extra opacity and a subtle shadow once the user scrolls
+   (via the `.scrolled` class toggled by JS).
+   ============================================================= */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: var(--z-navbar);
+  background: rgba(3, 3, 7, 0.85);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border-bottom: 1px solid var(--color-glass-border);
+  transition: var(--transition-base);
+}
+
+/* Scrolled state — slightly more opaque with a soft shadow */
+.navbar.scrolled {
+  background: rgba(3, 3, 7, 0.95);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Centered content wrapper */
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-6);
+}
+
+/* ---- Logo ---- */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-logo img {
+  height: 36px;
+  width: auto;
+}
+
+/* ---- Link list ---- */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: var(--space-8);
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Individual nav link with animated underline */
+.nav-link {
+  color: var(--color-slate-grey);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  position: relative;
+  padding: var(--space-2) 0;
+  transition: var(--transition-base);
+}
+
+/* Animated gradient underline */
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--gradient-main);
+  transition: var(--transition-base);
+}
+
+@media (hover: hover) {
+  .nav-link:hover {
+    color: var(--color-pure-white);
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+}
+
+/* Active state — cyan highlight with full underline */
+.nav-link.active {
+  color: var(--color-smart-cyan);
+}
+
+.nav-link.active::after {
+  width: 100%;
+}
+
+/* ---- Actions area (right side) ---- */
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* ---- Mobile hamburger toggle ---- */
+.mobile-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--color-pure-white);
+  cursor: pointer;
+  padding: var(--space-2);
+}
+
+.mobile-toggle svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---- Slide-down mobile menu ---- */
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--color-luxury-navy);
+  border-bottom: 1px solid var(--color-glass-border);
+  padding: var(--space-4) var(--space-6);
+  backdrop-filter: blur(var(--blur-lg));
+  -webkit-backdrop-filter: blur(var(--blur-lg));
+}
+
+.mobile-menu.active {
+  display: block;
+}
+
+.mobile-menu .nav-link {
+  display: block;
+  padding: var(--space-3) 0;
+  font-size: var(--font-size-base);
+}
+
+/* Responsive: collapse links on small screens */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+
+  .mobile-toggle {
+    display: flex;
+  }
+}
+
+
+/* =============================================================
+   2. BUTTONS
+   =============================================================
+   Flexible button system with primary (gradient), secondary
+   (outline) variants plus size modifiers and an icon-only mode.
+   ============================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: var(--transition-base);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Focus ring for keyboard navigation */
+.btn:focus-visible {
+  outline: 2px solid var(--color-smart-cyan);
+  outline-offset: 2px;
+}
+
+/* ---- Primary — gradient fill ---- */
+.btn-primary {
+  background: var(--gradient-main);
+  color: #ffffff;
+  border-color: transparent;
+}
+
+@media (hover: hover) {
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-glow-cyan);
+  }
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ---- Secondary — ghost / outline ---- */
+.btn-secondary {
+  background: transparent;
+  color: var(--color-slate-grey);
+  border-color: var(--color-glass-border);
+}
+
+@media (hover: hover) {
+  .btn-secondary:hover {
+    border-color: var(--color-smart-cyan);
+    color: var(--color-pure-white);
+  }
+}
+
+/* ---- Size modifiers ---- */
+.btn-lg {
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-lg);
+}
+
+.btn-sm {
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--font-size-xs);
+}
+
+/* ---- Icon-only / icon-with-text ---- */
+.btn-icon {
+  padding: var(--space-3);
+  gap: var(--space-2);
+}
+
+.btn-icon svg {
+  width: 18px;
+  height: 18px;
+}
+
+
+/* =============================================================
+   3. CARDS
+   =============================================================
+   Glass-morphism card with subtle border glow on hover.
+   Variants include `.card-glow` for a cyan shadow effect and
+   `.feature-card` for centered feature showcases.
+   ============================================================= */
+
+.card {
+  background: var(--color-luxury-navy);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  backdrop-filter: blur(var(--blur-sm));
+  -webkit-backdrop-filter: blur(var(--blur-sm));
+  transition: var(--transition-base);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    border-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+/* Glow variant — adds cyan shadow on hover */
+.card-glow:hover {
+  box-shadow: var(--shadow-glow-cyan);
+}
+
+/* ---- Card sub-sections ---- */
+.card-header {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-glass-border);
+  margin-bottom: var(--space-4);
+}
+
+.card-body {
+  flex: 1;
+}
+
+.card-footer {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-glass-border);
+  margin-top: var(--space-4);
+}
+
+/* ---- Circular icon container ---- */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.card-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #ffffff;
+}
+
+/* ---- Card typography ---- */
+.card-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  font-size: var(--font-size-lg);
+  color: var(--color-pure-white);
+  margin-bottom: var(--space-2);
+}
+
+.card-text {
+  font-family: var(--font-body);
+  color: var(--color-slate-grey);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-relaxed);
+}
+
+/* ---- Feature card — centered layout ---- */
+.feature-card {
+  padding: var(--space-8);
+  text-align: center;
+}
+
+.feature-card .card-icon {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* =============================================================
+   4. TABLES
+   =============================================================
+   Responsive data table with rounded corners, uppercase
+   header row, and a subtle cyan tint on hover/highlight.
+   ============================================================= */
+
+.table-responsive {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-glass-border);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* ---- Header cells ---- */
+.table th {
+  background: var(--color-surface-slate);
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-pure-white);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+}
+
+/* Rounded top-left corner */
+.table th:first-child {
+  border-radius: var(--radius-lg) 0 0 0;
+}
+
+/* Rounded top-right corner */
+.table th:last-child {
+  border-radius: 0 var(--radius-lg) 0 0;
+}
+
+/* ---- Body cells ---- */
+.table td {
+  font-family: var(--font-body);
+  color: var(--color-slate-grey);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-glass-border);
+  font-size: var(--font-size-sm);
+}
+
+/* Row hover — very subtle cyan tint */
+@media (hover: hover) {
+  .table tbody tr:hover {
+    background: rgba(6, 182, 212, 0.03);
+  }
+}
+
+/* Highlighted / selected row */
+.highlight-row {
+  background: rgba(6, 182, 212, 0.08) !important;
+  border-left: 2px solid var(--color-smart-cyan);
+}
+
+
+/* =============================================================
+   5. BADGES
+   =============================================================
+   Small inline labels for statuses, categories, and tags.
+   Each color variant uses a semi-transparent background paired
+   with a matching text color for readability on dark surfaces.
+   ============================================================= */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xs);
+  line-height: 1;
+  gap: var(--space-1);
+}
+
+/* ---- Color variants ---- */
+.badge-cyan {
+  background: rgba(6, 182, 212, 0.15);
+  color: var(--color-smart-cyan);
+}
+
+.badge-blue {
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--color-sapphire-blue);
+}
+
+.badge-green {
+  background: rgba(16, 185, 129, 0.15);
+  color: var(--color-success);
+}
+
+.badge-amber {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-warning);
+}
+
+.badge-red {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-error);
+}
+
+
+/* =============================================================
+   6. TIMELINE
+   =============================================================
+   Vertical timeline with a connecting line, gradient dots, and
+   bordered content cards. Used for roadmaps, history, etc.
+   ============================================================= */
+
+.timeline {
+  position: relative;
+  padding-left: var(--space-8);
+}
+
+/* Vertical connecting line */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-glass-border);
+}
+
+/* ---- Individual timeline entry ---- */
+.timeline-item {
+  position: relative;
+  padding-bottom: var(--space-8);
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+/* Gradient dot marker */
+.timeline-dot {
+  position: absolute;
+  left: calc(-1 * var(--space-8) + 4px);
+  top: 4px;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-full);
+  background: var(--gradient-main);
+  border: 3px solid var(--color-deep-obsidian);
+  z-index: 1;
+}
+
+/* Content card beside the dot */
+.timeline-content {
+  background: var(--color-luxury-navy);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+}
+
+/* ---- Timeline typography ---- */
+.timeline-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-pure-white);
+  font-size: var(--font-size-base);
+  margin-bottom: var(--space-1);
+}
+
+.timeline-text {
+  color: var(--color-slate-grey);
+  font-size: var(--font-size-sm);
+}
+
+
+/* =============================================================
+   7. ACCORDION
+   =============================================================
+   Collapsible sections with a rotating chevron indicator.
+   Expand / collapse is handled via `.active` classes toggled
+   by JavaScript.
+   ============================================================= */
+
+.accordion {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--color-glass-border);
+}
+
+/* ---- Clickable header row ---- */
+.accordion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: var(--space-4) var(--space-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-pure-white);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  text-align: left;
+  transition: var(--transition-base);
+}
+
+/* Chevron indicator (rotates when open) */
+.accordion-header::after {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--color-muted-slate);
+  border-bottom: 2px solid var(--color-muted-slate);
+  transform: rotate(45deg);
+  transition: var(--transition-base);
+  flex-shrink: 0;
+}
+
+/* Rotated chevron in open state */
+.accordion-header.active::after {
+  transform: rotate(-135deg);
+}
+
+@media (hover: hover) {
+  .accordion-header:hover {
+    color: var(--color-smart-cyan);
+  }
+}
+
+/* ---- Collapsible content area ---- */
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow) ease-out;
+}
+
+.accordion-content.active {
+  max-height: 500px;
+}
+
+/* Inner padding so content doesn't touch the edges */
+.accordion-body {
+  padding: var(--space-2) var(--space-2) var(--space-4);
+}
+
+.accordion-body p {
+  color: var(--color-slate-grey);
+  font-size: var(--font-size-sm);
+}
+
+
+/* =============================================================
+   8. TABS
+   =============================================================
+   Horizontal tab bar with an active underline indicator and
+   fade-in animation when switching panes.
+   ============================================================= */
+
+.tab-group {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 2px solid var(--color-glass-border);
+  overflow-x: auto;
+}
+
+.tab-btn {
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--color-muted-slate);
+  font-family: var(--font-heading);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: var(--transition-base);
+  white-space: nowrap;
+}
+
+@media (hover: hover) {
+  .tab-btn:hover {
+    color: var(--color-pure-white);
+  }
+}
+
+/* Active tab — cyan underline */
+.tab-btn.active {
+  color: var(--color-smart-cyan);
+  border-bottom-color: var(--color-smart-cyan);
+}
+
+/* Container for tab pane content */
+.tab-content {
+  padding-top: var(--space-6);
+}
+
+/* Individual pane — hidden by default */
+.tab-pane {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+
+/* =============================================================
+   9. ALERTS
+   =============================================================
+   Contextual notification banners with a coloured left border,
+   tinted background, and an optional leading icon.
+   ============================================================= */
+
+.alert {
+  padding: var(--space-4) var(--space-6);
+  border-radius: var(--radius-md);
+  border-left: 4px solid;
+  margin-bottom: var(--space-4);
+  font-size: var(--font-size-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+}
+
+/* Leading icon alignment */
+.alert svg {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}
+
+/* ---- Semantic colour variants ---- */
+.alert-info {
+  background: rgba(6, 182, 212, 0.08);
+  border-color: var(--color-smart-cyan);
+  color: var(--color-smart-cyan);
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.08);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+.alert-warning {
+  background: rgba(245, 158, 11, 0.08);
+  border-color: var(--color-warning);
+  color: var(--color-warning);
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
+
+
+/* =============================================================
+   10. FOOTER
+   =============================================================
+   Multi-column footer with brand section, navigation columns,
+   social icons, and a bottom bar for legal text.
+   ============================================================= */
+
+.footer {
+  background: var(--color-surface-slate);
+  padding: var(--space-16) 0 0;
+}
+
+/* Four-column grid — collapses to 2 / 1 on smaller screens */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-8);
+  margin-bottom: var(--space-12);
+}
+
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Generic footer column */
+.footer-section {
+  /* Intentionally minimal — a basic block */
+}
+
+/* ---- Brand column ---- */
+.footer-brand {
+  margin-bottom: var(--space-4);
+}
+
+.footer-brand img {
+  height: 32px;
+  margin-bottom: var(--space-3);
+}
+
+.footer-brand p {
+  color: var(--color-muted-slate);
+  font-size: var(--font-size-sm);
+  max-width: 280px;
+}
+
+/* ---- Column title ---- */
+.footer-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-pure-white);
+  margin-bottom: var(--space-4);
+}
+
+/* ---- Footer link list ---- */
+.footer-links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.footer-link {
+  display: block;
+  color: var(--color-slate-grey);
+  text-decoration: none;
+  padding: var(--space-1) 0;
+  font-size: var(--font-size-sm);
+  transition: var(--transition-fast);
+}
+
+@media (hover: hover) {
+  .footer-link:hover {
+    color: var(--color-smart-cyan);
+    padding-left: var(--space-2);
+  }
+}
+
+/* ---- Bottom bar (copyright & social) ---- */
+.footer-bottom {
+  border-top: 1px solid var(--color-glass-border);
+  padding: var(--space-6) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.footer-bottom p {
+  color: var(--color-muted-slate);
+  font-size: var(--font-size-xs);
+}
+
+/* Social icon row */
+.footer-social {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.footer-social a {
+  color: var(--color-muted-slate);
+  transition: var(--transition-fast);
+}
+
+@media (hover: hover) {
+  .footer-social a:hover {
+    color: var(--color-smart-cyan);
+  }
+}
+
+
+/* =============================================================
+   11. HERO
+   =============================================================
+   Full-width hero section with a radial glow overlay, large
+   heading, subtitle, and a centered call-to-action row.
+   ============================================================= */
+
+.hero {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  padding: var(--space-24) 0;
+}
+
+/* Radial glow overlay */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-hero-glow);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Centered content wrapper */
+.hero-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  padding: 0 var(--space-6);
+}
+
+/* Small highlighted label above the title */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: var(--color-smart-cyan);
+  font-weight: var(--font-weight-medium);
+  margin-bottom: var(--space-6);
+}
+
+/* Main hero heading */
+.hero-title {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-5xl);
+  color: var(--color-pure-white);
+  margin-bottom: var(--space-6);
+  line-height: 1.1;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: var(--font-size-3xl);
+  }
+}
+
+/* Supporting description text */
+.hero-subtitle {
+  font-family: var(--font-body);
+  font-weight: var(--font-weight-light);
+  font-size: var(--font-size-lg);
+  color: var(--color-slate-grey);
+  max-width: 600px;
+  margin: 0 auto var(--space-8);
+  line-height: var(--line-height-relaxed);
+}
+
+/* Action button row */
+.hero-actions {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+/* =============================================================
+   12. THEME TOGGLE
+   =============================================================
+   Compact icon button that swaps between sun / moon icons
+   depending on [data-theme] on the root element.
+   ============================================================= */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--color-slate-grey);
+  transition: var(--transition-base);
+}
+
+@media (hover: hover) {
+  .theme-toggle:hover {
+    border-color: var(--color-smart-cyan);
+    color: var(--color-pure-white);
+  }
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Default (dark theme) — show moon, hide sun */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+.theme-toggle .icon-moon {
+  display: block;
+}
+
+/* Light theme — show sun, hide moon */
+[data-theme='light'] .theme-toggle .icon-sun {
+  display: block;
+}
+
+[data-theme='light'] .theme-toggle .icon-moon {
+  display: none;
+}
+
+
+/* =============================================================
+   13. STATS ROW
+   =============================================================
+   Auto-fit grid of stat items with gradient-clipped values
+   for a vibrant, data-driven look.
+   ============================================================= */
+
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-8);
+  padding: var(--space-8) 0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+/* Large gradient number */
+.stat-value {
+  font-family: var(--font-heading);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-3xl);
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-1);
+}
+
+/* Descriptive label beneath the number */
+.stat-label {
+  font-family: var(--font-body);
+  color: var(--color-muted-slate);
+  font-size: var(--font-size-sm);
+}
+
+
+/* =============================================================
+   14. KEYFRAME ANIMATIONS
+   =============================================================
+   Shared keyframes used by multiple component systems above.
+   ============================================================= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

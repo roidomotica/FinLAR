@@ -1,0 +1,239 @@
+/* ============================================================
+   FinLAR — Base / Reset Stylesheet
+   ============================================================
+   Provides a modern CSS reset, sensible defaults, and shared
+   utility classes. Assumes variables.css is loaded first so all
+   custom properties (--color-*, --font-*, --space-*, etc.) are
+   already available on :root.
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. Modern CSS Reset
+   ------------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Remove list bullets & numbering */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Collapse table borders */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Responsive media elements */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Inherit typography for form controls */
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Strip default button chrome */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Clean anchor defaults */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Remove textarea resize handle where undesired */
+textarea {
+  resize: vertical;
+}
+
+/* ------------------------------------------------------------
+   2. Body Defaults
+   ------------------------------------------------------------ */
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  color: var(--color-slate-grey);
+  background-color: var(--color-deep-obsidian);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ------------------------------------------------------------
+   3. Headings (h1 – h6)
+   ------------------------------------------------------------ */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  color: var(--color-pure-white);
+  line-height: var(--line-height-tight);
+  font-weight: 600;
+}
+
+h1 { font-size: var(--font-size-5xl); }
+h2 { font-size: var(--font-size-4xl); }
+h3 { font-size: var(--font-size-3xl); }
+h4 { font-size: var(--font-size-2xl); }
+h5 { font-size: var(--font-size-xl);  }
+h6 { font-size: var(--font-size-lg);  }
+
+/* ------------------------------------------------------------
+   4. Paragraph
+   ------------------------------------------------------------ */
+
+p {
+  margin-bottom: var(--space-4);
+  max-width: 75ch; /* optimal reading measure */
+}
+
+/* ------------------------------------------------------------
+   5. Links
+   ------------------------------------------------------------ */
+
+a {
+  color: var(--color-smart-cyan);
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  text-decoration: underline;
+  filter: brightness(1.15);
+}
+
+/* ------------------------------------------------------------
+   6. Focus Visible
+   ------------------------------------------------------------ */
+
+:focus-visible {
+  outline: 2px solid var(--color-smart-cyan);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ------------------------------------------------------------
+   7. Text Selection
+   ------------------------------------------------------------ */
+
+::selection {
+  background: var(--color-smart-cyan);
+  color: var(--color-deep-obsidian);
+}
+
+/* ------------------------------------------------------------
+   8. Container
+   ------------------------------------------------------------ */
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding-inline: var(--space-4);
+  }
+}
+
+/* ------------------------------------------------------------
+   9. Section
+   ------------------------------------------------------------ */
+
+.section {
+  padding-block: var(--space-16) var(--space-24);
+}
+
+/* ------------------------------------------------------------
+   10. Utility Classes
+   ------------------------------------------------------------ */
+
+/* Text alignment */
+.text-center {
+  text-align: center;
+}
+
+/* Muted text colour */
+.text-muted {
+  color: var(--color-muted-slate);
+}
+
+/* Gradient text effect */
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Screen-reader only (visually hidden but accessible) */
+.sr-only,
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ------------------------------------------------------------
+   11. Custom Scrollbar (WebKit)
+   ------------------------------------------------------------ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-deep-obsidian);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted-slate);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-slate-grey);
+}

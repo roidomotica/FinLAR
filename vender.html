@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiero Vender — FinLAR</title>
+    <meta name="description" content="Guía para vender tu vivienda: valoración, impuestos (IRPF, Plusvalía) y documentación necesaria.">
+    
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/simulators.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="index.html" class="nav-logo"><img src="assets/logo-finlar.svg" alt="FinLAR"></a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="educacion.html" class="nav-link">Educación</a></li>
+                <li><a href="comprar.html" class="nav-link">Comprar</a></li>
+                <li><a href="vender.html" class="nav-link active">Vender</a></li>
+                <li><a href="mercado.html" class="nav-link">Mercado</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="index.html" class="nav-link">Inicio</a>
+            <a href="educacion.html" class="nav-link">Educación</a>
+            <a href="comprar.html" class="nav-link">Comprar</a>
+            <a href="vender.html" class="nav-link active">Vender</a>
+            <a href="mercado.html" class="nav-link">Mercado</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header section container animate-on-scroll">
+            <h1 class="hero-title gradient-text mb-16">Guía para Vender tu Vivienda</h1>
+            <p class="hero-subtitle text-muted" style="margin: 0 auto;">Maximiza el valor de tu propiedad, prepara toda la documentación legal y conoce exactamente qué impuestos deberás pagar.</p>
+        </section>
+
+        <section class="section container content-section pt-0 animate-on-scroll">
+            <div class="grid grid-3 mb-48">
+                <div class="card card-glow text-center">
+                    <div class="card-icon mx-auto mb-16"><i data-lucide="search"></i></div>
+                    <h3 class="mb-16">Valoración</h3>
+                    <p class="text-muted" style="font-size: 0.9rem;">Cómo fijar el precio correcto analizando comparables del mercado y herramientas de tasación.</p>
+                </div>
+                <div class="card card-glow text-center">
+                    <div class="card-icon mx-auto mb-16"><i data-lucide="file-text"></i></div>
+                    <h3 class="mb-16">Documentación</h3>
+                    <p class="text-muted" style="font-size: 0.9rem;">Certificado energético, IBI, cédula de habitabilidad y todo el papeleo obligatorio.</p>
+                </div>
+                <div class="card card-glow text-center">
+                    <div class="card-icon mx-auto mb-16"><i data-lucide="receipt"></i></div>
+                    <h3 class="mb-16">Impuestos</h3>
+                    <p class="text-muted" style="font-size: 0.9rem;">IRPF por ganancia patrimonial y la temida Plusvalía Municipal. ¿Cuándo se está exento?</p>
+                </div>
+            </div>
+
+            <h2 class="mb-24">Los Impuestos de la Venta</h2>
+            
+            <div class="grid grid-2 mb-48">
+                <!-- IRPF -->
+                <div class="card">
+                    <h3 class="gradient-text mb-16">1. IRPF (Ganancia Patrimonial)</h3>
+                    <p class="text-muted mb-16">Solo pagas si vendes más caro de lo que compraste. Tributa en la base imponible del ahorro de la declaración de la renta del año siguiente a la venta.</p>
+                    
+                    <div class="alert alert-info mb-16">
+                        <strong>Fórmula Básica:</strong><br>
+                        Ganancia = Valor de Transmisión (Venta - Gastos) - Valor de Adquisición (Compra + Gastos + Reformas)
+                    </div>
+
+                    <table class="table mb-16">
+                        <thead>
+                            <tr>
+                                <th>Ganancia Patrimonial</th>
+                                <th>Tipo a Aplicar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Hasta 6.000 €</td><td>19%</td></tr>
+                            <tr><td>De 6.000 € a 50.000 €</td><td>21%</td></tr>
+                            <tr><td>De 50.000 € a 200.000 €</td><td>23%</td></tr>
+                            <tr><td>De 200.000 € a 300.000 €</td><td>27%</td></tr>
+                            <tr><td>Más de 300.000 €</td><td>28%</td></tr>
+                        </tbody>
+                    </table>
+
+                    <p class="text-muted" style="font-size: 0.9rem;"><strong>Exenciones:</strong> Reinversión en vivienda habitual (si lo vendido era vivienda habitual y lo comprado también lo será) y mayores de 65 años que vendan su vivienda habitual.</p>
+                </div>
+
+                <!-- Plusvalia -->
+                <div class="card">
+                    <h3 class="gradient-text mb-16">2. Plusvalía Municipal (IIVTNU)</h3>
+                    <p class="text-muted mb-16">Impuesto local que grava el incremento de valor del <em>terreno</em> (no de la construcción) durante los años que has sido propietario.</p>
+                    
+                    <p class="text-muted mb-8">Tras la sentencia del Tribunal Constitucional, existen dos métodos de cálculo. Puedes elegir el que sea más favorable para ti:</p>
+                    
+                    <ul class="text-muted pl-24 mb-16">
+                        <li class="mb-8"><strong>Método Objetivo:</strong> Se multiplica el valor catastral del suelo por unos coeficientes que establece la ley estatal (y adapta cada ayuntamiento) según los años transcurridos.</li>
+                        <li><strong>Método Real:</strong> Se calcula la ganancia real de la compraventa (Precio Venta - Precio Compra) y se aplica el porcentaje que representa el valor catastral del suelo sobre el valor catastral total.</li>
+                    </ul>
+
+                    <div class="alert alert-success mt-auto">
+                        <i data-lucide="check-circle" class="mr-12"></i>
+                        <div>Si vendes a pérdidas (por menos dinero del que compraste), <strong>no tienes que pagar</strong> la plusvalía municipal.</div>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="mb-24">Documentación Necesaria (Checklist)</h2>
+            <div class="card" style="background: rgba(15, 23, 42, 0.5)">
+                <ul class="text-muted pl-24" style="line-height: 2;">
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Escritura de propiedad</strong> (Título de compraventa original).</li>
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Nota simple actualizada</strong> (Para demostrar que no hay cargas o hipotecas, aunque esto lo suele pedir el comprador).</li>
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Certificado de Eficiencia Energética</strong> (Obligatorio incluso para publicar el anuncio).</li>
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Último recibo del IBI</strong> (Impuesto de Bienes Inmuebles, pagado).</li>
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Certificado de la Comunidad de Propietarios</strong> (Firmado por el administrador, conforme no hay deudas ni derramas).</li>
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Cédula de habitabilidad</strong> o Licencia de Primera Ocupación (Obligatoria en algunas CCAA como Cataluña o Baleares).</li>
+                    <li><input type="checkbox" disabled class="mr-8"> <strong>Certificado de deuda pendiente</strong> (Si la casa tiene hipoteca, documento del banco con lo que falta por pagar para cancelarla el día de la firma).</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section footer-brand">
+                    <img src="assets/logo-finlar.svg" alt="FinLAR" style="height: 32px; margin-bottom: 16px;">
+                    <p class="card-text text-muted">Tu guía inteligente para decisiones financieras e inmobiliarias en España.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="footer-link">Inicio</a></li>
+                        <li><a href="educacion.html" class="footer-link">Educación Financiera</a></li>
+                        <li><a href="comprar.html" class="footer-link">Quiero Comprar</a></li>
+                        <li><a href="vender.html" class="footer-link">Quiero Vender</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+# ============================================================
+# CONFIGURACIÓN DEL PANEL DE ADMINISTRACIÓN — FinLAR
+# Decap CMS Configuration File
+# ============================================================
+
+# ----------------------------------------------------------
+# MODO LOCAL (para probar en tu ordenador sin publicar)
+# ----------------------------------------------------------
+# Activa esta línea cuando uses "iniciar-admin.bat"
+# Desactívala (pon un # delante) antes de publicar en GitHub
+local_backend: true
+
+# ----------------------------------------------------------
+# MODO PRODUCCIÓN (GitHub Pages)
+# ----------------------------------------------------------
+# Descomenta estas líneas cuando vayas a publicar.
+# Sustituye TU_USUARIO_GITHUB por tu nombre de usuario real.
+#
+# backend:
+#   name: github
+#   repo: TU_USUARIO_GITHUB/FinLAR
+#   branch: main
+#   auth_scope: public_repo
+
+# ----------------------------------------------------------
+# CARPETA PARA IMÁGENES
+# ----------------------------------------------------------
+# Las imágenes que subas desde el editor se guardarán aquí
+media_folder: assets/blog-images
+public_folder: /assets/blog-images
+
+# ----------------------------------------------------------
+# COLECCIONES DE CONTENIDO
+# ----------------------------------------------------------
+# Define qué tipos de contenido se pueden gestionar desde el panel
+
+collections:
+  # ─── BLOG: Gestión de artículos ─────────────────────────
+  - name: blog
+    label: "📝 Artículos del Blog"
+    label_singular: "Artículo"
+    folder: blog/posts
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    preview_path: "blog/post.html?slug={{slug}}"
+    summary: "{{title}} — [{{fields.category}}] — {{date}}"
+    fields:
+      - label: "Título"
+        name: title
+        widget: string
+        hint: "El título principal del artículo"
+
+      - label: "Extracto (descripción corta)"
+        name: excerpt
+        widget: text
+        hint: "Breve descripción que aparece en la tarjeta del blog (1-2 frases)"
+
+      - label: "Categoría"
+        name: category
+        widget: select
+        options:
+          - { label: "💰 Ahorro", value: ahorro }
+          - { label: "🏠 Hipotecas", value: hipotecas }
+          - { label: "📈 Inversión", value: inversion }
+
+      - label: "Fecha de publicación"
+        name: date
+        widget: datetime
+        format: "YYYY-MM-DD"
+        date_format: "DD/MM/YYYY"
+        time_format: false
+        default: ""
+
+      - label: "Tiempo de lectura estimado"
+        name: read_time
+        widget: string
+        default: "5 min de lectura"
+        hint: "Ej: 3 min de lectura"
+
+      - label: "Contenido del artículo"
+        name: body
+        widget: markdown
+        hint: "Usa el editor para escribir el artículo. Puedes añadir títulos, negritas, listas, etc."

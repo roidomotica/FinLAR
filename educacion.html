@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educación Financiera — FinLAR</title>
+    <meta name="description" content="Aprende los conceptos clave de ahorro, presupuesto, deuda e inversión.">
+    
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/simulators.css">
+    <link rel="stylesheet" href="css/theme.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="index.html" class="nav-logo"><img src="assets/logo-finlar.svg" alt="FinLAR"></a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="nav-link">Inicio</a></li>
+                <li><a href="educacion.html" class="nav-link active">Educación</a></li>
+                <li><a href="comprar.html" class="nav-link">Comprar</a></li>
+                <li><a href="vender.html" class="nav-link">Vender</a></li>
+                <li><a href="mercado.html" class="nav-link">Mercado</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="index.html" class="nav-link">Inicio</a>
+            <a href="educacion.html" class="nav-link active">Educación</a>
+            <a href="comprar.html" class="nav-link">Comprar</a>
+            <a href="vender.html" class="nav-link">Vender</a>
+            <a href="mercado.html" class="nav-link">Mercado</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-header section container animate-on-scroll">
+            <h1 class="hero-title gradient-text mb-16">Educación Financiera</h1>
+            <p class="hero-subtitle text-muted" style="margin: 0 auto;">Aprende los conceptos clave para gestionar tu dinero y tomar decisiones inmobiliarias informadas.</p>
+        </section>
+
+        <section class="section container content-section pt-0 animate-on-scroll">
+            <div class="card p-0 overflow-hidden">
+                <div class="tab-group" role="tablist">
+                    <button class="tab-btn active" data-tab="ahorro" role="tab">Ahorro</button>
+                    <button class="tab-btn" data-tab="presupuesto" role="tab">Presupuesto</button>
+                    <button class="tab-btn" data-tab="deuda" role="tab">Deuda</button>
+                    <button class="tab-btn" data-tab="inversion" role="tab">Inversión</button>
+                </div>
+
+                <div class="p-32">
+                    <!-- Tab 1: Ahorro -->
+                    <div id="tab-ahorro" class="tab-pane active" role="tabpanel">
+                        <h2 class="mb-24">La Regla del 50/30/20</h2>
+                        <p class="mb-24 text-muted">Es un método sencillo e intuitivo para organizar tus ingresos mensuales y asegurar que siempre destinas una parte al ahorro sistemático.</p>
+                        
+                        <div class="grid grid-3 mb-32">
+                            <div class="card card-glow" style="background: rgba(15, 23, 42, 0.5)">
+                                <h3 class="gradient-text mb-8" style="font-size: 2rem;">50%</h3>
+                                <h4 class="mb-8">Necesidades</h4>
+                                <p class="text-muted" style="font-size: 0.9rem;">Vivienda (hipoteca/alquiler), suministros, comida, transporte básico.</p>
+                            </div>
+                            <div class="card card-glow" style="background: rgba(15, 23, 42, 0.5)">
+                                <h3 class="gradient-text mb-8" style="font-size: 2rem;">30%</h3>
+                                <h4 class="mb-8">Deseos</h4>
+                                <p class="text-muted" style="font-size: 0.9rem;">Ocio, restaurantes, suscripciones, compras no esenciales, viajes.</p>
+                            </div>
+                            <div class="card card-glow" style="background: rgba(15, 23, 42, 0.5)">
+                                <h3 class="gradient-text mb-8" style="font-size: 2rem;">20%</h3>
+                                <h4 class="mb-8">Ahorro e Inversión</h4>
+                                <p class="text-muted" style="font-size: 0.9rem;">Fondo de emergencia, aportaciones a la hipoteca, fondos indexados.</p>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-info mb-32">
+                            <i data-lucide="info" class="mr-12"></i>
+                            <div>
+                                <strong>Fondo de emergencia:</strong> Antes de invertir o amortizar grandes cantidades de hipoteca, asegúrate de tener liquidez inmediata equivalente a entre 3 y 6 meses de tus gastos fijos.
+                            </div>
+                        </div>
+
+                        <h3 class="mb-16">Consejos para ahorrar más</h3>
+                        <ul class="text-muted pl-24" style="line-height: 1.8;">
+                            <li><strong>Págate a ti primero:</strong> Configura una transferencia automática a tu cuenta de ahorro el mismo día que cobras la nómina.</li>
+                            <li><strong>Evita la inflación del estilo de vida:</strong> Si te suben el sueldo, incrementa tu porcentaje de ahorro antes de aumentar tus gastos.</li>
+                            <li><strong>Revisa suscripciones:</strong> Cancela aquellos servicios recurrentes que no has utilizado en el último mes.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tab 2: Presupuesto -->
+                    <div id="tab-presupuesto" class="tab-pane" role="tabpanel">
+                        <h2 class="mb-24">Cómo crear tu presupuesto personal</h2>
+                        <p class="mb-24 text-muted">Un presupuesto no es una restricción, es un plan que le dice a tu dinero a dónde debe ir, en lugar de preguntarte a fin de mes a dónde fue.</p>
+                        
+                        <div class="timeline mt-32 mb-32">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <h4 class="timeline-title">Paso 1: Registra tus ingresos</h4>
+                                    <p class="timeline-text text-muted">Anota todo el dinero neto que entra al mes (nómina, alquileres, intereses).</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <h4 class="timeline-title">Paso 2: Categoriza tus gastos</h4>
+                                    <p class="timeline-text text-muted">Revisa tus últimos 3 meses del banco. Clasifica en fijos (hipoteca, luz) y variables (ocio, ropa).</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <h4 class="timeline-title">Paso 3: Define objetivos</h4>
+                                    <p class="timeline-text text-muted">Asigna importes máximos a cada categoría y define cuánto quieres ahorrar (Ej. 20%).</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <div class="timeline-content">
+                                    <h4 class="timeline-title">Paso 4: Seguimiento semanal</h4>
+                                    <p class="timeline-text text-muted">Revisa tu ejecución contra lo planeado. Ajusta las categorías flexibles si es necesario.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i data-lucide="alert-triangle" class="mr-12"></i>
+                            <div>
+                                <strong>El peligro de los "gastos hormiga":</strong> Esos cafés de 2€ diarios o snacks suman más de 700€ al año. Monitorizarlos es clave.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Deuda -->
+                    <div id="tab-deuda" class="tab-pane" role="tabpanel">
+                        <h2 class="mb-24">Tipos de deuda: Buena vs Mala</h2>
+                        
+                        <div class="grid grid-2 mb-32">
+                            <div class="card" style="border-top: 4px solid var(--color-green)">
+                                <h3 class="mb-16">Deuda "Buena"</h3>
+                                <p class="text-muted mb-16">Aquella que se utiliza para adquirir un activo que se aprecia en el tiempo o que genera ingresos adicionales.</p>
+                                <ul class="text-muted pl-24">
+                                    <li>Hipoteca para vivienda principal</li>
+                                    <li>Préstamo para estudios/formación</li>
+                                    <li>Financiación para un negocio rentable</li>
+                                </ul>
+                            </div>
+                            <div class="card" style="border-top: 4px solid var(--color-red)">
+                                <h3 class="mb-16">Deuda "Mala"</h3>
+                                <p class="text-muted mb-16">Aquella utilizada para comprar bienes de consumo que pierden valor rápidamente, a menudo con altos intereses.</p>
+                                <ul class="text-muted pl-24">
+                                    <li>Tarjetas de crédito revolving (>18% TIN)</li>
+                                    <li>Préstamos personales para vacaciones</li>
+                                    <li>Financiación de coches de gama alta</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <h3 class="mb-16">Estrategias para salir de deudas</h3>
+                        <div class="accordion mb-24">
+                            <div class="accordion-item">
+                                <div class="accordion-header">
+                                    <h4 class="m-0">Método Bola de Nieve (Snowball)</h4>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="p-16 text-muted">
+                                        <p>Ordena tus deudas de <strong>menor a mayor saldo total</strong>, sin importar el interés.</p>
+                                        <p>Paga el mínimo en todas, y destina todo el dinero extra a la deuda más pequeña. Al eliminarla rápido, consigues una victoria psicológica que te motiva a seguir con la siguiente.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <div class="accordion-header">
+                                    <h4 class="m-0">Método Avalancha (Avalanche)</h4>
+                                </div>
+                                <div class="accordion-content">
+                                    <div class="p-16 text-muted">
+                                        <p>Ordena tus deudas por <strong>tipo de interés, de mayor a menor</strong>.</p>
+                                        <p>Paga el mínimo en todas, y ataca agresivamente la que tiene el interés más alto. Es el método matemáticamente más eficiente y el que te hará pagar menos intereses en total.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Inversión -->
+                    <div id="tab-inversion" class="tab-pane" role="tabpanel">
+                        <h2 class="mb-24">Introducción a la Inversión</h2>
+                        <p class="text-muted mb-24">Mientras el ahorro protege tu dinero a corto plazo, la inversión lo hace crecer a largo plazo protegiéndolo de la inflación.</p>
+
+                        <div class="card mb-32" style="background: rgba(6, 182, 212, 0.05); border-color: rgba(6, 182, 212, 0.2)">
+                            <h3 class="gradient-text mb-16">El Interés Compuesto</h3>
+                            <p class="text-muted mb-16">Es cuando los intereses que generas producen a su vez más intereses. Es la fuerza más poderosa de las finanzas personales.</p>
+                            <p class="text-muted">Si inviertes 10.000€ a un 7% anual durante 25 años, sin aportar nada más, acabarás con <strong>54.274€</strong>. La mayor parte de ese dinero (44k) es puro rendimiento.</p>
+                        </div>
+
+                        <h3 class="mb-16">La relación Riesgo / Rentabilidad</h3>
+                        <table class="table mb-32">
+                            <thead>
+                                <tr>
+                                    <th>Activo</th>
+                                    <th>Riesgo</th>
+                                    <th>Rentabilidad Esperada</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Cuentas remuneradas y Depósitos</td>
+                                    <td><span class="badge badge-green">Muy Bajo</span></td>
+                                    <td>1% - 3% anual</td>
+                                </tr>
+                                <tr>
+                                    <td>Bonos del Estado</td>
+                                    <td><span class="badge badge-green">Bajo</span></td>
+                                    <td>2% - 4% anual</td>
+                                </tr>
+                                <tr>
+                                    <td>Inmobiliario (Alquiler)</td>
+                                    <td><span class="badge badge-amber">Medio</span></td>
+                                    <td>4% - 7% anual</td>
+                                </tr>
+                                <tr>
+                                    <td>Fondos Indexados Globales (RV)</td>
+                                    <td><span class="badge badge-amber">Medio/Alto</span></td>
+                                    <td>7% - 9% anual a largo plazo</td>
+                                </tr>
+                                <tr>
+                                    <td>Acciones Individuales / Cripto</td>
+                                    <td><span class="badge badge-red">Muy Alto</span></td>
+                                    <td>Altamente variable</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="alert alert-warning">
+                            <i data-lucide="shield-alert" class="mr-12"></i>
+                            <div>
+                                <strong>Importante:</strong> Rentabilidades pasadas no garantizan rentabilidades futuras. Nunca inviertas dinero que vayas a necesitar a corto plazo (menos de 5 años).
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section class="section container animate-on-scroll" id="blog-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;" class="mb-32">
+                <h2>Artículos y Guías</h2>
+                <div class="filter-group" id="blog-filters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="badge badge-cyan filter-btn active" data-filter="all" style="cursor: pointer; border: none;">Todos</button>
+                    <button class="badge filter-btn" data-filter="ahorro" style="cursor: pointer; background: transparent; border: 1px solid var(--color-glass-border); color: var(--color-text-muted);">Ahorro</button>
+                    <button class="badge filter-btn" data-filter="hipotecas" style="cursor: pointer; background: transparent; border: 1px solid var(--color-glass-border); color: var(--color-text-muted);">Hipotecas</button>
+                    <button class="badge filter-btn" data-filter="inversion" style="cursor: pointer; background: transparent; border: 1px solid var(--color-glass-border); color: var(--color-text-muted);">Inversión</button>
+                </div>
+            </div>
+
+            <!-- Las tarjetas se generan automáticamente desde los archivos .md de /blog/posts/ -->
+            <div class="grid grid-3" id="blog-grid">
+                <div id="blog-loading" style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--color-text-muted);">
+                    <i data-lucide="loader" style="width: 32px; height: 32px; animation: spin 1s linear infinite;"></i>
+                    <p class="mt-16">Cargando artículos...</p>
+                </div>
+            </div>
+
+            <p id="blog-empty" style="display: none; text-align: center; color: var(--color-text-muted); padding: 3rem;">No hay artículos en esta categoría todavía.</p>
+        </section>
+    </main>
+
+    <!-- Footer same as index.html -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section footer-brand">
+                    <img src="assets/logo-finlar.svg" alt="FinLAR" style="height: 32px; margin-bottom: 16px;">
+                    <p class="card-text text-muted">Tu guía inteligente para decisiones financieras e inmobiliarias en España.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" class="footer-link">Inicio</a></li>
+                        <li><a href="educacion.html" class="footer-link">Educación Financiera</a></li>
+                        <li><a href="comprar.html" class="footer-link">Quiero Comprar</a></li>
+                        <li><a href="vender.html" class="footer-link">Quiero Vender</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Herramientas</h4>
+                    <ul class="footer-links">
+                        <li><a href="simuladores/capacidad.html" class="footer-link">Simulador de Capacidad</a></li>
+                        <li><a href="simuladores/amortizacion.html" class="footer-link">Estrategia de Amortización</a></li>
+                        <li><a href="mercado.html" class="footer-link">Mercado Hipotecario</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Aviso Legal</a></li>
+                        <li><a href="#" class="footer-link">Política de Privacidad</a></li>
+                        <li><a href="#" class="footer-link">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="js/app.js"></script>
+    <script src="js/blog-loader.js"></script>
+</body>
+</html>
