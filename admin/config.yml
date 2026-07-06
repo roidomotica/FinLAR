@@ -8,7 +8,7 @@
 # ----------------------------------------------------------
 # Activa esta línea cuando uses "iniciar-admin.bat"
 # Desactívala (pon un # delante) antes de publicar en GitHub
-local_backend: false
+local_backend: true
 
 # ----------------------------------------------------------
 # MODO PRODUCCIÓN (GitHub Pages)
@@ -16,11 +16,11 @@ local_backend: false
 # Descomenta estas líneas cuando vayas a publicar.
 # Sustituye TU_USUARIO_GITHUB por tu nombre de usuario real.
 #
-backend:
-  name: github
-  repo: roidomotica/FinLAR
-  branch: main
-  auth_scope: public_repo
+# backend:
+#   name: github
+#   repo: TU_USUARIO_GITHUB/FinLAR
+#   branch: main
+#   auth_scope: public_repo
 
 # ----------------------------------------------------------
 # CARPETA PARA IMÁGENES

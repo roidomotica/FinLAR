@@ -31,6 +31,7 @@
                 <li><a href="../comprar.html" class="nav-link">Comprar</a></li>
                 <li><a href="../vender.html" class="nav-link">Vender</a></li>
                 <li><a href="../mercado.html" class="nav-link">Mercado</a></li>
+                <li><a href="coste-total.html" class="nav-link">Coste Hipoteca</a></li>
             </ul>
             <div class="nav-actions">
                 <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
@@ -47,6 +48,7 @@
             <a href="../comprar.html" class="nav-link">Comprar</a>
             <a href="../vender.html" class="nav-link">Vender</a>
             <a href="../mercado.html" class="nav-link">Mercado</a>
+            <a href="coste-total.html" class="nav-link">Coste Hipoteca</a>
         </div>
     </nav>
 
@@ -78,6 +80,13 @@
                             <div class="form-group">
                                 <label for="term">Plazo restante (años)</label>
                                 <input type="number" id="term" class="input" value="25" min="1" max="40">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group mt-16">
+                            <div class="quota-preview-card" style="background: rgba(6, 182, 212, 0.05); border: 1px dashed var(--color-smart-cyan); border-radius: var(--radius-lg); padding: var(--space-4); text-align: center;">
+                                <span class="text-muted" style="font-size: var(--font-size-sm); display: block; margin-bottom: var(--space-1); color: var(--color-text-muted);">Cuota mensual estimada original</span>
+                                <span id="quota-preview-value" class="gradient-text" style="font-family: var(--font-heading); font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); display: block;">0,00 €</span>
                             </div>
                         </div>
                         
@@ -148,6 +157,7 @@
                     <ul class="footer-links">
                         <li><a href="capacidad.html" class="footer-link">Simulador de Capacidad</a></li>
                         <li><a href="amortizacion.html" class="footer-link">Estrategia de Amortización</a></li>
+                        <li><a href="coste-total.html" class="footer-link">Coste de Hipoteca</a></li>
                         <li><a href="../mercado.html" class="footer-link">Mercado Hipotecario</a></li>
                     </ul>
                 </div>
@@ -168,6 +178,7 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/charts-config.js"></script>
     <script src="../js/simulator-amortization.js"></script>

@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Coste Total de Hipoteca y Vinculaciones — FinLAR</title>
+    <meta name="description" content="Compara el coste real de tu hipoteca entre diferentes bancos analizando el impacto de las vinculaciones de seguros y otros productos.">
+    
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/simulators.css">
+    <link rel="stylesheet" href="../css/theme.css">
+
+    <style>
+        .vinc-inputs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--space-2);
+            margin-top: var(--space-2);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid var(--color-glass-border);
+        }
+        .vinculacion-row {
+            margin-bottom: var(--space-4);
+        }
+        .vinculacion-row:last-child .vinc-inputs-grid {
+            border-bottom: none;
+        }
+        .form-group-compact {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group-compact label {
+            font-size: 10px;
+            color: var(--color-muted-slate);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .input-sm {
+            padding: 4px 6px !important;
+            font-size: 11px !important;
+            height: auto !important;
+            background: rgba(15, 23, 42, 0.4) !important;
+        }
+        .vinc-checkbox {
+            width: 16px;
+            height: 16px;
+            accent-color: var(--color-smart-cyan);
+            cursor: pointer;
+        }
+        .vinc-header {
+            align-items: center;
+        }
+        .vinc-badge-active {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--color-success);
+        }
+        .vinc-badge-inactive {
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--color-error);
+        }
+        .result-highlight {
+            font-size: var(--font-size-lg);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-pure-white);
+        }
+        .result-card-inner {
+            padding: var(--space-4);
+            border-radius: var(--radius-lg);
+            background: rgba(15, 23, 42, 0.3);
+            border: 1px solid var(--color-glass-border);
+        }
+        .btn-delete-vinc {
+            color: var(--color-error);
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+        }
+        .btn-delete-vinc:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .vinc-inputs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        .edu-note {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: var(--radius-lg);
+            padding: var(--space-4);
+            margin-bottom: var(--space-6);
+        }
+        .edu-note-title {
+            color: var(--color-smart-cyan);
+            font-family: var(--font-heading);
+            font-weight: var(--font-weight-semibold);
+            font-size: var(--font-size-base);
+            margin-bottom: var(--space-2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .edu-note-content {
+            font-size: var(--font-size-sm);
+            color: var(--color-slate-grey);
+            line-height: 1.6;
+        }
+        .edu-note-content strong {
+            color: var(--color-pure-white);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="../index.html" class="nav-logo">
+                <img src="../assets/logo-finlar.svg" alt="FinLAR">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="../educacion.html" class="nav-link">Educación</a></li>
+                <li><a href="../comprar.html" class="nav-link">Comprar</a></li>
+                <li><a href="../vender.html" class="nav-link">Vender</a></li>
+                <li><a href="../mercado.html" class="nav-link">Mercado</a></li>
+                <li><a href="coste-total.html" class="nav-link active">Coste Hipoteca</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema">
+                    <i data-lucide="moon"></i>
+                </button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú">
+                    <i data-lucide="menu"></i>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html" class="nav-link">Inicio</a>
+            <a href="../educacion.html" class="nav-link">Educación</a>
+            <a href="../comprar.html" class="nav-link">Comprar</a>
+            <a href="../vender.html" class="nav-link">Vender</a>
+            <a href="../mercado.html" class="nav-link">Mercado</a>
+            <a href="coste-total.html" class="nav-link active">Coste Hipoteca</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Header -->
+        <section class="page-header section container animate-on-scroll">
+            <h1 class="hero-title gradient-text mb-16">Coste Total de Hipoteca y Vinculaciones</h1>
+            <p class="hero-subtitle text-muted" style="margin: 0 auto; max-width: 800px;">
+                Compara el impacto financiero real de los productos vinculados de hasta 3 bancos. Descubre si te compensa más una hipoteca con TIN bajo pero cara en seguros, o un TIN más alto sin vinculaciones.
+            </p>
+        </section>
+
+        <!-- Inputs Section -->
+        <section class="simulator-section section animate-on-scroll pt-0">
+            <div class="container">
+                <!-- Datos Generales -->
+                <div class="card mb-32" style="background: var(--color-luxury-navy); border: 1px solid var(--color-glass-border);">
+                    <h3 class="card-title mb-24 flex flex-center" style="gap: 8px; justify-content: flex-start;">
+                        <i data-lucide="settings" style="color: var(--color-smart-cyan);"></i> Datos Generales de la Hipoteca
+                    </h3>
+                    <div class="grid grid-2 mb-24">
+                        <div class="form-group">
+                            <label for="global-capital" class="form-label font-semibold">Importe del préstamo (Capital)</label>
+                            <div class="input-group">
+                                <span class="input-prefix">€</span>
+                                <input type="number" id="global-capital" class="input" value="150000" min="10000" step="5000">
+                            </div>
+                            <p class="form-hint mt-4">Cantidad total de dinero que vas a solicitar al banco.</p>
+                        </div>
+                        <div class="form-group">
+                            <label for="global-term" class="form-label font-semibold">Plazo de amortización (años)</label>
+                            <div class="input-group">
+                                <input type="number" id="global-term" class="input" value="25" min="5" max="40" step="1">
+                                <span class="input-suffix" style="right: var(--space-4);">años</span>
+                            </div>
+                            <p class="form-hint mt-4">Tiempo en años para devolver el préstamo (habitualmente entre 15 y 30 años).</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label font-semibold">Tipo de operación</label>
+                            <div class="flex flex-gap-md" style="margin-top: 8px; gap: 16px;">
+                                <label class="flex flex-center flex-gap-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                                    <input type="radio" name="operation-type" id="op-nueva" value="nueva" checked style="accent-color: var(--color-smart-cyan); cursor: pointer;">
+                                    <span class="font-semibold" style="color: var(--color-pure-white); font-size: 14px;">Nueva Hipoteca</span>
+                                </label>
+                                <label class="flex flex-center flex-gap-sm" style="cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+                                    <input type="radio" name="operation-type" id="op-subrogacion" value="subrogacion" style="accent-color: var(--color-smart-cyan); cursor: pointer;">
+                                    <span class="font-semibold" style="color: var(--color-pure-white); font-size: 14px;">Subrogación / Mejora</span>
+                                </label>
+                            </div>
+                            <p class="form-hint mt-4">Elige si solicitas una hipoteca nueva o trasladas una hipoteca existente.</p>
+                        </div>
+                        <div class="form-group" id="cancelation-costs-container" style="display: none;">
+                            <label for="cancelation-costs" class="form-label font-semibold">Gastos de cancelación de hipoteca actual</label>
+                            <div class="input-group">
+                                <span class="input-prefix">€</span>
+                                <input type="number" id="cancelation-costs" class="input" value="1000" min="0" step="100">
+                            </div>
+                            <p class="form-hint mt-4">Comisiones y gastos por cancelar tu hipoteca de origen si te trasladas a una nueva entidad. Solo se aplicará a las ofertas de Banco B y Banco C, no a tu banco actual (Banco A).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel de Explicación Legal (Ley 2/1994 y RDL 19/2022) -->
+                <div class="edu-note mb-32" id="legal-explanation-panel" style="display: none;">
+                    <div class="edu-note-title">
+                        <i data-lucide="scale" style="color: #6366f1;"></i> Información Legal Relevante: Subrogación Hipotecaria (Ley 2/1994 y RDL 19/2022)
+                    </div>
+                    <div class="edu-note-content">
+                        <p style="margin-bottom: var(--space-3);">
+                            Trasladar tu hipoteca a otra entidad es un proceso regulado que ofrece ventajas y limitaciones importantes que debes conocer:
+                        </p>
+                        <ul style="padding-left: var(--space-4); margin-bottom: var(--space-3); list-style-type: disc;">
+                            <li style="margin-bottom: var(--space-2);">
+                                <strong>Novación vs. Subrogación:</strong> La <em>novación</em> consiste en renegociar y modificar las condiciones de la hipoteca con tu banco actual. La <em>subrogación</em> implica cambiar el préstamo de acreedor, es decir, trasladar la hipoteca de tu banco actual a una nueva entidad que mejore las condiciones de interés o plazo.
+                            </li>
+                            <li style="margin-bottom: var(--space-2);">
+                                <strong>Derecho de Enervación (Ley 2/1994, Art. 2, modificado por RDL 19/2022):</strong> Cuando presentas una oferta vinculante de un nuevo banco, tu banco actual dispone de un plazo de <strong>15 días naturales</strong> para igualar o mejorar formalmente dicha oferta (enervación). Si tu banco actual decide enervar la operación igualando las condiciones, estarás obligado por ley a mantener tu hipoteca con ellos, no pudiendo realizar el traslado.
+                            </li>
+                            <li style="margin-bottom: var(--space-2);">
+                                <strong>Estrategia comercial de cancelación:</strong> Para eludir este derecho de enervación y asegurar que el banco de origen no les "quite" la operación a última hora, muchas entidades financieras sugieren realizar una <em>cancelación completa de la hipoteca actual</em> y la <em>apertura de una nueva hipoteca</em>. Aunque esta estrategia impide legalmente al banco origen ejercer su derecho de enervación, ten en cuenta que <strong>encarece notablemente los gastos de notaría, registro y gestoría</strong> a tu cargo en comparación con una subrogación pura.
+                            </li>
+                        </ul>
+                        <p style="font-size: 12px; color: var(--color-muted-slate); margin-top: var(--space-3);">
+                            *Nota: Según el Real Decreto-ley 19/2022 y medidas de alivio hipotecario vigentes, las comisiones por amortización anticipada o cambio de hipoteca de tipo variable a fijo/mixto están limitadas o exentas en ciertos supuestos legales. Consulta siempre las condiciones específicas con tu entidad.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3 Bancos -->
+                <h3 class="mb-24 gradient-text">Configura las ofertas de los bancos</h3>
+                <div class="grid grid-3" id="banks-container">
+                    
+                    <!-- BANCO 1 -->
+                    <div class="card bank-card" data-bank-index="0" style="background: var(--color-luxury-navy); border: 1px solid var(--color-glass-border);">
+                        <div class="form-group mb-16">
+                            <label class="form-label font-semibold" style="color: var(--color-pure-white);">Nombre del Banco</label>
+                            <input type="text" class="input bank-name font-semibold" value="Banco A" style="border-color: var(--color-smart-cyan);">
+                            <span class="bank-role-badge badge mt-8" style="display: none; width: fit-content; background: rgba(6, 182, 212, 0.15); color: var(--color-smart-cyan);">Hipoteca Actual (Origen)</span>
+                        </div>
+                        <div class="form-group mb-24">
+                            <label class="form-label font-semibold">TIN Base Bonificado (%)</label>
+                            <div class="input-group">
+                                <input type="number" class="input bank-base-tin" value="2.50" step="0.05" min="0">
+                                <span class="input-suffix">%</span>
+                            </div>
+                            <p class="form-hint">TIN que te ofrece el banco si contratas todas las vinculaciones.</p>
+                        </div>
+
+                        <hr style="border-color: var(--color-glass-border); margin: var(--space-4) 0;">
+                        
+                        <h4 class="mb-16" style="font-size: 1.1rem; color: var(--color-pure-white);">Productos y Vinculaciones</h4>
+                        <div class="vinculaciones-list">
+                            <!-- Nómina -->
+                            <div class="vinculacion-row" data-vinc-id="nomina">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Domiciliación Nómina</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label title="Penalización en TIN si no se contrata">Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.50" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label title="Coste periódico de este servicio">Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label title="Incremento anual del coste (por inflación/edad)">Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seguro de Hogar -->
+                            <div class="vinculacion-row" data-vinc-id="hogar">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Seguro de Hogar</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.20" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="200" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="2.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seguro de Vida -->
+                            <div class="vinculacion-row" data-vinc-id="vida">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Seguro de Vida</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.25" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="300" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="3.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alarma -->
+                            <div class="vinculacion-row" data-vinc-id="alarma">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox">
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Servicio de Alarma</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.15" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="40" step="5" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual">Anual</option>
+                                            <option value="mensual" selected>Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="1.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Crédito -->
+                            <div class="vinculacion-row" data-vinc-id="tarjeta">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox">
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Tarjeta de Crédito</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="50" step="5" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulario para añadir vinculación personalizada -->
+                        <div class="custom-vinc-form mt-24" style="padding: var(--space-3); border: 1px dashed var(--color-glass-border); border-radius: var(--radius-md); background: rgba(3, 3, 7, 0.2);">
+                            <h5 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--color-pure-white);">+ Añadir vinculación personalizada</h5>
+                            <div class="form-group-compact mb-8">
+                                <label>Nombre del producto</label>
+                                <input type="text" class="input input-sm custom-name" placeholder="Ej. Seguro de Coche">
+                            </div>
+                            <div class="vinc-inputs-grid">
+                                <div class="form-group-compact">
+                                    <label>Penaliz. TIN (%)</label>
+                                    <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Coste (€)</label>
+                                    <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Periodo</label>
+                                    <select class="input input-sm custom-periodo">
+                                        <option value="anual" selected>Anual</option>
+                                        <option value="mensual">Mensual</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Inc. Anual (%)</label>
+                                    <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mt-12 btn-add-custom-vinc" style="width: 100%; font-size: 11px; padding: 6px 12px !important;">Añadir Producto</button>
+                        </div>
+                    </div>
+
+                    <!-- BANCO 2 -->
+                    <div class="card bank-card" data-bank-index="1" style="background: var(--color-luxury-navy); border: 1px solid var(--color-glass-border);">
+                        <div class="form-group mb-16">
+                            <label class="form-label font-semibold" style="color: var(--color-pure-white);">Nombre del Banco</label>
+                            <input type="text" class="input bank-name font-semibold" value="Banco B" style="border-color: var(--color-smart-cyan);">
+                            <span class="bank-role-badge badge mt-8" style="display: none; width: fit-content; background: rgba(99, 102, 241, 0.15); color: var(--color-indigo);">Nueva Oferta</span>
+                        </div>
+                        <div class="form-group mb-24">
+                            <label class="form-label font-semibold">TIN Base Bonificado (%)</label>
+                            <div class="input-group">
+                                <input type="number" class="input bank-base-tin" value="2.75" step="0.05" min="0">
+                                <span class="input-suffix">%</span>
+                            </div>
+                            <p class="form-hint">TIN que te ofrece el banco si contratas todas las vinculaciones.</p>
+                        </div>
+
+                        <hr style="border-color: var(--color-glass-border); margin: var(--space-4) 0;">
+                        
+                        <h4 class="mb-16" style="font-size: 1.1rem; color: var(--color-pure-white);">Productos y Vinculaciones</h4>
+                        <div class="vinculaciones-list">
+                            <!-- Domiciliación Nómina -->
+                            <div class="vinculacion-row" data-vinc-id="nomina">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Domiciliación Nómina</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.40" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seguro de Hogar -->
+                            <div class="vinculacion-row" data-vinc-id="hogar">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Seguro de Hogar</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="180" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="2.5" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seguro de Vida -->
+                            <div class="vinculacion-row" data-vinc-id="vida">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Seguro de Vida</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="280" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="3.5" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alarma -->
+                            <div class="vinculacion-row" data-vinc-id="alarma">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox">
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Servicio de Alarma</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.20" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="45" step="5" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual">Anual</option>
+                                            <option value="mensual" selected>Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="1.5" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Crédito -->
+                            <div class="vinculacion-row" data-vinc-id="tarjeta">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox">
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Tarjeta de Crédito</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="30" step="5" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulario para añadir vinculación personalizada -->
+                        <div class="custom-vinc-form mt-24" style="padding: var(--space-3); border: 1px dashed var(--color-glass-border); border-radius: var(--radius-md); background: rgba(3, 3, 7, 0.2);">
+                            <h5 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--color-pure-white);">+ Añadir vinculación personalizada</h5>
+                            <div class="form-group-compact mb-8">
+                                <label>Nombre del producto</label>
+                                <input type="text" class="input input-sm custom-name" placeholder="Ej. Seguro de Coche">
+                            </div>
+                            <div class="vinc-inputs-grid">
+                                <div class="form-group-compact">
+                                    <label>Penaliz. TIN (%)</label>
+                                    <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Coste (€)</label>
+                                    <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Periodo</label>
+                                    <select class="input input-sm custom-periodo">
+                                        <option value="anual" selected>Anual</option>
+                                        <option value="mensual">Mensual</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Inc. Anual (%)</label>
+                                    <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mt-12 btn-add-custom-vinc" style="width: 100%; font-size: 11px; padding: 6px 12px !important;">Añadir Producto</button>
+                        </div>
+                    </div>
+
+                    <!-- BANCO 3 -->
+                    <div class="card bank-card" data-bank-index="2" style="background: var(--color-luxury-navy); border: 1px solid var(--color-glass-border);">
+                        <div class="form-group mb-16">
+                            <label class="form-label font-semibold" style="color: var(--color-pure-white);">Nombre del Banco</label>
+                            <input type="text" class="input bank-name font-semibold" value="Banco C" style="border-color: var(--color-smart-cyan);">
+                            <span class="bank-role-badge badge mt-8" style="display: none; width: fit-content; background: rgba(99, 102, 241, 0.15); color: var(--color-indigo);">Nueva Oferta</span>
+                        </div>
+                        <div class="form-group mb-24">
+                            <label class="form-label font-semibold">TIN Base Bonificado (%)</label>
+                            <div class="input-group">
+                                <input type="number" class="input bank-base-tin" value="3.00" step="0.05" min="0">
+                                <span class="input-suffix">%</span>
+                            </div>
+                            <p class="form-hint">TIN que te ofrece el banco si contratas todas las vinculaciones.</p>
+                        </div>
+
+                        <hr style="border-color: var(--color-glass-border); margin: var(--space-4) 0;">
+                        
+                        <h4 class="mb-16" style="font-size: 1.1rem; color: var(--color-pure-white);">Productos y Vinculaciones</h4>
+                        <div class="vinculaciones-list">
+                            <!-- Domiciliación Nómina -->
+                            <div class="vinculacion-row" data-vinc-id="nomina">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Domiciliación Nómina</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.60" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Seguro de Hogar -->
+                            <div class="vinculacion-row" data-vinc-id="hogar">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Seguro de Hogar</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.25" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="220" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="3.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Seguro de Vida -->
+                            <div class="vinculacion-row" data-vinc-id="vida">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox" checked>
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Seguro de Vida</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-active">Contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="350" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="4.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Alarma -->
+                            <div class="vinculacion-row" data-vinc-id="alarma">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox">
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Servicio de Alarma</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="35" step="5" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual">Anual</option>
+                                            <option value="mensual" selected>Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="2.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tarjeta de Crédito -->
+                            <div class="vinculacion-row" data-vinc-id="tarjeta">
+                                <div class="vinc-header flex flex-between">
+                                    <label class="flex flex-center flex-gap-sm" style="cursor: pointer;">
+                                        <input type="checkbox" class="vinc-checkbox">
+                                        <span class="vinc-name-label font-semibold" style="color: var(--color-pure-white);">Tarjeta de Crédito</span>
+                                    </label>
+                                    <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
+                                </div>
+                                <div class="vinc-inputs-grid">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN</label>
+                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste (€)</label>
+                                        <input type="number" class="input input-sm vinc-coste" value="40" step="5" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm vinc-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual</label>
+                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formulario para añadir vinculación personalizada -->
+                        <div class="custom-vinc-form mt-24" style="padding: var(--space-3); border: 1px dashed var(--color-glass-border); border-radius: var(--radius-md); background: rgba(3, 3, 7, 0.2);">
+                            <h5 style="font-size: 0.85rem; margin-bottom: 8px; color: var(--color-pure-white);">+ Añadir vinculación personalizada</h5>
+                            <div class="form-group-compact mb-8">
+                                <label>Nombre del producto</label>
+                                <input type="text" class="input input-sm custom-name" placeholder="Ej. Seguro de Coche">
+                            </div>
+                            <div class="vinc-inputs-grid">
+                                <div class="form-group-compact">
+                                    <label>Penaliz. TIN (%)</label>
+                                    <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Coste (€)</label>
+                                    <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Periodo</label>
+                                    <select class="input input-sm custom-periodo">
+                                        <option value="anual" selected>Anual</option>
+                                        <option value="mensual">Mensual</option>
+                                    </select>
+                                </div>
+                                <div class="form-group-compact">
+                                    <label>Inc. Anual (%)</label>
+                                    <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm mt-12 btn-add-custom-vinc" style="width: 100%; font-size: 11px; padding: 6px 12px !important;">Añadir Producto</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="simulator-section section animate-on-scroll pt-0" style="border-top: 1px solid var(--color-glass-border);">
+            <div class="container">
+                <h2 class="mb-32 gradient-text text-center">Resultados Comparativos</h2>
+                
+                <div class="flex flex-center mb-32">
+                    <button id="download-excel-btn" class="btn btn-primary" style="gap: 8px;">
+                        <i data-lucide="download"></i> Descargar Comparativa Excel (.xlsx)
+                    </button>
+                </div>
+                
+                <!-- Comparativa lado a lado -->
+                <div class="grid grid-3 mb-48" id="comparison-results-cards">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Gráfica y Tabla de Amortización -->
+                <div class="grid grid-2" style="align-items: start;">
+                    <!-- Gráfica de Costes -->
+                    <div class="card" style="background: var(--color-luxury-navy); border: 1px solid var(--color-glass-border);">
+                        <h3 class="card-title mb-24 flex flex-center" style="gap: 8px; justify-content: flex-start;">
+                            <i data-lucide="bar-chart-3" style="color: var(--color-smart-cyan);"></i> Desglose de Costes Totales
+                        </h3>
+                        <div class="chart-container" style="height: 380px; position: relative;">
+                            <canvas id="cost-comparison-chart"></canvas>
+                        </div>
+                        <p class="form-hint text-center mt-16" style="color: var(--color-muted-slate);">
+                            El gráfico muestra el total que pagarás al final de la hipoteca desglosado en Capital, Intereses, Seguros y Otras vinculaciones.
+                        </p>
+                    </div>
+
+                    <!-- Tabla de Amortización -->
+                    <div class="card" style="background: var(--color-luxury-navy); border: 1px solid var(--color-glass-border);">
+                        <div class="flex flex-between mb-24" style="align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+                            <h3 class="card-title flex flex-center" style="gap: 8px; justify-content: flex-start; margin-bottom: 0;">
+                                <i data-lucide="calendar" style="color: var(--color-smart-cyan);"></i> Plan de Amortización
+                            </h3>
+                            <div>
+                                <select id="amortization-bank-select" class="input" style="padding: var(--space-2) var(--space-4); width: 180px; font-size: 13px;">
+                                    <option value="0">Banco A</option>
+                                    <option value="1">Banco B</option>
+                                    <option value="2">Banco C</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="table-responsive" style="max-height: 380px; overflow-y: auto;">
+                            <table class="table" style="font-size: 0.85rem; width: 100%;">
+                                <thead style="position: sticky; top: 0; background: var(--color-luxury-navy); z-index: 2;">
+                                    <tr>
+                                        <th style="padding: var(--space-2) var(--space-3);">Mes</th>
+                                        <th style="padding: var(--space-2) var(--space-3);">Cuota Hip.</th>
+                                        <th style="padding: var(--space-2) var(--space-3);">Interés</th>
+                                        <th style="padding: var(--space-2) var(--space-3);">Amortizado</th>
+                                        <th style="padding: var(--space-2) var(--space-3);">Vinculac.</th>
+                                        <th style="padding: var(--space-2) var(--space-3);">Pago Total</th>
+                                        <th style="padding: var(--space-2) var(--space-3);">Pendiente</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amortization-table-body">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <p class="form-hint text-center mt-16" style="color: var(--color-muted-slate);">
+                            La cuota hipotecaria y los intereses se calculan con el sistema de amortización francés. Las vinculaciones varían cada año según el incremento anual configurado.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section footer-brand">
+                    <img src="../assets/logo-finlar.svg" alt="FinLAR" style="height: 32px; margin-bottom: 16px;">
+                    <p class="card-text text-muted">Tu guía inteligente para decisiones financieras e inmobiliarias en España.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html" class="footer-link">Inicio</a></li>
+                        <li><a href="../educacion.html" class="footer-link">Educación Financiera</a></li>
+                        <li><a href="../comprar.html" class="footer-link">Quiero Comprar</a></li>
+                        <li><a href="../vender.html" class="footer-link">Quiero Vender</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Herramientas</h4>
+                    <ul class="footer-links">
+                        <li><a href="capacidad.html" class="footer-link">Simulador de Capacidad</a></li>
+                        <li><a href="amortizacion.html" class="footer-link">Estrategia de Amortización</a></li>
+                        <li><a href="coste-total.html" class="footer-link">Coste de Hipoteca</a></li>
+                        <li><a href="../mercado.html" class="footer-link">Mercado Hipotecario</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="../legal/aviso-legal.html" class="footer-link">Aviso Legal</a></li>
+                        <li><a href="../legal/privacidad.html" class="footer-link">Política de Privacidad</a></li>
+                        <li><a href="../legal/cookies.html" class="footer-link">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+                <p class="text-muted" style="font-size: 12px; max-width: 600px; text-align: right;">La información proporcionada tiene carácter educativo y no constituye asesoramiento financiero profesional. Los cálculos son simulaciones basadas en las variables introducidas.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/charts-config.js"></script>
+    <script src="../js/simulator-coste-total.js"></script>
+</body>
+</html>

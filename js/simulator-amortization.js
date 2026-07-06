@@ -21,6 +21,180 @@
 
   var CHART_ID = 'amortization-chart';
 
+  // Variables de ámbito superior para descargas y previsualización
+  var _lastSimResults = null;
+  var _lastTermYears = null;
+  var _lastCapital = null;
+  var _lastAnnualInterest = null;
+  var _lastMonthlyRate = null;
+  var _lastExtraSavings = null;
+
+  /**
+   * Actualiza el bloque visual de previsualización de la cuota mensual.
+   */
+  function updateQuotaPreview() {
+    var capitalEl = document.getElementById('capital');
+    var interestEl = document.getElementById('interest');
+    var termEl = document.getElementById('term');
+    var previewEl = document.getElementById('quota-preview-value');
+    if (!capitalEl || !interestEl || !termEl || !previewEl) return;
+
+    var capital = parseFloat(capitalEl.value) || 0;
+    var annualInterest = (parseFloat(interestEl.value) || 0) / 100;
+    var monthlyRate = annualInterest / 12;
+    var termYears = parseInt(termEl.value, 10) || 0;
+    var termMonths = termYears * 12;
+
+    var payment = 0;
+    if (capital > 0 && termMonths > 0) {
+      payment = monthlyPayment(capital, monthlyRate, termMonths);
+    }
+
+    var formatted = (typeof ChartConfig !== 'undefined' && ChartConfig.formatCurrency) 
+      ? ChartConfig.formatCurrency(payment) 
+      : new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(payment);
+
+    previewEl.textContent = formatted;
+  }
+
+  /**
+   * Descarga la tabla anual filtrada (años 1, 5, 10, etc.) a Excel
+   */
+  function downloadTableFiltered() {
+    if (!_lastSimResults || !_lastTermYears) return;
+
+    var fmt = function(v) { 
+      return (v !== undefined && v !== null) ? Number(v.toFixed(2)) : 0; 
+    };
+    var data = [];
+    
+    // Encabezados con divisa (€)
+    data.push(["Año", "Escenario", "Deuda Hipoteca (€)", "Intereses Acumulados (€)", "Ahorro / Fondo (€)", "Patrimonio Neto (€)"]);
+
+    var scenarioNames = {
+      '1a': '1A. Sin Amortizar (0%)',
+      '1b': '1B. C. Remunerada',
+      '2a': '2A. Reducir Cuota',
+      '2b': '2B. Reducir Plazo',
+      '3':  '3. Fondos Indexados'
+    };
+
+    var yearsToShow = [];
+    for (var i = 1; i <= _lastTermYears; i++) {
+      if (i === 1 || i % 5 === 0 || i === _lastTermYears) {
+        yearsToShow.push(i);
+      }
+    }
+
+    yearsToShow.forEach(function(yr) {
+      ['1a', '1b', '2a', '2b', '3'].forEach(function(sc) {
+        var r = _lastSimResults[sc];
+        data.push([
+          "Año " + yr,
+          scenarioNames[sc],
+          fmt(r.debt[yr]),
+          fmt(r.interestPaid[yr]),
+          fmt(r.savings[yr]),
+          fmt(r.netWealth[yr])
+        ]);
+      });
+    });
+
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Tabla Filtrada");
+    XLSX.writeFile(wb, "FinLAR_Amortizacion_Tabla_Filtrada.xlsx");
+  }
+
+  /**
+   * Descarga la tabla anual completa (todos los años) a Excel
+   */
+  function downloadTableComplete() {
+    if (!_lastSimResults || !_lastTermYears) return;
+
+    var fmt = function(v) { 
+      return (v !== undefined && v !== null) ? Number(v.toFixed(2)) : 0; 
+    };
+    var data = [];
+    
+    // Encabezados con divisa (€)
+    data.push(["Año", "Escenario", "Deuda Hipoteca (€)", "Intereses Acumulados (€)", "Ahorro / Fondo (€)", "Patrimonio Neto (€)"]);
+
+    var scenarioNames = {
+      '1a': '1A. Sin Amortizar (0%)',
+      '1b': '1B. C. Remunerada',
+      '2a': '2A. Reducir Cuota',
+      '2b': '2B. Reducir Plazo',
+      '3':  '3. Fondos Indexados'
+    };
+
+    for (var yr = 1; yr <= _lastTermYears; yr++) {
+      ['1a', '1b', '2a', '2b', '3'].forEach(function(sc) {
+        var r = _lastSimResults[sc];
+        data.push([
+          "Año " + yr,
+          scenarioNames[sc],
+          fmt(r.debt[yr]),
+          fmt(r.interestPaid[yr]),
+          fmt(r.savings[yr]),
+          fmt(r.netWealth[yr])
+        ]);
+      });
+    }
+
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Tabla Completa");
+    XLSX.writeFile(wb, "FinLAR_Amortizacion_Tabla_Completa.xlsx");
+  }
+
+  /**
+   * Descarga el cuadro de amortización mensual estándar (sistema francés) a Excel
+   */
+  function downloadAmortizationMonthly() {
+    if (!_lastCapital || !_lastTermYears) return;
+
+    var capital = _lastCapital;
+    var monthlyRate = _lastMonthlyRate;
+    var termMonths = _lastTermYears * 12;
+    var payment = monthlyPayment(capital, monthlyRate, termMonths);
+
+    var data = [];
+    data.push(["Mes", "Año", "Cuota (€)", "Interés pagado (€)", "Capital amortizado (€)", "Capital pendiente (€)"]);
+
+    var d = capital;
+    var fmt = function(v) { 
+      return (v !== undefined && v !== null) ? Number(v.toFixed(2)) : 0; 
+    };
+
+    for (var m = 1; m <= termMonths; m++) {
+      if (d <= 0) break;
+      var intM = d * monthlyRate;
+      var prinM = payment - intM;
+      if (prinM > d) {
+        prinM = d;
+      }
+      var cuotaM = prinM + intM;
+      var dNew = d - prinM;
+
+      data.push([
+        m,
+        Math.ceil(m / 12),
+        fmt(cuotaM),
+        fmt(intM),
+        fmt(prinM),
+        fmt(dNew)
+      ]);
+
+      d = dNew;
+    }
+
+    var ws = XLSX.utils.aoa_to_sheet(data);
+    var wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Cuadro Amortización");
+    XLSX.writeFile(wb, "FinLAR_Cuadro_Amortizacion_Mensual.xlsx");
+  }
+
   /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    * FINANCIAL HELPERS
    * ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -236,6 +410,17 @@
                   <p class="form-hint text-center mt-16">El <strong>Punto de Cruce</strong> ocurre cuando la línea de ahorro supera a la de deuda. En ese momento, tienes suficiente capital para cancelar la hipoteca de golpe si lo deseas.</p>
               </div>
               <div id="tab-table" class="tab-pane">
+                  <div class="download-buttons-container mb-16" style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+                      <button id="download-table-filtered" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; padding: 8px 16px; border: 1px solid var(--color-glass-border); background: var(--color-surface); color: var(--color-text); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
+                          <i data-lucide="download" style="width: 14px; height: 14px;"></i> Tabla Filtrada (.xlsx)
+                      </button>
+                      <button id="download-table-complete" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; padding: 8px 16px; border: 1px solid var(--color-glass-border); background: var(--color-surface); color: var(--color-text); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
+                          <i data-lucide="download" style="width: 14px; height: 14px;"></i> Tabla Completa (.xlsx)
+                      </button>
+                      <button id="download-amortization-monthly" class="btn btn-outline btn-sm" style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; padding: 8px 16px; border: 1px solid var(--color-glass-border); background: var(--color-surface); color: var(--color-text); border-radius: var(--radius-md); cursor: pointer; transition: var(--transition-fast);">
+                          <i data-lucide="download" style="width: 14px; height: 14px;"></i> Cuadro Mensual (.xlsx)
+                      </button>
+                  </div>
                   <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                       <table class="table results-table" style="font-size: 0.85rem;">
                           <thead>
@@ -291,6 +476,20 @@
     if (oldResults) oldResults.remove();
     
     summary.insertAdjacentHTML('afterend', html);
+
+    // Asignar listeners de descargas
+    var dlFiltered = document.getElementById('download-table-filtered');
+    var dlComplete = document.getElementById('download-table-complete');
+    var dlMonthly = document.getElementById('download-amortization-monthly');
+
+    if (dlFiltered) dlFiltered.addEventListener('click', function(e) { e.preventDefault(); downloadTableFiltered(); });
+    if (dlComplete) dlComplete.addEventListener('click', function(e) { e.preventDefault(); downloadTableComplete(); });
+    if (dlMonthly) dlMonthly.addEventListener('click', function(e) { e.preventDefault(); downloadAmortizationMonthly(); });
+
+    // Renderizar iconos de Lucide
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
 
     var tabs = document.querySelectorAll('#amortization-tabs .tab-btn');
     var panes = document.querySelectorAll('#amortization-tab-content .tab-pane');
@@ -558,6 +757,17 @@
 
     var results = simulate(capital, monthlyRate, termYears, extraSavings, savingsRate, fundReturn);
 
+    // Guardar en variables de ámbito superior
+    _lastSimResults = results;
+    _lastTermYears = termYears;
+    _lastCapital = capital;
+    _lastAnnualInterest = annualInterest;
+    _lastMonthlyRate = monthlyRate;
+    _lastExtraSavings = extraSavings;
+
+    // Actualizar previsualización
+    updateQuotaPreview();
+
     renderCharts(results, termYears);
     renderSummary(results, termYears);
     renderTable(results, termYears, annualInterest, fundReturn);
@@ -582,13 +792,23 @@
       input.addEventListener('input', calculate);
     });
 
+    // Escuchadores específicos para previsualización en tiempo real
+    var capitalEl = document.getElementById('capital');
+    var interestEl = document.getElementById('interest');
+    var termEl = document.getElementById('term');
+    
+    if (capitalEl) capitalEl.addEventListener('input', updateQuotaPreview);
+    if (interestEl) interestEl.addEventListener('input', updateQuotaPreview);
+    if (termEl) termEl.addEventListener('input', updateQuotaPreview);
+
     // Run with default values on load
     calculate();
+    updateQuotaPreview();
   });
 
   // Theme change: re-render chart with updated colors
   window.addEventListener('themechange', function () {
-    if (_lastSimData && _lastTermYears) {
+    if (_lastSimResults && _lastTermYears) {
       // Chart is rebuilt by ChartConfig.rebuildAll() via the registry.
       // We only need to refresh summary cards (static HTML, but colors
       // and text don't depend on theme, so nothing extra needed).
