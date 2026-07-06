@@ -80,11 +80,18 @@
    * ────────────────────────────────────────────── */
 
   function initActiveNav() {
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
+    const currentPage = pathParts[pathParts.length - 1] || 'index.html';
+    const parentDir = pathParts.length > 1 ? pathParts[pathParts.length - 2] : '';
+
     document.querySelectorAll('.nav-link').forEach(function (link) {
       const href = link.getAttribute('href') || '';
-      const linkPage = href.split('/').pop().split('#')[0] || 'index.html';
-      if (linkPage === currentPath) {
+      const hrefParts = href.replace('../', '').split('/');
+      const linkPage = hrefParts[hrefParts.length - 1].split('#')[0] || 'index.html';
+      const linkDir = hrefParts.length > 1 ? hrefParts[0] : '';
+
+      if (linkPage === currentPage ||
+          (parentDir && linkDir === '' && linkPage.replace('.html', '') === parentDir)) {
         link.classList.add('active');
       }
     });
@@ -258,36 +265,198 @@
   function initWizard() {
     const wizardStep1 = document.getElementById('wizard-step-1');
     const wizardStep2 = document.getElementById('wizard-step-2');
-    if (!wizardStep1 || !wizardStep2) return;
+    const wizardStep3 = document.getElementById('wizard-step-3');
+    const wizardTitle = document.getElementById('wizard-title');
+    
+    if (!wizardStep1 || !wizardStep2 || !wizardStep3) return;
 
     const options = document.querySelectorAll('.wizard-option');
-    const backBtn = document.getElementById('wizard-back');
-    const contents = {
-      'comprar': document.getElementById('wizard-content-comprar'),
-      'hipoteca': document.getElementById('wizard-content-hipoteca'),
-      'aprender': document.getElementById('wizard-content-aprender')
+    const backTo1Btn = document.getElementById('wizard-back-to-1');
+    const backTo2Btn = document.getElementById('wizard-back-to-2');
+    
+    const questionText = document.getElementById('wizard-question-text');
+    const answersGrid = document.getElementById('wizard-answers-grid');
+    
+    const resultTitle = document.getElementById('wizard-result-title');
+    const resultText = document.getElementById('wizard-result-text');
+    const resultBtn = document.getElementById('wizard-result-btn');
+
+    let currentGoal = '';
+    let currentAnswer = '';
+
+    const wizardData = {
+      'comprar': {
+        title: 'Planificación de Compra',
+        question: '¿Tienes ahorrado el 30% para la entrada y los gastos de la vivienda?',
+        answers: [
+          { text: 'Sí, dispongo de los ahorros', value: 'si' },
+          { text: 'No, no llego a ese importe', value: 'no' },
+          { text: 'No lo sé con seguridad', value: 'no-lo-se' }
+        ],
+        results: {
+          'si': {
+            title: '¡Tienes una excelente base financiera!',
+            text: 'Disponer del 30% de entrada (20% que no suele financiar el banco más 10% aproximado de gastos de compraventa e impuestos) te sitúa en una posición óptima. El siguiente paso es calcular exactamente qué rango de precio de vivienda te puedes permitir y conocer tu cuota mensual máxima.',
+            btnText: 'Realizar Análisis Financiero',
+            btnUrl: 'comprar/analisis-financiero.html'
+          },
+          'no': {
+            title: 'Planifica tu ahorro primero',
+            text: 'Comprar una vivienda requiere habitualmente una aportación inicial del 30%. Si aún no dispones de ella, es preferible trazar un plan de ahorro y entender todos los pasos del proceso para evitar riesgos. Te recomendamos consultar nuestra guía de compra detallada.',
+            btnText: 'Ver Guía de Compra',
+            btnUrl: 'comprar.html'
+          },
+          'no-lo-se': {
+            title: 'Analicemos tu capacidad real',
+            text: 'No te preocupes, es una duda muy común. Mediante un análisis financiero detallado de tus ingresos y gastos actuales, podremos determinar si cuentas con el capital inicial necesario o qué precio máximo de vivienda deberías buscar.',
+            btnText: 'Calcular Capacidad Financiera',
+            btnUrl: 'comprar/analisis-financiero.html'
+          }
+        }
+      },
+      'vender': {
+        title: 'Planificación de Venta',
+        question: '¿Conoces los gastos e impuestos asociados a la venta de una vivienda en España?',
+        answers: [
+          { text: 'Sí, los tengo calculados', value: 'si' },
+          { text: 'No, necesito saber cuánto me costará', value: 'no' }
+        ],
+        results: {
+          'si': {
+            title: '¡Perfecto! Estás listo para vender',
+            text: 'Tener claros los impuestos como la Plusvalía Municipal y el IRPF te permite fijar un precio de venta adecuado sin sorpresas de última hora. Te sugerimos revisar la documentación obligatoria necesaria para la firma de la escritura.',
+            btnText: 'Ver Guía de Venta de Vivienda',
+            btnUrl: 'vender.html'
+          },
+          'no': {
+            title: 'Calcula tus costes de venta',
+            text: 'Vender una casa conlleva impuestos significativos (IRPF por ganancia patrimonial, Plusvalía Municipal) y gastos de gestión. Descubre en nuestra guía completa cuáles son y cómo calcularlos para maximizar tu rentabilidad neta.',
+            btnText: 'Aprender a Vender mi Casa',
+            btnUrl: 'vender.html'
+          }
+        }
+      },
+      'optimizar': {
+        title: 'Optimización de Hipoteca',
+        question: '¿Qué tipo de interés tiene tu hipoteca actualmente?',
+        answers: [
+          { text: 'Tipo Fijo', value: 'fijo' },
+          { text: 'Tipo Variable', value: 'variable' }
+        ],
+        results: {
+          'fijo': {
+            title: 'Estrategia para Hipoteca Fija',
+            text: 'Con un tipo de interés fijo tienes la seguridad de una cuota estable. Si dispones de excedente de capital, puedes amortizar anticipadamente para reducir el plazo (años de deuda) y ahorrar intereses totales, o bien reducir la cuota mensual.',
+            btnText: 'Simular Estrategia de Amortización',
+            btnUrl: 'simuladores/amortizacion.html'
+          },
+          'variable': {
+            title: 'Estrategia para Hipoteca Variable',
+            text: 'Las hipotecas a tipo variable dependen directamente del Euríbor. Amortizar capital de forma anticipada te permite reducir tu exposición a futuras subidas de tipos y bajar el importe de tus cuotas mensuales de forma inmediata.',
+            btnText: 'Simular Estrategia de Amortización',
+            btnUrl: 'simuladores/amortizacion.html'
+          }
+        }
+      },
+      'educacion': {
+        title: 'Educación Financiera',
+        question: '¿Qué área te gustaría mejorar prioritariamente en tus finanzas?',
+        answers: [
+          { text: 'Ahorro y Presupuestos', value: 'ahorro' },
+          { text: 'Inversión Básica', value: 'inversion' },
+          { text: 'Gestión de Deudas', value: 'deudas' }
+        ],
+        results: {
+          'ahorro': {
+            title: 'Construye tus cimientos financieros',
+            text: 'Controlar tus gastos mensuales y crear un fondo de emergencia sólido (de 3 a 6 meses de gastos) es el paso fundamental antes de cualquier decisión inmobiliaria. Descubre cómo hacerlo en nuestra sección especializada.',
+            btnText: 'Ir a Guías de Ahorro y Presupuestos',
+            btnUrl: 'educacion.html#ahorro'
+          },
+          'inversion': {
+            title: 'Haz crecer tu patrimonio',
+            text: 'Aprende los fundamentos del interés compuesto, cómo batir a la inflación y cómo funcionan los productos de inversión básica para que tu capital no pierda poder adquisitivo con el paso de los años.',
+            btnText: 'Ir a Guías de Inversión',
+            btnUrl: 'educacion.html#inversion'
+          },
+          'deudas': {
+            title: 'Elimina y gestiona tu deuda',
+            text: 'Aprende a diferenciar la deuda buena (apalancamiento para activos) de la deuda mala (consumo rápido) y descubre las metodologías más eficaces (bola de nieve, avalancha) para liquidar tus deudas pendientes.',
+            btnText: 'Ir a Guías de Gestión de Deudas',
+            btnUrl: 'educacion.html#deudas'
+          }
+        }
+      }
     };
 
     options.forEach(function(opt) {
       opt.addEventListener('click', function() {
-        const goal = this.dataset.goal;
+        currentGoal = this.dataset.goal;
+        const data = wizardData[currentGoal];
+        if (!data) return;
+
+        wizardTitle.textContent = data.title;
+        questionText.textContent = data.question;
         
-        // Hide step 1, show step 2
+        answersGrid.innerHTML = '';
+        data.answers.forEach(ans => {
+          const btn = document.createElement('button');
+          btn.className = 'card card-glow text-center wizard-answer-opt';
+          btn.style.border = '1px solid var(--color-glass-border)';
+          btn.style.background = 'transparent';
+          btn.style.cursor = 'pointer';
+          btn.style.padding = '20px';
+          btn.style.width = '100%';
+          btn.dataset.value = ans.value;
+          
+          btn.innerHTML = `<h4 style="margin:0; font-weight:500;">${ans.text}</h4>`;
+          
+          btn.addEventListener('click', function() {
+            currentAnswer = this.dataset.value;
+            showStep3();
+          });
+          
+          answersGrid.appendChild(btn);
+        });
+
         wizardStep1.style.display = 'none';
         wizardStep2.style.display = 'block';
-        
-        // Hide all contents, show target
-        Object.values(contents).forEach(c => { if(c) c.style.display = 'none'; });
-        if (contents[goal]) {
-          contents[goal].style.display = 'block';
-        }
+        wizardStep3.style.display = 'none';
       });
     });
 
-    if (backBtn) {
-      backBtn.addEventListener('click', function() {
+    function showStep3() {
+      const data = wizardData[currentGoal];
+      if (!data) return;
+      const result = data.results[currentAnswer];
+      if (!result) return;
+
+      wizardTitle.textContent = 'Tu Plan de Acción';
+      resultTitle.textContent = result.title;
+      resultText.textContent = result.text;
+      resultBtn.textContent = result.btnText;
+      resultBtn.setAttribute('href', result.btnUrl);
+
+      wizardStep2.style.display = 'none';
+      wizardStep3.style.display = 'block';
+      
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    if (backTo1Btn) {
+      backTo1Btn.addEventListener('click', function() {
+        wizardTitle.textContent = '¿Qué quieres conseguir hoy?';
         wizardStep2.style.display = 'none';
         wizardStep1.style.display = 'block';
+      });
+    }
+
+    if (backTo2Btn) {
+      backTo2Btn.addEventListener('click', function() {
+        const data = wizardData[currentGoal];
+        if (data) wizardTitle.textContent = data.title;
+        wizardStep3.style.display = 'none';
+        wizardStep2.style.display = 'block';
       });
     }
   }

@@ -259,24 +259,24 @@
                       <p class="mb-16">Para que la comparativa sea matemática y justa, <strong>en todos los escenarios destinas exactamente el mismo dinero mes a mes</strong> (la cuota de la hipoteca + el ahorro extra que introduzcas en el simulador). Lo que cambia es el destino de ese dinero extra:</p>
                       <ul style="list-style: none; padding: 0;">
                           <li class="mb-16">
-                              <strong style="color: var(--color-text); font-size: 1.05rem;">1. Ahorrar (Sin Amortizar)</strong><br>
+                              <strong style="color: var(--color-text); font-size: 1.05rem;">1. Ahorrar (sin amortizar)</strong><br>
                               Consiste en no hacer aportaciones a la hipoteca y guardar el dinero extra. Tienes dos opciones:<br>
                               <span style="display: inline-block; margin-top: 4px; padding-left: 12px; border-left: 2px solid var(--color-glass-border);">
-                                  <strong>Ahorrar en cuenta corriente:</strong> El dinero se guarda en efectivo (0% rentabilidad). La inflación hará que pierda valor adquisitivo con el tiempo.<br>
-                                  <strong>Ahorrar en cuenta remunerada:</strong> El dinero se deposita en una cuenta conservadora que genera intereses fijos (por ej. 2%), combatiendo la inflación.
+                                  <strong>Ahorrar en cuenta corriente:</strong> El dinero se guarda en efectivo (rentabilidad del 0 %). La inflación hará que pierda valor adquisitivo con el tiempo.<br>
+                                  <strong>Ahorrar en cuenta remunerada:</strong> El dinero se deposita en una cuenta conservadora que genera intereses fijos (por ejemplo, el 2 %), combatiendo la inflación.
                               </span>
                           </li>
                           <li class="mb-16">
                               <strong style="color: var(--color-text); font-size: 1.05rem;">2. Amortizar</strong><br>
                               Consiste en entregar el ahorro extra al banco para reducir tu deuda. Tienes dos opciones:<br>
                               <span style="display: inline-block; margin-top: 4px; padding-left: 12px; border-left: 2px solid var(--color-glass-border);">
-                                  <strong>Amortizar en cuota:</strong> Inyectas el dinero extra a la hipoteca para que tu mensualidad baje. El sobrante que generas por la bajada de cuota suele ir a la cuenta corriente al 0%. A la larga, pagas más intereses totales al banco.<br>
+                                  <strong>Amortizar en cuota:</strong> Inyectas el dinero extra a la hipoteca para que tu mensualidad baje. El sobrante que generas por la bajada de cuota suele ir a la cuenta corriente al 0 %. A la larga, pagas más intereses totales al banco.<br>
                                   <strong>Amortizar en plazo:</strong> Inyectas el dinero extra para recortar años de hipoteca manteniendo tu cuota mensual congelada. Te ahorras muchísimos intereses al eliminar años completos del préstamo, aunque te descapitalizas a corto plazo.
                               </span>
                           </li>
                           <li>
-                              <strong style="color: var(--color-text); font-size: 1.05rem;">3. Invertir en fondos indexados o alternativa</strong><br>
-                              No amortizas la hipoteca. Todo tu ahorro extra lo inviertes mensualmente o anualmente en fondos indexados buscando rentabilidad a largo plazo (por ej. 7%). Suele ser la ganadora a nivel matemático si logras que el interés que te dan tus inversiones sea superior al interés que te cobra el banco por tu hipoteca (aprovechando el interés compuesto).
+                              <strong style="color: var(--color-text); font-size: 1.05rem;">3. Invertir en fondos indexados o alternativas</strong><br>
+                              No amortizas la hipoteca. Todo tu ahorro extra lo inviertes mensualmente o anualmente en fondos indexados buscando rentabilidad a largo plazo (por ejemplo, el 7 %). Suele ser la opción ganadora a nivel matemático si logras que el interés que te dan tus inversiones sea superior al interés que te cobra el banco por tu hipoteca (aprovechando el interés compuesto).
                           </li>
                       </ul>
                   </div>
@@ -494,23 +494,42 @@
       }
     });
 
-    var html = '<div class="scenario-cards">';
-    Object.keys(SCENARIO_META).forEach(function (id) {
+    // Create an array of scenarios with required details
+    var scenarios = Object.keys(SCENARIO_META).map(function (id) {
       var r = results[id];
-      var finalWealth = r.netWealth[termYears];
-      var cancelText  = r.cancelYear !== null ? ('Año ' + r.cancelYear) : 'No aplica';
-      var isBest      = id === bestId;
-      var color       = ChartConfig.scenarioColors[id];
+      return {
+        id: id,
+        meta: SCENARIO_META[id],
+        cancelYear: r.cancelYear,
+        finalWealth: r.netWealth[termYears],
+        isBest: id === bestId,
+        color: ChartConfig.scenarioColors[id]
+      };
+    });
+
+    // Sort scenarios: by cancelYear ascending (null at the end).
+    // Scenarios with cancelYear === null are sorted by finalWealth descending.
+    scenarios.sort(function (a, b) {
+      if (a.cancelYear === null && b.cancelYear === null) {
+        return b.finalWealth - a.finalWealth;
+      }
+      if (a.cancelYear === null) return 1;
+      if (b.cancelYear === null) return -1;
+      return a.cancelYear - b.cancelYear;
+    });
+
+    var html = '<div class="scenario-cards">';
+    scenarios.forEach(function (sc) {
+      var cancelText  = sc.cancelYear !== null ? ('Año ' + sc.cancelYear) : 'No aplica';
 
       html +=
-        '<div class="scenario-card' + (isBest ? ' best-scenario' : '') + '">' +
-        '  <div class="scenario-indicator" style="background:' + color + '"></div>' +
-        '  <h4 class="scenario-title">' + SCENARIO_META[id].shortLabel + '</h4>' +
-        '  <div class="scenario-value">' + fmt(finalWealth) + '</div>' +
+        '<div class="scenario-card' + (sc.isBest ? ' best-scenario' : '') + '">' +
+        '  <div class="scenario-indicator" style="background:' + sc.color + '"></div>' +
+        '  <h4 class="scenario-title">' + sc.meta.shortLabel + '</h4>' +
+        '  <div class="scenario-value">' + fmt(sc.finalWealth) + '</div>' +
         '  <div class="scenario-label">Patrimonio neto final</div>' +
         '  <div class="scenario-meta">' +
         '    <span>Cancelación: ' + cancelText + '</span>' +
-        (isBest ? '<span class="badge-best">Mejor opción</span>' : '') +
         '  </div>' +
         '</div>';
     });

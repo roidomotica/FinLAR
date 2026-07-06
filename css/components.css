@@ -248,6 +248,15 @@
   }
 }
 
+/* Disabled state */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
 /* ---- Size modifiers ---- */
 .btn-lg {
   padding: var(--space-4) var(--space-8);

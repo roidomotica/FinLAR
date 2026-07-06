@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paso 2: Encuentra tu vivienda — FinLAR</title>
+    <meta name="description" content="Guía detallada para buscar y encontrar tu vivienda ideal. Requisitos, checklist de prioridades y comparación objetiva.">
+    
+    <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/theme.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container container">
+            <a href="../index.html" class="nav-logo"><img src="../assets/logo-finlar.svg" alt="FinLAR"></a>
+            <ul class="nav-links">
+                <li><a href="../index.html" class="nav-link">Inicio</a></li>
+                <li><a href="../educacion.html" class="nav-link">Educación</a></li>
+                <li><a href="../comprar.html" class="nav-link active">Comprar</a></li>
+                <li><a href="../vender.html" class="nav-link">Vender</a></li>
+                <li><a href="../mercado.html" class="nav-link">Mercado</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Cambiar tema"><i data-lucide="moon"></i></button>
+                <button class="mobile-toggle" id="mobile-toggle" aria-label="Menú"><i data-lucide="menu"></i></button>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobile-menu">
+            <a href="../index.html" class="nav-link">Inicio</a>
+            <a href="../educacion.html" class="nav-link">Educación</a>
+            <a href="../comprar.html" class="nav-link active">Comprar</a>
+            <a href="../vender.html" class="nav-link">Vender</a>
+            <a href="../mercado.html" class="nav-link">Mercado</a>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Cabecera de navegación rápida del paso -->
+        <section class="container mt-32 pt-32 animate-on-scroll">
+            <div class="card" style="padding: 12px 24px; border-radius: var(--radius-md); background: var(--color-surface-slate);">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.85rem;">
+                    <a href="../comprar.html" class="text-muted" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
+                        <i data-lucide="chevron-left" style="width:14px;height:14px;"></i> Volver a la guía de compra
+                    </a>
+                    <div style="display:flex; gap:16px;">
+                        <a href="analisis-financiero.html" class="text-muted" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                            <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Paso anterior: Analizar capacidad
+                        </a>
+                        <span class="text-muted">|</span>
+                        <a href="busca-financiacion.html" style="color:var(--color-cyan); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                            Paso siguiente: Busca financiación <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cabecera del Artículo -->
+        <section class="page-header section container animate-on-scroll" style="padding-bottom: 24px;">
+            <div class="badge badge-cyan mb-16">Paso 2 del proceso</div>
+            <h1 class="hero-title gradient-text mb-16" style="font-size: 2.5rem; line-height: 1.2;">Encuentra tu Vivienda Ideal</h1>
+            <p class="hero-subtitle text-muted" style="margin: 0 auto; max-width: 800px;">Cómo estructurar la búsqueda de inmuebles de forma racional, definir tus necesidades reales y utilizar un checklist ponderado para tomar la mejor decisión de compra.</p>
+        </section>
+
+        <!-- Contenido principal -->
+        <section class="section container content-section pt-0 animate-on-scroll">
+            <div class="grid grid-2" style="grid-template-columns: 2fr 1fr; align-items: start; gap: 32px;">
+                
+                <!-- Columna principal -->
+                <div>
+                    <h3 class="mb-16">1. Define tus criterios de búsqueda</h3>
+                    <p class="text-muted mb-24">Buscar una vivienda no consiste solo en ver fotos bonitas en internet. Para evitar la frustración y visitas improductivas, debes segmentar claramente qué necesitas de forma obligatoria y qué es prescindible. Evalúa detalladamente estos elementos:</p>
+                    
+                    <div class="grid grid-2" style="gap: 16px; margin-bottom: 32px;">
+                        <div class="card" style="padding: 20px;">
+                            <h5 style="margin-top: 0; color: var(--color-pure-white); font-family: var(--font-heading);" class="mb-8">Tipo de inmueble y espacio</h5>
+                            <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin: 0;">Decide entre piso, ático, bajo con jardín o casa unifamiliar. Considera el tamaño en metros cuadrados construidos/útiles y el número necesario de habitaciones y baños.</p>
+                        </div>
+                        <div class="card" style="padding: 20px;">
+                            <h5 style="margin-top: 0; color: var(--color-pure-white); font-family: var(--font-heading);" class="mb-8">Ubicación y Entorno</h5>
+                            <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin: 0;">Define si prefieres el centro urbano o zonas residenciales periféricas. Evalúa la cercanía al transporte público, colegios, supermercados, centros médicos y zonas verdes.</p>
+                        </div>
+                        <div class="card" style="padding: 20px;">
+                            <h5 style="margin-top: 0; color: var(--color-pure-white); font-family: var(--font-heading);" class="mb-8">Anejos del inmueble</h5>
+                            <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin: 0;">Valora si necesitas garaje (clave en zonas céntricas) o trastero/bodega para almacenamiento extra. A menudo estas opciones incrementan el precio, pero añaden gran valor a largo plazo.</p>
+                        </div>
+                        <div class="card" style="padding: 20px;">
+                            <h5 style="margin-top: 0; color: var(--color-pure-white); font-family: var(--font-heading);" class="mb-8">Estado de conservación</h5>
+                            <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin: 0;">Una vivienda de obra nueva es más eficiente pero más cara. Una de segunda mano puede requerir reformas menores o estructurales, lo que debes prever en tu presupuesto financiero.</p>
+                        </div>
+                    </div>
+
+                    <h3 class="mb-16">2. La importancia de un Checklist Priorizado</h3>
+                    <p class="text-muted mb-16">Las decisiones de compra de una vivienda suelen estar influidas por impulsos emocionales. Para evitar esto, es fundamental crear un **checklist priorizado**. Consiste en clasificar las características de la casa en tres niveles jerárquicos:</p>
+                    
+                    <ol class="pl-24 mb-24 text-muted" style="line-height: 1.6;">
+                        <li class="mb-8"><strong>Imprescindibles (Must-Haves):</strong> Requisitos no negociables (ej. ascensor si es un piso alto, mínimo 3 habitaciones si tienes hijos, o una zona escolar concreta). Si un inmueble no lo cumple, se descarta directamente.</li>
+                        <li class="mb-8"><strong>Deseables (Nice-to-Haves):</strong> Elementos que te gustaría tener pero no son determinantes (ej. terraza, trastero, cocina americana). Aportan puntos extra al comparar.</li>
+                        <li class="mb-8"><strong>Extras (Delighters):</strong> Detalles lujosos que suman pero que no penalizan si faltan (ej. piscina comunitaria, domótica integrada, vistas panorámicas).</li>
+                    </ol>
+
+                    <div class="alert alert-info mb-32">
+                        <i data-lucide="info"></i>
+                        <div>
+                            <strong>Consejo FinLAR:</strong> Al visitar una casa, llévate una plantilla o libreta para puntuar del 1 al 10 cada criterio clave. Esto te permitirá crear más tarde una tabla de ponderación en un Excel para comparar de forma fría y objetiva todas las viviendas visitadas.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Columna lateral / Recursos rápidos -->
+                <div>
+                    <div class="card mb-24">
+                        <h4 class="mb-16" style="font-family: var(--font-heading);">Portales Inmobiliarios</h4>
+                        <p class="card-text text-muted mb-24">Los principales portales especializados de España para iniciar la búsqueda y comparar precios de mercado:</p>
+                        
+                        <ul style="list-style: none; padding: 0; margin: 0; display:flex; flex-direction:column; gap:12px;">
+                            <li>
+                                <a href="https://www.idealista.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-cyan); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
+                                    Idealista <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+                                </a>
+                                <p class="text-muted" style="font-size:0.75rem; margin:2px 0 0 0;">Líder de mercado en España, con el catálogo más amplio de venta y alquiler.</p>
+                            </li>
+                            <li>
+                                <a href="https://www.fotocasa.es" target="_blank" rel="noopener noreferrer" style="color: var(--color-cyan); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
+                                    Fotocasa <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+                                </a>
+                                <p class="text-muted" style="font-size:0.75rem; margin:2px 0 0 0;">Gran volumen de anuncios, filtros avanzados y buscador visual por zonas.</p>
+                            </li>
+                            <li>
+                                <a href="https://www.habitaclia.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-cyan); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
+                                    Habitaclia <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+                                </a>
+                                <p class="text-muted" style="font-size:0.75rem; margin:2px 0 0 0;">Muy popular en Cataluña, Baleares y la costa mediterránea.</p>
+                            </li>
+                            <li>
+                                <a href="https://www.pisos.com" target="_blank" rel="noopener noreferrer" style="color: var(--color-cyan); text-decoration: none; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;">
+                                    Pisos.com <i data-lucide="external-link" style="width:14px;height:14px;"></i>
+                                </a>
+                                <p class="text-muted" style="font-size:0.75rem; margin:2px 0 0 0;">Herramientas avanzadas de precios medios e informes del sector.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="card" style="background: rgba(99, 102, 241, 0.05); border-color: rgba(99, 102, 241, 0.2);">
+                        <h4 class="mb-12" style="font-family: var(--font-heading); color: #818cf8;">Hoja de Comparación</h4>
+                        <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">Descarga o monta en tu Excel una tabla con las viviendas en filas y los criterios en columnas, aplicando pesos (por ejemplo, Ubicación 40%, Espacio 30%, Precio 30%).</p>
+                        <div style="font-size:0.8rem; border-left:2px solid #818cf8; padding-left:12px; color:var(--color-muted-slate);">
+                            "La fórmula de puntuación ponderada te dará una nota final objetiva sobre qué casa es la idónea."
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Navegación inferior cruzada -->
+            <div class="mt-48 pt-32" style="border-top: 1px solid var(--color-glass-border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                <a href="analisis-financiero.html" class="btn btn-secondary" style="display:inline-flex; align-items:center; gap:8px;">
+                    <i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Paso anterior: Analizar capacidad
+                </a>
+                <a href="../comprar.html" class="btn btn-secondary">
+                    Guía de compra
+                </a>
+                <a href="busca-financiacion.html" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px;">
+                    Paso siguiente: Busca financiación <i data-lucide="arrow-right" style="width:16px;height:16px;"></i>
+                </a>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section footer-brand">
+                    <img src="../assets/logo-finlar.svg" alt="FinLAR" style="height: 32px; margin-bottom: 16px;">
+                    <p class="card-text text-muted">Tu guía inteligente para decisiones financieras e inmobiliarias en España.</p>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="../index.html" class="footer-link">Inicio</a></li>
+                        <li><a href="../educacion.html" class="footer-link">Educación Financiera</a></li>
+                        <li><a href="../comprar.html" class="footer-link">Quiero Comprar</a></li>
+                        <li><a href="../vender.html" class="footer-link">Quiero Vender</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Herramientas</h4>
+                    <ul class="footer-links">
+                        <li><a href="../simuladores/capacidad.html" class="footer-link">Simulador de Capacidad</a></li>
+                        <li><a href="../simuladores/amortizacion.html" class="footer-link">Estrategia de Amortización</a></li>
+                        <li><a href="../mercado.html" class="footer-link">Mercado Hipotecario</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4 class="footer-title">Legal</h4>
+                    <ul class="footer-links">
+                        <li><a href="../legal/aviso-legal.html" class="footer-link">Aviso Legal</a></li>
+                        <li><a href="../legal/privacidad.html" class="footer-link">Política de Privacidad</a></li>
+                        <li><a href="../legal/cookies.html" class="footer-link">Cookies</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 FinLAR. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>

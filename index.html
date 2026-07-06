@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinLAR — Educación Financiera e Inmobiliaria</title>
-    <meta name="description" content="Plataforma de educación financiera, compraventa de inmuebles y simulación avanzada de hipotecas en España.">
+    <meta name="description" content="Tu guía inteligente de educación financiera, compraventa de inmuebles y simulación avanzada de hipotecas en España.">
     
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -58,13 +58,12 @@
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content container">
-                <span class="hero-badge badge badge-cyan">Plataforma Gratuita</span>
-                <h1 class="hero-title animate-on-scroll">Decisiones financieras inteligentes para tu hogar</h1>
-                <p class="hero-subtitle animate-on-scroll">Simula escenarios hipotecarios avanzados, entiende el mercado inmobiliario y toma el control de tu patrimonio.</p>
+                <span class="hero-badge badge badge-cyan">Asistente Inteligente</span>
+                <h1 class="hero-title animate-on-scroll">Domina el mercado inmobiliario y toma el control de tu futuro financiero</h1>
+                <p class="hero-subtitle animate-on-scroll">Aprende a comprar, vender u optimizar tu hipoteca con herramientas de análisis transparentes, guías paso a paso y simuladores avanzados sin letra pequeña.</p>
                 
                 <div class="hero-actions animate-on-scroll">
-                    <a href="simuladores/capacidad.html" class="btn btn-primary btn-lg">Simular Capacidad</a>
-                    <a href="simuladores/amortizacion.html" class="btn btn-secondary btn-lg">Estrategia de Amortización</a>
+                    <a href="#wizard" class="btn btn-primary btn-lg">Iniciar Diagnóstico Inteligente</a>
                 </div>
                 
                 <div class="stats-row animate-on-scroll">
@@ -78,7 +77,7 @@
                     </div>
                     <div class="stat-item">
                         <div class="stat-value">100%</div>
-                        <div class="stat-label">Gratuito</div>
+                        <div class="stat-label">Independiente</div>
                     </div>
                 </div>
             </div>
@@ -121,52 +120,69 @@
 
         <!-- Interactive Wizard Section -->
         <section id="wizard" class="section container animate-on-scroll pt-0">
-            <div class="card p-0 overflow-hidden" style="max-width: 800px; margin: 0 auto; background: var(--color-luxury-navy); box-shadow: 0 20px 40px rgba(0,0,0,0.4);">
-                <div style="background: var(--color-gradient-luxury); padding: 32px; text-align: center;">
+            <div class="card p-0 overflow-hidden" style="max-width: 800px; margin: 0 auto; background: var(--color-luxury-navy); box-shadow: 0 20px 40px rgba(0,0,0,0.4); border: 1px solid var(--color-glass-border);">
+                <div style="background: var(--gradient-luxury); padding: 32px; text-align: center;">
                     <span class="badge badge-cyan mb-16">Asistente Inteligente</span>
-                    <h2 class="m-0" style="color: var(--color-pure-white);">¿Qué quieres conseguir hoy?</h2>
+                    <h2 class="m-0" id="wizard-title" style="color: var(--color-pure-white);">¿Qué quieres conseguir hoy?</h2>
                 </div>
                 
+                <!-- STEP 1: INTERÉS PRINCIPAL -->
                 <div class="p-32" id="wizard-step-1">
-                    <div class="grid grid-3 gap-16">
-                        <button class="card card-glow text-center wizard-option" data-goal="comprar" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer;">
+                    <p class="text-center text-muted mb-24">Selecciona tu objetivo principal para guiarte en el proceso:</p>
+                    <div class="grid grid-2 gap-16">
+                        <button class="card card-glow text-center wizard-option" data-goal="comprar" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer; padding: 24px;">
                             <div class="card-icon" style="margin: 0 auto 16px;"><i data-lucide="home"></i></div>
-                            <h4 class="mb-8">Comprar Casa</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Quiero saber si me lo puedo permitir</p>
+                            <h4 class="mb-8">Quiero Comprar</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Analiza si estás listo para adquirir tu vivienda</p>
                         </button>
-                        <button class="card card-glow text-center wizard-option" data-goal="hipoteca" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer;">
+                        <button class="card card-glow text-center wizard-option" data-goal="vender" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer; padding: 24px;">
+                            <div class="card-icon" style="margin: 0 auto 16px;"><i data-lucide="tag"></i></div>
+                            <h4 class="mb-8">Quiero Vender</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Calcula impuestos, gastos y conoce el proceso</p>
+                        </button>
+                        <button class="card card-glow text-center wizard-option" data-goal="optimizar" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer; padding: 24px;">
                             <div class="card-icon" style="margin: 0 auto 16px;"><i data-lucide="percent"></i></div>
-                            <h4 class="mb-8">Mi Hipoteca</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Quiero amortizar o mejorarla</p>
+                            <h4 class="mb-8">Optimizar Hipoteca</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Mejora tus condiciones o planifica amortizaciones</p>
                         </button>
-                        <button class="card card-glow text-center wizard-option" data-goal="aprender" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer;">
-                            <div class="card-icon" style="margin: 0 auto 16px;"><i data-lucide="book-open"></i></div>
-                            <h4 class="mb-8">Aprender</h4>
-                            <p class="text-muted" style="font-size: 0.85rem;">Quiero formarme financieramente</p>
+                        <button class="card card-glow text-center wizard-option" data-goal="educacion" style="border: 1px solid var(--color-glass-border); background: transparent; cursor: pointer; padding: 24px;">
+                            <div class="card-icon" style="margin: 0 auto 16px;"><i data-lucide="graduation-cap"></i></div>
+                            <h4 class="mb-8">Educación Financiera</h4>
+                            <p class="text-muted" style="font-size: 0.85rem;">Fórmate en presupuestos, deudas e inversiones</p>
                         </button>
                     </div>
                 </div>
 
+                <!-- STEP 2: PREGUNTAS DINÁMICAS -->
                 <div class="p-32" id="wizard-step-2" style="display: none;">
-                    <div id="wizard-content-comprar" style="display: none;">
-                        <h3 class="mb-16">Genial. Vamos a calcular tu presupuesto.</h3>
-                        <p class="text-muted mb-24">Para comprar una casa de forma segura, el banco te pedirá ahorros y analizará tus ingresos. Nuestro simulador te dirá exactamente el precio máximo que puedes buscar.</p>
-                        <a href="simuladores/capacidad.html" class="btn btn-primary btn-lg" style="width: 100%;">Ir al Simulador de Capacidad</a>
+                    <div id="wizard-question-container">
+                        <h3 id="wizard-question-text" class="mb-24 text-center">Pregunta...</h3>
+                        <div id="wizard-answers-grid" class="grid grid-2 gap-16">
+                            <!-- Respuestas dinámicas -->
+                        </div>
                     </div>
                     
-                    <div id="wizard-content-hipoteca" style="display: none;">
-                        <h3 class="mb-16">Optimiza el pago de tu deuda.</h3>
-                        <p class="text-muted mb-24">Si tienes ahorros extra, puedes quitarte años de hipoteca, reducir tu cuota mensual o invertir ese dinero para generar rentabilidad. Averigua qué te conviene más matemáticamente.</p>
-                        <a href="simuladores/amortizacion.html" class="btn btn-primary btn-lg" style="width: 100%;">Ir al Simulador de Amortización</a>
-                    </div>
+                    <button id="wizard-back-to-1" class="btn btn-secondary mt-24" style="border: none; padding-left: 0;">
+                        <i data-lucide="arrow-left" class="mr-8"></i> Volver al paso anterior
+                    </button>
+                </div>
 
-                    <div id="wizard-content-aprender" style="display: none;">
-                        <h3 class="mb-16">El conocimiento es poder.</h3>
-                        <p class="text-muted mb-24">Aprende los conceptos básicos sobre ahorro, gestión de deudas, elaboración de presupuestos y la fuerza del interés compuesto en nuestras guías interactivas.</p>
-                        <a href="educacion.html" class="btn btn-primary btn-lg" style="width: 100%;">Ir a Educación Financiera</a>
+                <!-- STEP 3: RESULTADOS Y RECOMENDACIÓN -->
+                <div class="p-32 text-center" id="wizard-step-3" style="display: none;">
+                    <div class="card-icon mb-16" style="margin: 0 auto; color: var(--color-cyan); width: 48px; height: 48px;">
+                        <i data-lucide="check-circle" style="width: 48px; height: 48px;"></i>
                     </div>
-
-                    <button id="wizard-back" class="btn btn-secondary mt-24" style="border: none; padding-left: 0;"><i data-lucide="arrow-left" class="mr-8"></i> Volver</button>
+                    <h3 class="mb-16" id="wizard-result-title">Tu Recomendación Personalizada</h3>
+                    <p class="text-muted mb-32" id="wizard-result-text" style="max-width: 600px; margin: 0 auto 24px;">
+                        Recomendación...
+                    </p>
+                    <div style="max-width: 400px; margin: 0 auto;">
+                        <a href="#" id="wizard-result-btn" class="btn btn-primary btn-lg" style="width: 100%;">Comenzar ahora</a>
+                    </div>
+                    
+                    <button id="wizard-back-to-2" class="btn btn-secondary mt-24" style="border: none; padding-left: 0;">
+                        <i data-lucide="arrow-left" class="mr-8"></i> Cambiar mi respuesta
+                    </button>
                 </div>
             </div>
         </section>
@@ -201,17 +217,17 @@
                 <div class="footer-section">
                     <h4 class="footer-title">Herramientas</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html#simulator-capacity" class="footer-link">Simulador de Capacidad</a></li>
-                        <li><a href="index.html#simulator-amortization" class="footer-link">Estrategia de Amortización</a></li>
+                        <li><a href="simuladores/capacidad.html" class="footer-link">Simulador de Capacidad</a></li>
+                        <li><a href="simuladores/amortizacion.html" class="footer-link">Estrategia de Amortización</a></li>
                         <li><a href="mercado.html" class="footer-link">Mercado Hipotecario</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4 class="footer-title">Legal</h4>
                     <ul class="footer-links">
-                        <li><a href="#" class="footer-link">Aviso Legal</a></li>
-                        <li><a href="#" class="footer-link">Política de Privacidad</a></li>
-                        <li><a href="#" class="footer-link">Cookies</a></li>
+                        <li><a href="legal/aviso-legal.html" class="footer-link">Aviso Legal</a></li>
+                        <li><a href="legal/privacidad.html" class="footer-link">Política de Privacidad</a></li>
+                        <li><a href="legal/cookies.html" class="footer-link">Cookies</a></li>
                     </ul>
                 </div>
             </div>

@@ -148,4 +148,18 @@
   --blur-sm:  4px;
   --blur-md: 12px;
   --blur-lg: 24px;
+
+
+  /* ----------------------------------------------------------
+     Aliases convenientes (compatibilidad con páginas nuevas)
+     ---------------------------------------------------------- */
+
+  --color-cyan:       var(--color-smart-cyan);
+  --color-text:       var(--color-pure-white);
+  --color-text-muted: var(--color-muted-slate);
+  --color-green:      var(--color-success);
+  --color-amber:      var(--color-warning);
+  --color-red:        var(--color-error);
+  --color-blue:       var(--color-sapphire-blue);
+  --color-surface:    var(--color-luxury-navy);
 }
