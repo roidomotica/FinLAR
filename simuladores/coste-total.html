@@ -20,19 +20,58 @@
     <link rel="stylesheet" href="../css/theme.css">
 
     <style>
+        #banks-container, #comparison-results-cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: var(--space-4);
+        }
+        @media (max-width: 1024px) {
+            #banks-container, #comparison-results-cards {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            #banks-container, #comparison-results-cards {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+        .bank-card, #comparison-results-cards > div {
+            min-width: 0;
+        }
         .vinc-inputs-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: var(--space-2);
             margin-top: var(--space-2);
             padding-bottom: var(--space-3);
-            border-bottom: 1px solid var(--color-glass-border);
         }
         .vinculacion-row {
             margin-bottom: var(--space-4);
+            padding-bottom: var(--space-3);
+            border-bottom: 1px solid var(--color-glass-border);
         }
-        .vinculacion-row:last-child .vinc-inputs-grid {
+        .vinculacion-row:last-child {
             border-bottom: none;
+            padding-bottom: 0;
+        }
+        /* Estilos elegantes y sutiles para la barra de scroll en PC/Tablets */
+        .vinculaciones-list div::-webkit-scrollbar,
+        .custom-vinc-form div::-webkit-scrollbar {
+            height: 4px;
+        }
+        .vinculaciones-list div::-webkit-scrollbar-track,
+        .custom-vinc-form div::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.2);
+            border-radius: var(--radius-sm);
+        }
+        .vinculaciones-list div::-webkit-scrollbar-thumb,
+        .custom-vinc-form div::-webkit-scrollbar-thumb {
+            background: rgba(6, 182, 212, 0.3);
+            border-radius: var(--radius-sm);
+        }
+        .vinculaciones-list div::-webkit-scrollbar-thumb:hover,
+        .custom-vinc-form div::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.5);
         }
         .form-group-compact {
             display: flex;
@@ -98,11 +137,6 @@
         .btn-delete-vinc:hover {
             text-decoration: underline;
         }
-        @media (max-width: 768px) {
-            .vinc-inputs-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
         .edu-note {
             background: rgba(99, 102, 241, 0.05);
             border: 1px solid rgba(99, 102, 241, 0.2);
@@ -127,6 +161,86 @@
         }
         .edu-note-content strong {
             color: var(--color-pure-white);
+        }
+
+        /* Botón Flotante y Modal de Ayuda */
+        .floating-help-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-smart-cyan), var(--color-blue));
+            border: none;
+            color: var(--color-pure-white);
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .floating-help-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.6);
+        }
+        .help-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3, 3, 7, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-4);
+        }
+        .help-modal-content {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--color-glass-border);
+            border-radius: var(--radius-xl);
+            max-width: 650px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: var(--space-6);
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            animation: modalFadeIn 0.3s ease;
+        }
+        .help-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--color-muted-slate);
+            font-size: 28px;
+            cursor: pointer;
+            line-height: 1;
+            transition: color 0.2s ease;
+        }
+        .help-modal-close:hover {
+            color: var(--color-pure-white);
+        }
+        .help-modal-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .help-section h4 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -180,7 +294,7 @@
                     <h3 class="card-title mb-24 flex flex-center" style="gap: 8px; justify-content: flex-start;">
                         <i data-lucide="settings" style="color: var(--color-smart-cyan);"></i> Datos Generales de la Hipoteca
                     </h3>
-                    <div class="grid grid-2 mb-24">
+                    <div class="grid grid-3">
                         <div class="form-group">
                             <label for="global-capital" class="form-label font-semibold">Importe del préstamo (Capital)</label>
                             <div class="input-group">
@@ -197,8 +311,6 @@
                             </div>
                             <p class="form-hint mt-4">Tiempo en años para devolver el préstamo (habitualmente entre 15 y 30 años).</p>
                         </div>
-                    </div>
-                    <div class="grid grid-2">
                         <div class="form-group">
                             <label class="form-label font-semibold">Tipo de operación</label>
                             <div class="flex flex-gap-md" style="margin-top: 8px; gap: 16px;">
@@ -213,7 +325,7 @@
                             </div>
                             <p class="form-hint mt-4">Elige si solicitas una hipoteca nueva o trasladas una hipoteca existente.</p>
                         </div>
-                        <div class="form-group" id="cancelation-costs-container" style="display: none;">
+                        <div class="form-group" id="cancelation-costs-container" style="display: none; margin-top: var(--space-4);">
                             <label for="cancelation-costs" class="form-label font-semibold">Gastos de cancelación de hipoteca actual</label>
                             <div class="input-group">
                                 <span class="input-prefix">€</span>
@@ -248,9 +360,8 @@
                             *Nota: Según el Real Decreto-ley 19/2022 y medidas de alivio hipotecario vigentes, las comisiones por amortización anticipada o cambio de hipoteca de tipo variable a fijo/mixto están limitadas o exentas en ciertos supuestos legales. Consulta siempre las condiciones específicas con tu entidad.
                         </p>
                     </div>
-                </div>
-
-                <!-- 3 Bancos -->
+                </div> <!-- Cierre de #legal-explanation-panel -->
+                
                 <h3 class="mb-24 gradient-text">Configura las ofertas de los bancos</h3>
                 <div class="grid grid-3" id="banks-container">
                     
@@ -283,25 +394,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label title="Penalización en TIN si no se contrata">Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.50" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label title="Coste periódico de este servicio">Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label title="Incremento anual del coste (por inflación/edad)">Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label title="Penalización en TIN si no se contrata">Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.50" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label title="Coste si se contrata con el banco">Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label title="Coste fuera del banco si no se contrata">Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="1" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label title="Incremento anual del coste (por inflación/edad)">Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -315,25 +432,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.20" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="200" step="10" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="2.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.20" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="200" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="150" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="2.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -347,25 +470,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.25" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="300" step="10" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="3.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.25" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="300" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="180" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="3.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -379,25 +508,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.15" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="40" step="5" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual">Anual</option>
-                                            <option value="mensual" selected>Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="1.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.15" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="40" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual">Anual</option>
+                                                <option value="mensual" selected>Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="1.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -411,25 +546,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="50" step="5" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="50" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -442,25 +583,31 @@
                                 <label>Nombre del producto</label>
                                 <input type="text" class="input input-sm custom-name" placeholder="Ej. Seguro de Coche">
                             </div>
-                            <div class="vinc-inputs-grid">
-                                <div class="form-group-compact">
-                                    <label>Penaliz. TIN (%)</label>
-                                    <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Coste (€)</label>
-                                    <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Periodo</label>
-                                    <select class="input input-sm custom-periodo">
-                                        <option value="anual" selected>Anual</option>
-                                        <option value="mensual">Mensual</option>
-                                    </select>
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Inc. Anual (%)</label>
-                                    <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                            <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN (%)</label>
+                                        <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste Banco (€)</label>
+                                        <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste Externo (€)</label>
+                                        <input type="number" class="input input-sm custom-coste-externo" value="0" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm custom-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual (%)</label>
+                                        <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-secondary btn-sm mt-12 btn-add-custom-vinc" style="width: 100%; font-size: 11px; padding: 6px 12px !important;">Añadir Producto</button>
@@ -496,25 +643,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.40" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.40" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="1" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -528,25 +681,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="180" step="10" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="2.5" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="180" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="150" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="2.5" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -560,25 +719,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="280" step="10" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="3.5" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="280" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="180" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="3.5" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -592,25 +757,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.20" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="45" step="5" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual">Anual</option>
-                                            <option value="mensual" selected>Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="1.5" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.20" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="45" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual">Anual</option>
+                                                <option value="mensual" selected>Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="1.5" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -624,25 +795,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="30" step="5" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="30" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -655,25 +832,31 @@
                                 <label>Nombre del producto</label>
                                 <input type="text" class="input input-sm custom-name" placeholder="Ej. Seguro de Coche">
                             </div>
-                            <div class="vinc-inputs-grid">
-                                <div class="form-group-compact">
-                                    <label>Penaliz. TIN (%)</label>
-                                    <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Coste (€)</label>
-                                    <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Periodo</label>
-                                    <select class="input input-sm custom-periodo">
-                                        <option value="anual" selected>Anual</option>
-                                        <option value="mensual">Mensual</option>
-                                    </select>
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Inc. Anual (%)</label>
-                                    <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                            <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN (%)</label>
+                                        <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste Banco (€)</label>
+                                        <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste Externo (€)</label>
+                                        <input type="number" class="input input-sm custom-coste-externo" value="0" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm custom-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual (%)</label>
+                                        <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-secondary btn-sm mt-12 btn-add-custom-vinc" style="width: 100%; font-size: 11px; padding: 6px 12px !important;">Añadir Producto</button>
@@ -709,25 +892,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.60" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.60" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="0" step="1" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="1" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -741,25 +930,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.25" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="220" step="10" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="3.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.25" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="220" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="150" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="3.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -773,25 +968,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-active">Contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="350" step="10" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="4.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.30" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="350" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="180" step="10" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="4.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -805,25 +1006,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="35" step="5" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual">Anual</option>
-                                            <option value="mensual" selected>Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="2.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="35" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual">Anual</option>
+                                                <option value="mensual" selected>Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="2.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -837,25 +1044,31 @@
                                     </label>
                                     <span class="vinc-status-badge vinc-badge-inactive">No contratado</span>
                                 </div>
-                                <div class="vinc-inputs-grid">
-                                    <div class="form-group-compact">
-                                        <label>Penaliz. TIN</label>
-                                        <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Coste (€)</label>
-                                        <input type="number" class="input input-sm vinc-coste" value="40" step="5" min="0">
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Periodo</label>
-                                        <select class="input input-sm vinc-periodo">
-                                            <option value="anual" selected>Anual</option>
-                                            <option value="mensual">Mensual</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group-compact">
-                                        <label>Inc. Anual</label>
-                                        <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                    <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                        <div class="form-group-compact">
+                                            <label>Penaliz. TIN</label>
+                                            <input type="number" class="input input-sm vinc-penalizacion" value="0.10" step="0.05" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Banco</label>
+                                            <input type="number" class="input input-sm vinc-coste" value="40" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Coste Externo</label>
+                                            <input type="number" class="input input-sm vinc-coste-externo" value="0" step="5" min="0">
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Periodo</label>
+                                            <select class="input input-sm vinc-periodo">
+                                                <option value="anual" selected>Anual</option>
+                                                <option value="mensual">Mensual</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group-compact">
+                                            <label>Inc. Anual</label>
+                                            <input type="number" class="input input-sm vinc-incremento" value="0.0" step="0.1" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -868,25 +1081,31 @@
                                 <label>Nombre del producto</label>
                                 <input type="text" class="input input-sm custom-name" placeholder="Ej. Seguro de Coche">
                             </div>
-                            <div class="vinc-inputs-grid">
-                                <div class="form-group-compact">
-                                    <label>Penaliz. TIN (%)</label>
-                                    <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Coste (€)</label>
-                                    <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Periodo</label>
-                                    <select class="input input-sm custom-periodo">
-                                        <option value="anual" selected>Anual</option>
-                                        <option value="mensual">Mensual</option>
-                                    </select>
-                                </div>
-                                <div class="form-group-compact">
-                                    <label>Inc. Anual (%)</label>
-                                    <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                            <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+                                <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+                                    <div class="form-group-compact">
+                                        <label>Penaliz. TIN (%)</label>
+                                        <input type="number" class="input input-sm custom-penalizacion" value="0.10" step="0.05" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste Banco (€)</label>
+                                        <input type="number" class="input input-sm custom-coste" value="100" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Coste Externo (€)</label>
+                                        <input type="number" class="input input-sm custom-coste-externo" value="0" step="10" min="0">
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Periodo</label>
+                                        <select class="input input-sm custom-periodo">
+                                            <option value="anual" selected>Anual</option>
+                                            <option value="mensual">Mensual</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group-compact">
+                                        <label>Inc. Anual (%)</label>
+                                        <input type="number" class="input input-sm custom-incremento" value="2.0" step="0.5" min="0">
+                                    </div>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-secondary btn-sm mt-12 btn-add-custom-vinc" style="width: 100%; font-size: 11px; padding: 6px 12px !important;">Añadir Producto</button>
@@ -1010,6 +1229,45 @@
             </div>
         </div>
     </footer>
+    <!-- Botón Flotante de Ayuda -->
+    <button class="floating-help-btn" id="floating-help-btn" aria-label="Ayuda del simulador">
+        <i data-lucide="help-circle"></i>
+    </button>
+
+    <!-- Modal de Ayuda (Glassmorphic Overlay) -->
+    <div class="help-modal-overlay" id="help-modal-overlay">
+        <div class="help-modal-content">
+            <button class="help-modal-close" id="help-modal-close" aria-label="Cerrar modal">&times;</button>
+            <h2 class="help-modal-title gradient-text mb-20 flex flex-center" style="justify-content: flex-start; gap: 8px;">
+                <i data-lucide="help-circle" style="color: var(--color-smart-cyan);"></i> Guía Educativa del Simulador
+            </h2>
+            <div class="help-modal-body text-muted">
+                <section class="help-section mb-20">
+                    <h4 style="color: var(--color-pure-white); margin-bottom: 8px;">1. Vinculaciones del Banco vs. Externas</h4>
+                    <p style="font-size: 13px; line-height: 1.5;">
+                        • <strong>Coste Banco:</strong> Es el precio anual (o mensual) del seguro o servicio si decides contratarlo directamente con la entidad financiera para obtener la bonificación en tu tipo de interés.<br>
+                        • <strong>Coste Externo:</strong> Es el precio estimado que pagarías si contratas ese mismo seguro o servicio de forma independiente con una aseguradora o proveedor externo.<br>
+                        • <strong>Dinámica:</strong> Si <strong>marcas</strong> el producto, se aplicará el <em>Coste Banco</em> y se mantendrá el tipo bonificado. Si lo <strong>desmarcas</strong>, se aplicará el <em>Coste Externo</em> (tu seguro privado) y el banco te penalizará sumando el porcentaje correspondiente al TIN.
+                    </p>
+                </section>
+                <section class="help-section mb-20">
+                    <h4 style="color: var(--color-pure-white); margin-bottom: 8px;">2. ¿Qué es el TAE Global?</h4>
+                    <p style="font-size: 13px; line-height: 1.5;">
+                        El <strong>TAE Global (Tasa Anual Equivalente de la Operación)</strong> calcula de forma exacta el rendimiento o coste financiero real de tu hipoteca. A diferencia del TAE tradicional del banco (que solo incluye los gastos y seguros impuestos por este), el TAE Global incluye <strong>todos tus flujos de caja reales</strong>: el capital que recibes, las cuotas mensuales, las penalizaciones de TIN y los costes de tus seguros (tanto del banco como externos).<br>
+                        • <strong>¿Por qué es más preciso?</strong> Te permite ver si realmente te compensa contratar un seguro del banco para rebajar el TIN o si es mejor pagar la penalización y contratar un seguro privado más barato externamente. El banco con la cuota más baja no siempre tiene el TAE Global más favorable.
+                    </p>
+                </section>
+                <section class="help-section mb-20">
+                    <h4 style="color: var(--color-pure-white); margin-bottom: 8px;">3. Conceptos Legales Importantes</h4>
+                    <p style="font-size: 13px; line-height: 1.5;">
+                        • <strong>Novación:</strong> Modificar las condiciones del préstamo hipotecario actual negociando directamente con tu banco de origen.<br>
+                        • <strong>Subrogación de Acreedor:</strong> Trasladar legalmente tu hipoteca a otra entidad bancaria que te ofrece mejores condiciones, sin cancelar el préstamo original.<br>
+                        • <strong>Derecho de Enervación (Ley 2/1994):</strong> Cuando solicitas una subrogación y presentas una oferta de un nuevo banco, tu banco actual tiene <strong>15 días naturales</strong> para igualar o mejorar formalmente dicha oferta. Si lo hace (enervación), estarás obligado a quedarte con ellos en esas nuevas condiciones.
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/lucide@latest"></script>

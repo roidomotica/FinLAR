@@ -46,18 +46,17 @@
 
     <main>
         <!-- Cabecera de navegación rápida -->
-        <section class="container mt-32 pt-32 animate-on-scroll">
+        <section class="container animate-on-scroll" style="margin-top: 88px; padding-top: 0; padding-bottom: 0;">
             <div class="card" style="padding: 12px 24px; border-radius: var(--radius-md); background: var(--color-surface-slate);">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.85rem;">
                     <a href="../comprar.html" class="text-muted" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
                         <i data-lucide="chevron-left" style="width:14px;height:14px;"></i> Volver a la guía de compra
                     </a>
-                    <div style="display:flex; gap:16px;">
-                        <a href="encuentra-vivienda.html" class="text-muted" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <a href="encuentra-vivienda.html" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:4px; text-decoration:none;">
                             <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Paso anterior: Encuentra tu vivienda
                         </a>
-                        <span class="text-muted">|</span>
-                        <a href="contrato-arras.html" style="color:var(--color-cyan); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                        <a href="contrato-arras.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:4px; text-decoration:none;">
                             Paso siguiente: Contrato de arras <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
                         </a>
                     </div>
@@ -86,7 +85,10 @@
                             <div class="timeline-dot" style="left: -20px; width: 14px; height: 14px;"></div>
                             <div class="timeline-content" style="padding: 12px 16px;">
                                 <h5 class="timeline-title" style="font-size: 0.95rem;">1. Analizar tu perfil de riesgo</h5>
-                                <p class="timeline-text text-muted" style="font-size:0.85rem; margin:0;">Calcula tu ratio de endeudamiento (máximo recomendado: 30-35% de tus ingresos netos mensuales). Revisa que dispongas de ahorros suficientes para aportar la entrada (típicamente el 20% del precio de compra) más los gastos derivados (10-12%).</p>
+                                <p class="timeline-text text-muted" style="font-size:0.85rem; margin:0 0 10px 0;">Calcula tu ratio de endeudamiento (máximo recomendado: 30-35% de tus ingresos netos mensuales). Revisa que dispongas de ahorros suficientes para aportar la entrada (típicamente el 20% del precio de compra) más los gastos derivados (10-12%).</p>
+                                <a href="../simuladores/capacidad.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px;">
+                                    <i data-lucide="calculator" style="width:14px;height:14px;"></i> Simulador de Capacidad
+                                </a>
                             </div>
                         </div>
                         <div class="timeline-item" style="padding-bottom: 24px;">
@@ -120,12 +122,28 @@
                             <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading); display:flex; align-items:center; gap:8px;">
                                 <i data-lucide="user-check" style="width:18px;height:18px;color:var(--color-cyan);"></i> Documentación Personal e Historial Crediticio
                             </h5>
-                            <ul class="pl-20 text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
-                                <li class="mb-4"><strong>DNI o NIE en vigor:</strong> De todos los titulares que vayan a figurar en el préstamo hipotecario.</li>
-                                <li class="mb-4"><strong>Declaración de la Renta:</strong> Copia completa del último ejercicio presentado del IRPF.</li>
-                                <li class="mb-4"><strong>Últimas 3 a 6 nóminas:</strong> Para asalariados (o justificantes de IVA/IRPF trimestrales en el caso de autónomos).</li>
-                                <li class="mb-4"><strong>Vida laboral actualizada:</strong> Emitida por la Seguridad Social en los últimos 30 días.</li>
-                                <li class="mb-4"><strong>Últimos 3 recibos de otros préstamos activos:</strong> Si dispones de préstamos (coche, consumo, etc.), el banco requiere ver el capital pendiente y la cuota que abonas mensualmente.</li>
+                            <p class="text-muted mb-12" style="font-size:0.8rem;">Marca los documentos que ya tienes preparados:</p>
+                            <ul class="text-muted" style="list-style:none; padding-left:0; font-size:0.85rem; line-height:1.6; margin:0; display:flex; flex-direction:column; gap:8px;">
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-dni" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-dni" style="cursor:pointer;"><strong>DNI o NIE en vigor:</strong> De todos los titulares que vayan a figurar en el préstamo hipotecario.</label>
+                                </li>
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-renta" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-renta" style="cursor:pointer;"><strong>Declaración de la Renta:</strong> Copia completa del último ejercicio presentado del IRPF.</label>
+                                </li>
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-nominas" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-nominas" style="cursor:pointer;"><strong>Últimas 3 a 6 nóminas:</strong> Para asalariados (o justificantes de IVA/IRPF trimestrales en el caso de autónomos).</label>
+                                </li>
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-vida-laboral" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-vida-laboral" style="cursor:pointer;"><strong>Vida laboral actualizada:</strong> Emitida por la Seguridad Social en los últimos 30 días.</label>
+                                </li>
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-recibos" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-recibos" style="cursor:pointer;"><strong>Últimos 3 recibos de otros préstamos activos:</strong> Si dispones de préstamos (coche, consumo, etc.), el banco requiere ver el capital pendiente y la cuota que abonas mensualmente.</label>
+                                </li>
                             </ul>
                         </div>
 
@@ -133,9 +151,16 @@
                             <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading); display:flex; align-items:center; gap:8px;">
                                 <i data-lucide="home" style="width:18px;height:18px;color:var(--color-cyan);"></i> Documentación de la Vivienda
                             </h5>
-                            <ul class="pl-20 text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
-                                <li class="mb-4"><strong>Nota Simple actualizada:</strong> Imprescindible para que el banco identifique la vivienda y evalúe sus cargas.</li>
-                                <li class="mb-4"><strong>Contrato de arras:</strong> En caso de que ya se haya firmado (aunque es aconsejable buscar ofertas antes).</li>
+                            <p class="text-muted mb-12" style="font-size:0.8rem;">Marca los documentos de la vivienda que ya tienes disponibles:</p>
+                            <ul class="text-muted" style="list-style:none; padding-left:0; font-size:0.85rem; line-height:1.6; margin:0; display:flex; flex-direction:column; gap:8px;">
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-nota-simple" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-nota-simple" style="cursor:pointer;"><strong>Nota Simple actualizada:</strong> Imprescindible para que el banco identifique la vivienda y evalúe sus cargas.</label>
+                                </li>
+                                <li style="display:flex; align-items:flex-start; gap:10px;">
+                                    <input type="checkbox" id="doc-arras" style="margin-top:4px; width:16px; height:16px; cursor:pointer;">
+                                    <label for="doc-arras" style="cursor:pointer;"><strong>Contrato de arras:</strong> En caso de que ya se haya firmado (aunque es aconsejable buscar ofertas antes).</label>
+                                </li>
                             </ul>
                         </div>
 
@@ -148,12 +173,101 @@
                             </p>
                         </div>
                     </div>
+
+                    <!-- Sección: Información clave que debes solicitar -->
+                    <h3 class="mb-16 mt-32">Información clave que debes solicitar a las entidades</h3>
+                    <p class="text-muted mb-24">Cuando te reúnas con los gestores bancarios o analices sus propuestas comerciales, no te quedes solo con la cuota mensual inicial. Debes solicitar información detallada sobre los siguientes aspectos clave:</p>
+                    
+                    <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:32px;">
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-blue);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading); display:flex; align-items:center; gap:8px;">
+                                <i data-lucide="percent" style="width:18px;height:18px;color:var(--color-blue);"></i> Tipo de interés
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                Solicita tanto el <strong>TIN base</strong> (el tipo de interés que pagarías sin contratar ningún producto adicional con el banco) como el <strong>tipo de interés bonificado</strong> (el tipo rebajado si cumples con las condiciones de vinculación).
+                            </p>
+                        </div>
+
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-blue);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading); display:flex; align-items:center; gap:8px;">
+                                <i data-lucide="check-square" style="width:18px;height:18px;color:var(--color-blue);"></i> Vinculaciones y bonificaciones
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                Pregunta qué porcentaje exacto de bonificación (por ejemplo, 0.10%, 0.20%, etc.) rebaja cada producto específico en el TIN. Además, consulta si los costes y las bonificaciones son fijos o variables, y si tienen algún tipo de incremento o revisión anual.
+                            </p>
+                        </div>
+
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-blue);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading); display:flex; align-items:center; gap:8px;">
+                                <i data-lucide="shield-alert" style="width:18px;height:18px;color:var(--color-blue);"></i> Coste de vinculaciones
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                Exige el precio exacto de cada seguro que ofrece el banco (hogar, vida, protección de pagos, etc.). Averigua también si te permiten <strong>contratarlos de forma externa</strong> (con aseguradoras de tu elección) y cuál sería la penalización correspondiente en el TIN base. Muchas veces, contratar los seguros fuera del banco compensa la pérdida de bonificación.
+                            </p>
+                        </div>
+
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-blue);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading); display:flex; align-items:center; gap:8px;">
+                                <i data-lucide="coins" style="width:18px;height:18px;color:var(--color-blue);"></i> Comisiones de amortización y otros gastos
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                Solicita información sobre las comisiones por amortización parcial y total, las cuales están reguladas por la <strong>Ley 5/2019 reguladora de los contratos de crédito inmobiliario</strong>. Asimismo, pregunta si aplican comisiones de apertura o de estudio (las cuales idealmente deben ser del 0%).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Sección: Fases del proceso (Tasación y FEIN) -->
+                    <h3 class="mb-16 mt-32">El proceso paso a paso: De las ofertas a la firma</h3>
+                    <p class="text-muted mb-24">Una vez que presentas tu dossier, el proceso de estudio de la financiación pasa por tres fases claramente definidas:</p>
+                    
+                    <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:32px;">
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-cyan);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading);">
+                                Fase 1: Preofertas y Scoring inicial
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                Las entidades analizan tu solvencia mediante sistemas automatizados y analistas de riesgos. Si el perfil es apto, emiten una oferta inicial no vinculante basada en los datos proporcionados.
+                            </p>
+                        </div>
+
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-cyan);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading);">
+                                Fase 2: Tasación de la vivienda (Tasación Independiente)
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                El banco solicitará valorar el inmueble para calcular el porcentaje de financiación. Aunque el coste de la tasación corre a cargo del comprador, <strong>tienes el derecho legal</strong> (según el artículo 14 de la <strong>Ley 5/2019</strong> reguladora de los contratos de crédito inmobiliario) a <strong>aportar una tasación independiente realizada por cualquier sociedad de tasación homologada por el Banco de España</strong> (bajo la norma de valoración <strong style="color: var(--color-cyan);">Orden ECO/805/2003</strong>). Esta tasación tiene una <strong>validez legal de 6 meses</strong> desde su fecha de emisión y el banco está legalmente obligado a aceptarla para el estudio de riesgos. A pesar de esto, se aconseja <strong style="color: var(--color-cyan);">verificar previamente qué tasadoras están bien vistas por el departamento de riesgos de cada entidad</strong> para agilizar los trámites internos y evitar fricciones administrativas comerciales que demoren la firma.
+                            </p>
+                        </div>
+
+                        <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-cyan);">
+                            <h5 style="margin:0 0 8px 0; color:var(--color-pure-white); font-family:var(--font-heading);">
+                                Fase 3: Estudio definitivo, FEIN y Acta Notarial
+                            </h5>
+                            <p class="text-muted" style="font-size:0.85rem; line-height:1.6; margin:0;">
+                                Con la tasación aportada y el perfil de riesgos validado, el banco emite la <strong style="color: var(--color-cyan);">FEIN (Ficha Europea de Información Normalizada)</strong>. Este documento es la oferta formal definitiva y es <strong style="color: var(--color-cyan);">contractualmente vinculante para el banco durante un plazo mínimo de 10 días naturales</strong> en toda España. Para garantizar que comprendes todas las cláusulas complejas de la hipoteca, la ley exige que visites al notario de tu elección para firmar de forma gratuita un <strong style="color: var(--color-cyan);">Acta de Transparencia Notarial</strong> previa, la cual debe formalizarse <strong style="color: var(--color-cyan);">al menos 1 día antes</strong> de la firma definitiva de las escrituras de compraventa e hipoteca.
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- Columna lateral / Recursos rápidos -->
                 <div>
+                    <!-- Comparador de hipotecas destacado -->
+                    <div class="card mb-24" style="background: linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(99, 102, 241, 0.15)); border: 1px solid rgba(6, 182, 212, 0.3);">
+                        <h4 class="card-title mb-12" style="display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="calculator" style="color: var(--color-cyan); width: 20px; height: 20px;"></i> Comparador Avanzado
+                        </h4>
+                        <p class="card-text text-muted mb-16" style="font-size: 0.85rem; line-height: 1.5;">
+                            ¿Quieres comparar tus ofertas? Usa nuestro comparador avanzado de hipotecas y vinculaciones para calcular el coste real y la TAE Global.
+                        </p>
+                        <a href="../simuladores/coste-total.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:8px; width:100%; justify-content: center; background: linear-gradient(135deg, var(--color-cyan), var(--color-blue)); border: none;">
+                            Comparar Ofertas <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+                        </a>
+                    </div>
+
                     <div class="card mb-24">
-                        <h4 class="mb-16" style="font-family: var(--font-heading);">Sede del Banco de España</h4>
+                        <h4 class="card-title mb-16">Sede del Banco de España</h4>
                         <p class="card-text text-muted mb-16">El informe <strong>CIRBE</strong> de riesgos crediticios es crucial. Puedes solicitar tu informe de deudas de forma gratuita e inmediata en la web oficial:</p>
                         <a href="https://sedeelectronica.bde.es/sede/es/menu/tramites/central-de-infor/solicitud-informes-riesgos-cirbe-p58.html" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:8px; width:100%;">
                             Solicitar informe CIRBE <i data-lucide="external-link" style="width:14px;height:14px;"></i>
@@ -162,11 +276,14 @@
                     </div>
 
                     <div class="card" style="background: rgba(6, 182, 212, 0.05); border-color: rgba(6, 182, 212, 0.2);">
-                        <h4 class="mb-12" style="font-family: var(--font-heading); color: var(--color-cyan);">¿Tipo Fijo, Variable o Mixto?</h4>
-                        <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">Analiza tu aversión al riesgo. Las hipotecas mixtas ofrecen una cuota estable durante los primeros 5-10 años y luego pasan a variable, siendo una opción popular hoy día.</p>
-                        <a href="../simuladores/capacidad.html" style="color:var(--color-cyan); font-size:0.8rem; text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:4px;">
-                            Ir al simulador de capacidad <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
-                        </a>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <i data-lucide="file-spreadsheet" style="width:20px;height:20px;color:var(--color-cyan);"></i>
+                            <h4 class="card-title m-0">Plantilla de Comparación de Hipotecas</h4>
+                        </div>
+                        <p class="card-text text-muted mb-16">Descarga nuestra plantilla oficial en Excel para registrar y comparar todas las ofertas bancarias (TIN base, bonificaciones, seguros, comisiones y tasación).</p>
+                        <button id="btn-download-excel" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:8px; width:100%; justify-content:center; background: linear-gradient(135deg, #6366f1, #3b82f6); border:none;">
+                            <i data-lucide="download" style="width:14px;height:14px;"></i> Descargar Plantilla (Excel)
+                        </button>
                     </div>
                 </div>
 
@@ -230,5 +347,73 @@
 
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="../js/app.js"></script>
+    <!-- Carga de la librería SheetJS (XLSX) -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script>
+        // Manejador del botón de descarga de plantilla Excel
+        document.getElementById('btn-download-excel').addEventListener('click', function() {
+            try {
+                // Crear un nuevo libro de trabajo
+                const wb = XLSX.utils.book_new();
+                
+                // Definir datos del dossier comparativo con ejemplo ilustrativo y columnas para 4 bancos
+                const data = [
+                    ["FinLAR - DOSSIER DE COMPARACIÓN DE OFERTAS HIPOTECARIAS", "", "", "", "", ""],
+                    ["Utiliza esta plantilla para anotar las ofertas de las diferentes entidades bancarias y compararlas de forma objetiva.", "", "", "", "", ""],
+                    [],
+                    ["Concepto / Pregunta a realizar", "Ejemplo Ilustrativo", "Banco 1 (Oferta A)", "Banco 2 (Oferta B)", "Banco 3 (Oferta C)", "Banco 4 (Oferta D)"],
+                    ["TIN Base (sin productos vinculados)", "2,85%", "", "", "", ""],
+                    ["TIN Bonificado Máximo (con todos los productos)", "1,85%", "", "", "", ""],
+                    ["Diferencial / Bonificación por Nómina (e importe mínimo requerido)", "0,30% (mín. 1.500€/mes)", "", "", "", ""],
+                    ["Bonificación por Seguro de Hogar (porcentaje rebajado en TIN)", "0,20%", "", "", "", ""],
+                    ["Coste anual estimado del Seguro de Hogar comercializado por el banco", "250 €", "", "", "", ""],
+                    ["¿Permiten Seguro de Hogar externo contratado de forma independiente?", "Sí, con penalización", "", "", "", ""],
+                    ["Penalización en el TIN si se contrata el Seguro de Hogar de forma externa", "0,20%", "", "", "", ""],
+                    ["Bonificación por Seguro de Vida (porcentaje rebajado en TIN)", "0,40%", "", "", "", ""],
+                    ["Coste anual estimado del Seguro de Vida comercializado por el banco", "320 €", "", "", "", ""],
+                    ["¿Permiten Seguro de Vida externo contratado de forma independiente?", "Sí, con penalización", "", "", "", ""],
+                    ["Penalización en el TIN si se contrata el Seguro de Vida de forma externa", "0,40%", "", "", "", ""],
+                    ["Otras bonificaciones (planes de pensiones, domic. recibos, alarmas...)", "0,10% por Tarjeta (uso mín. 1.000€/año)", "", "", "", ""],
+                    ["Comisión de apertura o estudio (%)", "0,00%", "", "", "", ""],
+                    ["Comisión por amortización anticipada parcial (primeros años según Ley 5/2019)", "0,15% (primeros 5 años, luego 0%)", "", "", "", ""],
+                    ["Comisión por amortización anticipada total (según Ley 5/2019)", "1,50% (tipo fijo primeros 10 años)", "", "", "", ""],
+                    ["¿Qué sociedades de tasación homologadas acepta el departamento de riesgos?", "Tinsa, Sociedad de Tasación, CoHispania", "", "", "", ""],
+                    ["¿La tasación es reembolsable o corre a cuenta del comprador?", "A cuenta del comprador (aprox. 350€)", "", "", "", ""],
+                    ["Fecha de emisión de la FEIN", "05/07/2026", "", "", "", ""],
+                    ["Fecha límite de validez de las condiciones de la FEIN", "15/07/2026 (10 días)", "", "", "", ""],
+                    ["Plazo estimado de tramitación hasta firma notarial", "30-45 días", "", "", "", ""],
+                    ["Observaciones y notas adicionales", "Requiere contratar alarma de securitas para el 1,85% de TIN. No compensa.", "", "", "", ""]
+                ];
+
+                // Crear la hoja a partir de la matriz de datos
+                const ws = XLSX.utils.aoa_to_sheet(data);
+
+                // Ajustar el ancho de las columnas para visualización clara
+                ws['!cols'] = [
+                    { wch: 70 }, // Columna A (Concepto)
+                    { wch: 25 }, // Columna B (Ejemplo)
+                    { wch: 25 }, // Columna C (Banco 1)
+                    { wch: 25 }, // Columna D (Banco 2)
+                    { wch: 25 }, // Columna E (Banco 3)
+                    { wch: 25 }  // Columna F (Banco 4)
+                ];
+
+                // Combinaciones de celdas para el encabezado
+                ws['!merges'] = [
+                    { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }, // Título principal
+                    { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } }  // Subtítulo desc
+                ];
+
+                // Añadir la hoja al libro de trabajo
+                XLSX.utils.book_append_sheet(wb, ws, "Comparativa Bancos");
+
+                // Generar y descargar el archivo Excel
+                XLSX.writeFile(wb, "dossier_comparativo_bancos.xlsx");
+            } catch (error) {
+                console.error("Error al generar la plantilla de comparación:", error);
+                alert("Ha ocurrido un error al generar la plantilla Excel. Inténtalo de nuevo.");
+            }
+        });
+    </script>
 </body>
 </html>

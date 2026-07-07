@@ -43,6 +43,74 @@
     return total;
   }
 
+  /**
+   * Net Present Value (NPV) helper for monthly cash flows.
+   */
+  function calculateNPV(rate, cashFlows) {
+    var npv = 0;
+    for (var t = 0; t < cashFlows.length; t++) {
+      npv += cashFlows[t] / Math.pow(1 + rate, t);
+    }
+    return npv;
+  }
+
+  /**
+   * Internal Rate of Return (IRR) monthly solver.
+   * Uses Secant method with Bisection fallback.
+   */
+  function calculateIRR(cashFlows) {
+    var maxIterations = 150;
+    var tolerance = 1e-7;
+    
+    // Initial guesses (approx. 0.1% and 1% monthly interest)
+    var x0 = 0.001;
+    var x1 = 0.01;
+    
+    var f0 = calculateNPV(x0, cashFlows);
+    var f1 = calculateNPV(x1, cashFlows);
+    
+    for (var i = 0; i < maxIterations; i++) {
+      if (Math.abs(f1 - f0) < 1e-12) {
+        break;
+      }
+      
+      var x2 = x1 - f1 * (x1 - x0) / (f1 - f0);
+      
+      if (Math.abs(x2 - x1) < tolerance) {
+        return x2;
+      }
+      
+      x0 = x1;
+      f0 = f1;
+      x1 = x2;
+      f1 = calculateNPV(x1, cashFlows);
+    }
+    
+    // Bisection fallback
+    var low = -0.99;
+    var high = 2.0;
+    var fLow = calculateNPV(low, cashFlows);
+    var fHigh = calculateNPV(high, cashFlows);
+    
+    if (fLow * fHigh < 0) {
+      for (var j = 0; j < 100; j++) {
+        var mid = (low + high) / 2;
+        var fMid = calculateNPV(mid, cashFlows);
+        if (Math.abs(fMid) < 1e-6 || (high - low) / 2 < tolerance) {
+          return mid;
+        }
+        if (fMid * fLow > 0) {
+          low = mid;
+          fLow = fMid;
+        } else {
+          high = mid;
+        }
+      }
+    }
+    
+    return x1;
+  }
+
   /* ── Data Retrieval and Calculation ── */
 
   function doCalculation() {
@@ -78,6 +146,8 @@
         var nameLabel = row.querySelector('.vinc-name-label').textContent.trim();
         var penalization = parseFloat(row.querySelector('.vinc-penalizacion').value) || 0;
         var cost = parseFloat(row.querySelector('.vinc-coste').value) || 0;
+        var costExtInput = row.querySelector('.vinc-coste-externo');
+        var costExt = costExtInput ? parseFloat(costExtInput.value) || 0 : 0;
         var period = row.querySelector('.vinc-periodo').value;
         var increaseRate = (parseFloat(row.querySelector('.vinc-incremento').value) || 0) / 100;
 
@@ -86,10 +156,11 @@
           effectiveTin += penalization;
         }
 
-        // Calculate accumulated cost if checked
+        // Calculate accumulated cost (Coste Banco if checked, Coste Externo if unchecked)
+        var activeCost = isChecked ? cost : costExt;
         var accumulatedCost = 0;
-        if (isChecked && cost > 0) {
-          var firstYearCost = period === 'mensual' ? cost * 12 : cost;
+        if (activeCost > 0) {
+          var firstYearCost = period === 'mensual' ? activeCost * 12 : activeCost;
           accumulatedCost = calculateAccumulatedCost(firstYearCost, increaseRate, termYears);
         }
 
@@ -108,6 +179,7 @@
           isChecked: isChecked,
           penalization: penalization,
           cost: cost,
+          costExt: costExt,
           period: period,
           increaseRate: increaseRate,
           accumulatedCost: accumulatedCost,
@@ -131,11 +203,43 @@
       }
       var grandTotalCost = totalMortgageCost + totalInsuranceCost + totalOtherCost + bankCancelationCosts;
 
+      // Calculate TAE Global using cash flows
+      var cashFlows = [];
+      // Mes 0: +Capital - cancelationCosts (disbursement net)
+      cashFlows.push(capital - bankCancelationCosts);
+
+      for (var m = 1; m <= termMonths; m++) {
+        var currentYear = Math.ceil(m / 12);
+        var monthlyBindingsCost = 0;
+
+        bindingsData.forEach(function (bind) {
+          var activeCost = bind.isChecked ? bind.cost : bind.costExt;
+          if (activeCost > 0) {
+            var firstYearCost = bind.period === 'mensual' ? activeCost * 12 : activeCost;
+            var yearlyCost = firstYearCost * Math.pow(1 + bind.increaseRate, currentYear - 1);
+            monthlyBindingsCost += yearlyCost / 12;
+          }
+        });
+
+        // Cash flow is negative (payment)
+        cashFlows.push(-(monthlyQuota + monthlyBindingsCost));
+      }
+
+      var irrMonthly = 0;
+      var taeGlobal = 0;
+      if (termMonths > 0 && capital > 0) {
+        irrMonthly = calculateIRR(cashFlows);
+        if (!isNaN(irrMonthly)) {
+          taeGlobal = (Math.pow(1 + irrMonthly, 12) - 1) * 100;
+        }
+      }
+
       calculatedData.push({
         index: bankIndex,
         name: name,
         baseTin: baseTin,
         effectiveTin: effectiveTin,
+        taeGlobal: taeGlobal,
         monthlyQuota: monthlyQuota,
         totalMortgageCost: totalMortgageCost,
         totalInterest: totalInterest,
@@ -190,10 +294,17 @@
           </h3>
           
           <div class="flex flex-col flex-gap-md">
-            <div class="result-card-inner">
-              <span class="text-muted" style="font-size: 11px; display: block; margin-bottom: 2px;">TIN EFECTIVO</span>
-              <span class="result-highlight" style="color: var(--color-smart-cyan);">${data.effectiveTin.toFixed(2)} %</span>
-              <span class="text-muted" style="font-size: 10px; display: block; margin-top: 2px;">Base: ${data.baseTin.toFixed(2)}%</span>
+            <div class="grid grid-2" style="gap: var(--space-2); margin: 0;">
+              <div class="result-card-inner" style="padding: var(--space-3); min-height: 80px; display: flex; flex-direction: column; justify-content: center;">
+                <span class="text-muted" style="font-size: 10px; display: block; margin-bottom: 2px; line-height: 1;">TIN EFECTIVO</span>
+                <span class="result-highlight" style="color: var(--color-smart-cyan); font-size: 1.15rem; line-height: 1.2;">${data.effectiveTin.toFixed(2)} %</span>
+                <span class="text-muted" style="font-size: 9px; display: block; margin-top: 2px; line-height: 1;">Base: ${data.baseTin.toFixed(2)}%</span>
+              </div>
+              <div class="result-card-inner" style="padding: var(--space-3); min-height: 80px; display: flex; flex-direction: column; justify-content: center; border-color: rgba(99, 102, 241, 0.4); background: rgba(99, 102, 241, 0.05);">
+                <span class="text-muted" style="font-size: 10px; display: block; margin-bottom: 2px; line-height: 1;">TAE GLOBAL</span>
+                <span class="result-highlight" style="color: #818cf8; font-size: 1.15rem; line-height: 1.2;">${data.taeGlobal.toFixed(2)} %</span>
+                <span class="text-muted" style="font-size: 9px; display: block; margin-top: 2px; line-height: 1;">Coste Real</span>
+              </div>
             </div>
 
             <div class="result-card-inner">
@@ -417,8 +528,9 @@
       var monthlyBindingsCost = 0;
 
       bankData.bindings.forEach(function (bind) {
-        if (bind.isChecked && bind.cost > 0) {
-          var firstYearCost = bind.period === 'mensual' ? bind.cost * 12 : bind.cost;
+        var activeCost = bind.isChecked ? bind.cost : bind.costExt;
+        if (activeCost > 0) {
+          var firstYearCost = bind.period === 'mensual' ? activeCost * 12 : activeCost;
           var yearlyCost = firstYearCost * Math.pow(1 + bind.increaseRate, currentYear - 1);
           monthlyBindingsCost += yearlyCost / 12;
         }
@@ -456,6 +568,7 @@
     var nameInput = card.querySelector('.custom-name');
     var penInput = card.querySelector('.custom-penalizacion');
     var costInput = card.querySelector('.custom-coste');
+    var costExtInput = card.querySelector('.custom-coste-externo');
     var periodSelect = card.querySelector('.custom-periodo');
     var incInput = card.querySelector('.custom-incremento');
 
@@ -468,6 +581,7 @@
 
     var penalization = parseFloat(penInput.value) || 0;
     var cost = parseFloat(costInput.value) || 0;
+    var costExt = costExtInput ? parseFloat(costExtInput.value) || 0 : 0;
     var period = periodSelect.value;
     var increment = parseFloat(incInput.value) || 0;
 
@@ -490,25 +604,31 @@
               <a href="#" class="btn-delete-vinc flex flex-center" title="Eliminar vinculación"><i data-lucide="trash-2" style="width: 12px; height: 12px;"></i></a>
           </div>
       </div>
-      <div class="vinc-inputs-grid">
-          <div class="form-group-compact">
-              <label>Penaliz. TIN</label>
-              <input type="number" class="input input-sm vinc-penalizacion" value="${penalization.toFixed(2)}" step="0.05" min="0">
-          </div>
-          <div class="form-group-compact">
-              <label>Coste (€)</label>
-              <input type="number" class="input input-sm vinc-coste" value="${cost.toFixed(0)}" step="1" min="0">
-          </div>
-          <div class="form-group-compact">
-              <label>Periodo</label>
-              <select class="input input-sm vinc-periodo">
-                  <option value="anual" ${period === 'anual' ? 'selected' : ''}>Anual</option>
-                  <option value="mensual" ${period === 'mensual' ? 'selected' : ''}>Mensual</option>
-              </select>
-          </div>
-          <div class="form-group-compact">
-              <label>Inc. Anual</label>
-              <input type="number" class="input input-sm vinc-incremento" value="${increment.toFixed(1)}" step="0.1" min="0">
+      <div style="overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; margin-top: var(--space-2); padding-bottom: 4px;">
+          <div class="vinc-inputs-grid" style="min-width: 460px; display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--space-2); margin-top: 0; border-bottom: none;">
+              <div class="form-group-compact">
+                  <label>Penaliz. TIN</label>
+                  <input type="number" class="input input-sm vinc-penalizacion" value="${penalization.toFixed(2)}" step="0.05" min="0">
+              </div>
+              <div class="form-group-compact">
+                  <label>Coste Banco</label>
+                  <input type="number" class="input input-sm vinc-coste" value="${cost.toFixed(0)}" step="1" min="0">
+              </div>
+              <div class="form-group-compact">
+                  <label>Coste Externo</label>
+                  <input type="number" class="input input-sm vinc-coste-externo" value="${costExt.toFixed(0)}" step="1" min="0">
+              </div>
+              <div class="form-group-compact">
+                  <label>Periodo</label>
+                  <select class="input input-sm vinc-periodo">
+                      <option value="anual" ${period === 'anual' ? 'selected' : ''}>Anual</option>
+                      <option value="mensual" ${period === 'mensual' ? 'selected' : ''}>Mensual</option>
+                  </select>
+              </div>
+              <div class="form-group-compact">
+                  <label>Inc. Anual</label>
+                  <input type="number" class="input input-sm vinc-incremento" value="${increment.toFixed(1)}" step="0.1" min="0">
+              </div>
           </div>
       </div>
     `;
@@ -519,6 +639,7 @@
     nameInput.value = '';
     penInput.value = '0.10';
     costInput.value = '100';
+    if (costExtInput) costExtInput.value = '0';
     periodSelect.value = 'anual';
     incInput.value = '2.0';
 
@@ -558,6 +679,7 @@
     
     var rowBaseTin = ["TIN Base (%)"];
     var rowEffectiveTin = ["TIN Efectivo (%)"];
+    var rowTaeGlobal = ["TAE Global (%)"];
     var rowMonthlyQuota = ["Cuota mensual (€)"];
     var rowCancelation = ["Gastos cancelación (€)"];
     var rowInsurance = ["Coste seguros total (€)"];
@@ -568,6 +690,7 @@
     calculatedData.forEach(function(bank) {
       rowBaseTin.push(parseFloat(bank.baseTin.toFixed(2)));
       rowEffectiveTin.push(parseFloat(bank.effectiveTin.toFixed(2)));
+      rowTaeGlobal.push(parseFloat(bank.taeGlobal.toFixed(2)));
       rowMonthlyQuota.push(parseFloat(bank.monthlyQuota.toFixed(2)));
       rowCancelation.push(parseFloat((bank.cancelationCosts || 0).toFixed(2)));
       rowInsurance.push(parseFloat(bank.totalInsuranceCost.toFixed(2)));
@@ -578,6 +701,7 @@
     
     resumeData.push(rowBaseTin);
     resumeData.push(rowEffectiveTin);
+    resumeData.push(rowTaeGlobal);
     resumeData.push(rowMonthlyQuota);
     if (opType === 'subrogacion') {
       resumeData.push(rowCancelation);
@@ -643,8 +767,9 @@
           
           var monthlyBindingsCost = 0;
           bank.bindings.forEach(function (bind) {
-            if (bind.isChecked && bind.cost > 0) {
-              var firstYearCost = bind.period === 'mensual' ? bind.cost * 12 : bind.cost;
+            var activeCost = bind.isChecked ? bind.cost : bind.costExt;
+            if (activeCost > 0) {
+              var firstYearCost = bind.period === 'mensual' ? activeCost * 12 : activeCost;
               var yearlyCost = firstYearCost * Math.pow(1 + bind.increaseRate, y - 1);
               monthlyBindingsCost += yearlyCost / 12;
             }
@@ -791,6 +916,30 @@
         if (addBtn) {
           e.preventDefault();
           addCustomVinc(addBtn);
+        }
+      });
+    }
+
+    // Modal de Ayuda
+    var helpBtn = document.getElementById('floating-help-btn');
+    var helpOverlay = document.getElementById('help-modal-overlay');
+    var helpClose = document.getElementById('help-modal-close');
+
+    if (helpBtn && helpOverlay && helpClose) {
+      helpBtn.addEventListener('click', function () {
+        helpOverlay.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      });
+
+      helpClose.addEventListener('click', function () {
+        helpOverlay.style.display = 'none';
+        document.body.style.overflow = '';
+      });
+
+      helpOverlay.addEventListener('click', function (e) {
+        if (e.target === helpOverlay) {
+          helpOverlay.style.display = 'none';
+          document.body.style.overflow = '';
         }
       });
     }

@@ -46,18 +46,17 @@
 
     <main>
         <!-- Cabecera de navegación rápida -->
-        <section class="container mt-32 pt-32 animate-on-scroll">
+        <section class="container animate-on-scroll" style="margin-top: 88px; padding-top: 0; padding-bottom: 0;">
             <div class="card" style="padding: 12px 24px; border-radius: var(--radius-md); background: var(--color-surface-slate);">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:0.85rem;">
                     <a href="../comprar.html" class="text-muted" style="display:inline-flex; align-items:center; gap:6px; text-decoration:none;">
                         <i data-lucide="chevron-left" style="width:14px;height:14px;"></i> Volver a la guía de compra
                     </a>
-                    <div style="display:flex; gap:16px;">
-                        <a href="contrato-arras.html" class="text-muted" style="text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                    <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                        <a href="contrato-arras.html" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:4px; text-decoration:none;">
                             <i data-lucide="arrow-left" style="width:12px;height:12px;"></i> Paso anterior: Contrato de arras
                         </a>
-                        <span class="text-muted">|</span>
-                        <a href="escritura-notaria.html" style="color:var(--color-cyan); text-decoration:none; display:inline-flex; align-items:center; gap:4px;">
+                        <a href="escritura-notaria.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:4px; text-decoration:none;">
                             Paso siguiente: Escritura y notaría <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
                         </a>
                     </div>
@@ -79,30 +78,30 @@
                 <!-- Columna principal -->
                 <div>
                     <h3 class="mb-16">¿Qué es la Nota Simple y qué información contiene?</h3>
-                    <p class="text-muted mb-24">La **Nota Simple** es un extracto oficial emitido por el Registro de la Propiedad de España que resume la situación jurídica actual de una finca inmobiliaria. Al ser un registro público, cualquier persona interesada puede solicitarla pagando la tasa correspondiente. Este documento es la fotografía legal del inmueble y contiene tres bloques de información fundamentales que debes analizar al detalle:</p>
+                    <p class="text-muted mb-24">La <strong style="color: var(--color-cyan);">Nota Simple</strong> es un extracto oficial emitido por el Registro de la Propiedad de España que resume la situación jurídica actual de una finca inmobiliaria. Al ser un registro público, cualquier persona interesada puede solicitarla pagando la tasa correspondiente. Este documento es la fotografía legal del inmueble y contiene tres bloques de información fundamentales que debes analizar al detalle:</p>
                     
                     <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:32px;">
                         <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-cyan);">
-                            <h5 style="margin:0 0 6px 0; color:var(--color-pure-white); font-family:var(--font-heading);">1. Descripción de la Finca</h5>
+                            <h5 class="card-title" style="margin:0 0 6px 0;">1. Descripción de la Finca</h5>
                             <p class="card-text text-muted" style="font-size:0.85rem; line-height:1.5; margin:0;">Detalla la tipología del inmueble (piso, local, garaje), su superficie exacta (tanto útil como construida), sus límites de linderos geográficos y si cuenta con anejos indivisibles (como trasteros o plazas de aparcamiento). Comprueba siempre que coincida con lo ofertado por el propietario o agencia.</p>
                         </div>
                         <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-cyan);">
-                            <h5 style="margin:0 0 6px 0; color:var(--color-pure-white); font-family:var(--font-heading);">2. Titularidad Registral</h5>
-                            <p class="card-text text-muted" style="font-size:0.85rem; line-height:1.5; margin:0;">Establece de forma inequívoca quién es el dueño legal actual de la vivienda y en qué porcentaje. **Advertencia:** Quien firma el contrato de arras o de compraventa debe coincidir al 100% con los titulares indicados en la Nota Simple (o bien disponer de un poder de representación debidamente notariado).</p>
+                            <h5 class="card-title" style="margin:0 0 6px 0;">2. Titularidad Registral</h5>
+                            <p class="card-text text-muted" style="font-size:0.85rem; line-height:1.5; margin:0;">Establece de forma inequívoca quién es el dueño legal actual de la vivienda y en qué porcentaje. <strong style="color: var(--color-cyan);">Advertencia:</strong> Quien firma el contrato de arras o de compraventa debe coincidir al 100% con los titulares indicados en la Nota Simple (o bien disponer de un poder de representación debidamente notariado).</p>
                         </div>
                         <div style="background:var(--color-surface-slate); border-radius:var(--radius-lg); padding:20px; border-left:4px solid var(--color-cyan);">
-                            <h5 style="margin:0 0 6px 0; color:var(--color-pure-white); font-family:var(--font-heading);">3. Cargas y Gravámenes</h5>
+                            <h5 class="card-title" style="margin:0 0 6px 0;">3. Cargas y Gravámenes</h5>
                             <p class="card-text text-muted" style="font-size:0.85rem; line-height:1.5; margin:0;">El apartado más crítico. Aquí se detallan todas las cargas financieras o limitaciones legales del inmueble: hipotecas vigentes, embargos judiciales preventivos, servidumbres de paso o de vistas, y afecciones fiscales. La vivienda debe transmitirse en notaría libre de toda carga.</p>
                         </div>
                     </div>
 
                     <h3 class="mb-16">Cómo leer e interpretar la Nota Simple</h3>
-                    <p class="text-muted mb-24">Al recibir el documento (suele ser un PDF de 2 o 3 páginas), debes verificar que no tenga más de un mes de antigüedad. Fíjate en los párrafos de **Cargas**. Si aparece una hipoteca anterior, no te preocupes: el vendedor tiene la obligación de cancelarla económica y registralmente en el mismo acto de la firma de tu compraventa (usando el dinero de tu pago para cancelar su deuda).</p>
+                    <p class="text-muted mb-24">Al recibir el documento (suele ser un PDF de 2 o 3 páginas), debes verificar que no tenga más de un mes de antigüedad. Fíjate en los párrafos de <strong style="color: var(--color-cyan);">Cargas</strong>. Si aparece una hipoteca anterior, no te preocupes: el vendedor tiene la obligación de cancelarla económica y registralmente en el mismo acto de la firma de tu compraventa (usando el dinero de tu pago para cancelar su deuda).</p>
 
                     <div class="alert alert-danger mb-32">
                         <i data-lucide="shield-alert"></i>
                         <div>
-                            <strong>Advertencia Crítica Imprescindible:</strong> Obtén la Nota Simple **SIEMPRE** antes de entregar dinero de reserva o firmar un contrato de arras. Si por urgencia del vendedor no fuera posible, debes introducir obligatoriamente una cláusula en el contrato que estipule la rescisión del mismo y la devolución íntegra de tu dinero si en la Nota Simple posterior constan cargas que no puedan cancelarse o discrepancias graves en la titularidad o metros del inmueble.
+                            <strong>Advertencia Crítica Imprescindible:</strong> Obtén la Nota Simple <strong style="color: var(--color-cyan);">SIEMPRE</strong> antes de entregar dinero de reserva o firmar un contrato de arras. Si por urgencia del vendedor no fuera posible, debes introducir obligatoriamente una cláusula en el contrato que estipule la rescisión del mismo y la devolución íntegra de tu dinero si en la Nota Simple posterior constan cargas que no puedan cancelarse o discrepancias graves en la titularidad o metros del inmueble.
                         </div>
                     </div>
                 </div>
@@ -110,18 +109,21 @@
                 <!-- Columna lateral / Recursos rápidos -->
                 <div>
                     <div class="card mb-24">
-                        <h4 class="mb-16" style="font-family: var(--font-heading);">Cómo obtenerla</h4>
+                        <h4 class="card-title mb-16">Cómo obtenerla</h4>
                         <p class="card-text text-muted mb-16">Si el propietario o la inmobiliaria no te aportan una Nota Simple de menos de 15 días, puedes solicitarla tú mismo directamente en la web oficial del Colegio de Registradores de España:</p>
                         <a href="https://www.registradores.org" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm" style="width:100%; display:inline-flex; align-items:center; gap:8px;">
                             Web de Registradores <i data-lucide="external-link" style="width:14px;height:14px;"></i>
                         </a>
-                        <p class="text-muted mt-8" style="font-size:0.75rem;">Tiene un coste aproximado de **9,02€** por finca y el plazo de entrega por correo electrónico suele ser inferior a 24-48 horas laborables.</p>
+                        <p class="text-muted mt-8" style="font-size:0.75rem;">Tiene un coste aproximado de <strong style="color: var(--color-cyan);">9,02€</strong> por finca y el plazo de entrega por correo electrónico suele ser inferior a 24-48 horas laborables.</p>
                     </div>
 
-                    <div class="card" style="background: rgba(99, 102, 241, 0.05); border-color: rgba(99, 102, 241, 0.2);">
-                        <h4 class="mb-12" style="font-family: var(--font-heading); color: #818cf8;">Datos mínimos para pedirla</h4>
-                        <p class="card-text text-muted" style="font-size: 0.85rem; line-height: 1.5; margin-bottom: 16px;">Para agilizar la solicitud registral online, es recomendable disponer de alguno de estos datos:</p>
-                        <ul class="pl-20 text-muted" style="font-size:0.78rem; margin:0; line-height:1.5;">
+                    <div class="card">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <i data-lucide="info" style="width:20px;height:20px;color:var(--color-cyan);"></i>
+                            <h4 class="card-title m-0">Datos mínimos para pedirla</h4>
+                        </div>
+                        <p class="card-text text-muted mb-12">Para agilizar la solicitud registral online, es recomendable disponer de alguno de estos datos:</p>
+                        <ul class="text-muted" style="font-size:0.85rem; line-height:1.7; margin:0; padding-left:20px;">
                             <li>Número de Finca Registral</li>
                             <li>Código Registral Único (CRU)</li>
                             <li>DNI/Nombre del Propietario</li>

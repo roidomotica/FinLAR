@@ -176,7 +176,7 @@
    -------------------------------------------------------------------------- */
 
 .content-section {
-  max-width: 800px;
+  max-width: 100%;
   margin: 0 auto;
 }
 
@@ -190,6 +190,7 @@
 .content-section p {
   margin-bottom: var(--space-4);
   line-height: var(--line-height-relaxed);
+  max-width: 100%;
 }
 
 .content-section ul,
