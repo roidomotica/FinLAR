@@ -431,23 +431,34 @@
                             <label for="comunidad">Comunidad Autónoma</label>
                             <select id="comunidad" class="input">
                                 <option value="AND">Andalucía — ITP 7%</option>
-                                <option value="ARA">Aragón — ITP 8%</option>
-                                <option value="AST">Asturias — ITP 8%</option>
-                                <option value="BAL">Baleares — ITP 8%</option>
-                                <option value="CAN">Canarias — IGIC 7% / ITP 6.5%</option>
-                                <option value="CANT">Cantabria — ITP 10%</option>
+                                <option value="ARA">Aragón — ITP Escala (8% — 10%)</option>
+                                <option value="AST">Asturias — ITP Escala (8% — 10%)</option>
+                                <option value="BAL">Baleares — ITP Escala (8% — 13%)</option>
+                                <option value="CAN">Canarias — IGIC 6.5% / ITP 6.5%</option>
+                                <option value="CANT">Cantabria — ITP 9%</option>
                                 <option value="CLM">Castilla-La Mancha — ITP 9%</option>
-                                <option value="CYL">Castilla y León — ITP 8%</option>
-                                <option value="CAT">Cataluña — ITP 10%</option>
-                                <option value="VAL">Comunitat Valenciana — ITP 10%</option>
-                                <option value="EXT">Extremadura — ITP 8%</option>
-                                <option value="GAL">Galicia — ITP 10%</option>
+                                <option value="CYL">Castilla y León — ITP Escala (8% — 10%)</option>
+                                <option value="CAT">Cataluña — ITP Escala (10% — 13%)</option>
+                                <option value="VAL">Comunitat Valenciana — ITP Escala (9% — 11%)</option>
+                                <option value="EXT">Extremadura — ITP Escala (8% — 11%)</option>
+                                <option value="GAL">Galicia — ITP General 8% / 7% / 3%</option>
                                 <option value="MAD">Madrid — ITP 6%</option>
                                 <option value="MUR">Murcia — ITP 8%</option>
                                 <option value="NAV">Navarra — ITP 6%</option>
-                                <option value="PV">País Vasco — ITP 4%</option>
+                                <option value="PV">País Vasco — ITP 4% Habitual / 7%</option>
                                 <option value="RIO">La Rioja — ITP 7%</option>
                             </select>
+                        </div>
+
+                        <div class="grid grid-2 mt-12 mb-16" style="gap: 16px;">
+                            <label class="custom-checkbox-container" style="display:flex; align-items:center; gap:8px; cursor:pointer; font-family:var(--font-body); font-size:var(--font-size-sm); color:var(--color-slate-grey);">
+                                <input type="checkbox" id="es-habitual" checked style="width:16px; height:16px; accent-color:var(--color-cyan);">
+                                ¿Es tu vivienda habitual?
+                            </label>
+                            <label class="custom-checkbox-container" style="display:flex; align-items:center; gap:8px; cursor:pointer; font-family:var(--font-body); font-size:var(--font-size-sm); color:var(--color-slate-grey);">
+                                <input type="checkbox" id="es-colectivo" style="width:16px; height:16px; accent-color:var(--color-cyan);">
+                                Colectivo protegido / Joven / FN
+                            </label>
                         </div>
 
                         <div class="form-section-title mt-24"><i data-lucide="percent" style="width:18px;height:18px;color:var(--color-cyan);"></i> La Hipoteca que Aspiras</div>
@@ -520,16 +531,29 @@
                             </p>
                         </div>
 
+                        <div class="card" style="background:rgba(99,102,241,0.04);border-color:rgba(99,102,241,0.2);margin-bottom:20px;">
+                            <h4 class="card-title mb-12" style="display:flex;align-items:center;gap:8px;">
+                                <i data-lucide="shield-alert" style="width:18px;height:18px;color:var(--color-indigo);"></i>
+                                Valor de Referencia Catastral
+                            </h4>
+                            <p class="text-muted" style="font-size:0.9rem;line-height:1.7;">
+                                Desde la reforma de lucha contra el fraude fiscal, la base imponible del ITP es el mayor valor entre el precio escriturado y el **Valor de Referencia Catastral** determinado por Catastro.
+                            </p>
+                            <p class="text-muted" style="font-size:0.9rem;line-height:1.7;margin-top:8px;">
+                                Si el Catastro asigna un valor superior al precio pactado, tributarás por esa magnitud a menos que presentes una reclamación con tasación contradictoria ante la Agencia Tributaria.
+                            </p>
+                        </div>
+
                         <div class="card" style="background:rgba(239,68,68,0.04);border-color:rgba(239,68,68,0.2);">
                             <h4 class="card-title mb-12" style="display:flex;align-items:center;gap:8px;">
                                 <i data-lucide="alert-triangle" style="width:18px;height:18px;color:var(--color-red);"></i>
                                 El banco financia máximo el 80%
                             </h4>
                             <p class="text-muted" style="font-size:0.9rem;line-height:1.7;">
-                                Por normativa del Banco de España, los bancos no pueden financiar más del <strong style="color:var(--color-text);">80% del valor de tasación</strong> de la vivienda (o del precio de compra si es menor). El 20% restante debes aportarlo tú, más los gastos.
+                                Por normativa del Banco de España, los bancos no pueden financiar más del <strong style="color:var(--color-text);">80% del valor de tasación</strong> de la vivienda (o del precio de compra si es menor). El 20% restante debes aportarlo tú, más los gastos e impuestos.
                             </p>
                             <p class="text-muted" style="font-size:0.9rem;line-height:1.7;margin-top:8px;">
-                                Existen excepciones para jóvenes menores de 35 años con garantías del Estado (ICO), que permiten hasta el 90-95%.
+                                Existen excepciones para jóvenes menores de 35 años con avales públicos (ej. líneas ICO), que permiten financiar hasta el 90-95% en determinados colectivos.
                             </p>
                         </div>
                     </div>

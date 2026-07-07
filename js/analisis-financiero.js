@@ -15,18 +15,18 @@
     ARA: { segunda: 0.08, nueva_ajd: 0.010, label: 'Aragón' },
     AST: { segunda: 0.08, nueva_ajd: 0.012, label: 'Asturias' },
     BAL: { segunda: 0.08, nueva_ajd: 0.012, label: 'Baleares' },
-    CAN: { segunda: 0.065, nueva_ajd: 0.010, label: 'Canarias', especial: 'IGIC 7% (en vez de IVA 10%)' },
-    CANT: { segunda: 0.10, nueva_ajd: 0.015, label: 'Cantabria' },
+    CAN: { segunda: 0.065, nueva_ajd: 0.010, label: 'Canarias', especial: 'IGIC 6.5% (en vez de IVA 10%)' },
+    CANT: { segunda: 0.09, nueva_ajd: 0.015, label: 'Cantabria' },
     CLM: { segunda: 0.09, nueva_ajd: 0.015, label: 'Castilla-La Mancha' },
     CYL: { segunda: 0.08, nueva_ajd: 0.015, label: 'Castilla y León' },
     CAT: { segunda: 0.10, nueva_ajd: 0.015, label: 'Cataluña' },
-    VAL: { segunda: 0.10, nueva_ajd: 0.015, label: 'Comunitat Valenciana' },
+    VAL: { segunda: 0.09, nueva_ajd: 0.015, label: 'Comunitat Valenciana' },
     EXT: { segunda: 0.08, nueva_ajd: 0.015, label: 'Extremadura' },
-    GAL: { segunda: 0.10, nueva_ajd: 0.015, label: 'Galicia' },
+    GAL: { segunda: 0.08, nueva_ajd: 0.015, label: 'Galicia' },
     MAD: { segunda: 0.06, nueva_ajd: 0.007, label: 'Madrid' },
     MUR: { segunda: 0.08, nueva_ajd: 0.015, label: 'Murcia' },
     NAV: { segunda: 0.06, nueva_ajd: 0.005, label: 'Navarra' },
-    PV:  { segunda: 0.04, nueva_ajd: 0.000, label: 'País Vasco' },
+    PV:  { segunda: 0.07, nueva_ajd: 0.000, label: 'País Vasco' },
     RIO: { segunda: 0.07, nueva_ajd: 0.010, label: 'La Rioja' }
   };
 
@@ -52,22 +52,159 @@
     return principal * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
   }
 
+  /* Helper para cálculo por tramos de ITP progresivo */
+  function calcTramo(valor, tramos) {
+    var impuesto = 0;
+    for (var i = 0; i < tramos.length; i++) {
+      var limite = tramos[i].limite;
+      var tipo = tramos[i].tipo;
+      var anteriorLimite = i > 0 ? tramos[i-1].limite : 0;
+      
+      if (valor > limite) {
+        impuesto += (limite - anteriorLimite) * tipo;
+      } else {
+        impuesto += (valor - anteriorLimite) * tipo;
+        break;
+      }
+    }
+    return impuesto;
+  }
+
   /* ────────────────────────────────────────────────────────
    * CÁLCULO: Gastos de compraventa
    * ──────────────────────────────────────────────────────── */
-  function calcGastos(precio, tipoVivienda, comunidad) {
+  function calcGastos(precio, tipoVivienda, comunidad, esHabitual, esColectivo) {
     var ccaa = ITP_RATES[comunidad] || ITP_RATES.MAD;
     var gastos = {};
     var total = 0;
 
     if (tipoVivienda === 'segunda') {
-      var itp = precio * ccaa.segunda;
-      gastos['ITP — ' + ccaa.label + ' (' + (ccaa.segunda * 100).toFixed(0) + '%)'] = itp;
+      var itp = 0;
+      var descITP = '';
+      if (comunidad === 'PV') {
+        var tasa = esHabitual ? 0.04 : 0.07;
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(0) + '% Habitual)';
+      } else if (comunidad === 'GAL') {
+        var tasa = 0.08;
+        if (precio < 240000) {
+          tasa = esColectivo ? 0.03 : (esHabitual ? 0.07 : 0.08);
+        }
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(0) + '% ' + (tasa < 0.08 ? 'Bonificado' : 'General') + ')';
+      } else if (comunidad === 'AND') {
+        var tasa = 0.07;
+        if (esColectivo && precio <= 150000) {
+          tasa = 0.035;
+        }
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(1) + '% ' + (tasa < 0.07 ? 'Bonificado' : 'General') + ')';
+      } else if (comunidad === 'MAD') {
+        var tasa = (esColectivo && esHabitual) ? 0.04 : 0.06;
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(0) + '% ' + (tasa < 0.06 ? 'Bonificado' : 'General') + ')';
+      } else if (comunidad === 'CAN') {
+        var tasa = 0.065;
+        if (precio <= 150000) {
+          tasa = esColectivo ? 0.04 : (esHabitual ? 0.05 : 0.065);
+        }
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(1) + '% ' + (tasa < 0.065 ? 'Bonificado' : 'General') + ')';
+      } else if (comunidad === 'MUR') {
+        var tasa = 0.08;
+        if (esColectivo && precio <= 150000) {
+          tasa = 0.03;
+        }
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(0) + '% ' + (tasa < 0.08 ? 'Bonificado' : 'General') + ')';
+      } else if (comunidad === 'RIO') {
+        var tasa = 0.07;
+        if (esColectivo && precio <= 150000) {
+          tasa = 0.03;
+        }
+        itp = precio * tasa;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(0) + '% ' + (tasa < 0.07 ? 'Bonificado' : 'General') + ')';
+      } else if (comunidad === 'VAL') {
+        if (precio <= 180000) {
+          var tasa = esColectivo ? 0.04 : (esHabitual ? 0.08 : 0.09);
+          itp = precio * tasa;
+          descITP = 'ITP — ' + ccaa.label + ' (' + (tasa * 100).toFixed(0) + '% ' + (tasa < 0.09 ? 'Bonificado' : 'General') + ')';
+        } else {
+          var tramos = [
+            { limite: 1000000, tipo: 0.09 },
+            { limite: Infinity, tipo: 0.11 }
+          ];
+          itp = calcTramo(precio, tramos);
+          descITP = 'ITP — ' + ccaa.label + ' (Escala 9%-11%)';
+        }
+      } else if (comunidad === 'CAT') {
+        if (esColectivo && esHabitual) {
+          var tasa = 0.05;
+          itp = precio * tasa;
+          descITP = 'ITP — ' + ccaa.label + ' (5% Colectivo Bonificado)';
+        } else {
+          var tramos = [
+            { limite: 600000, tipo: 0.10 },
+            { limite: 900000, tipo: 0.11 },
+            { limite: 1500000, tipo: 0.12 },
+            { limite: Infinity, tipo: 0.13 }
+          ];
+          itp = calcTramo(precio, tramos);
+          descITP = 'ITP — ' + ccaa.label + ' (Escala 10%-13%)';
+        }
+      } else if (comunidad === 'ARA') {
+        var tramos = [
+          { limite: 400000, tipo: 0.08 },
+          { limite: 450000, tipo: 0.085 },
+          { limite: 500000, tipo: 0.09 },
+          { limite: 750000, tipo: 0.095 },
+          { limite: Infinity, tipo: 0.10 }
+        ];
+        itp = calcTramo(precio, tramos);
+        descITP = 'ITP — ' + ccaa.label + ' (Escala 8%-10%)';
+      } else if (comunidad === 'AST') {
+        var tramos = [
+          { limite: 300000, tipo: 0.08 },
+          { limite: 500000, tipo: 0.09 },
+          { limite: Infinity, tipo: 0.10 }
+        ];
+        itp = calcTramo(precio, tramos);
+        descITP = 'ITP — ' + ccaa.label + ' (Escala 8%-10%)';
+      } else if (comunidad === 'CYL') {
+        var tramos = [
+          { limite: 250000, tipo: 0.08 },
+          { limite: Infinity, tipo: 0.10 }
+        ];
+        itp = calcTramo(precio, tramos);
+        descITP = 'ITP — ' + ccaa.label + ' (Escala 8%-10%)';
+      } else if (comunidad === 'EXT') {
+        var tramos = [
+          { limite: 360000, tipo: 0.08 },
+          { limite: 600000, tipo: 0.10 },
+          { limite: Infinity, tipo: 0.11 }
+        ];
+        itp = calcTramo(precio, tramos);
+        descITP = 'ITP — ' + ccaa.label + ' (Escala 8%-11%)';
+      } else if (comunidad === 'BAL') {
+        var tramos = [
+          { limite: 400000, tipo: 0.08 },
+          { limite: 600000, tipo: 0.09 },
+          { limite: 1000000, tipo: 0.10 },
+          { limite: 2000000, tipo: 0.12 },
+          { limite: Infinity, tipo: 0.13 }
+        ];
+        itp = calcTramo(precio, tramos);
+        descITP = 'ITP — ' + ccaa.label + ' (Escala 8%-13%)';
+      } else {
+        itp = precio * ccaa.segunda;
+        descITP = 'ITP — ' + ccaa.label + ' (' + (ccaa.segunda * 100).toFixed(1) + '%)';
+      }
+      gastos[descITP] = itp;
       total += itp;
     } else if (tipoVivienda === 'nueva') {
-      var iva = comunidad === 'CAN' ? precio * 0.07 : precio * 0.10;
+      var iva = comunidad === 'CAN' ? precio * 0.065 : precio * 0.10;
       var ajd = precio * ccaa.nueva_ajd;
-      gastos[comunidad === 'CAN' ? 'IGIC (7%)' : 'IVA (10%)'] = iva;
+      gastos[comunidad === 'CAN' ? 'IGIC (6.5%)' : 'IVA (10%)'] = iva;
       if (ajd > 0) gastos['AJD — ' + ccaa.label + ' (' + (ccaa.nueva_ajd * 100).toFixed(1) + '%)'] = ajd;
       total += iva + ajd;
     } else {
@@ -148,13 +285,15 @@
     // Leer inputs paso 2
     var precio      = parseFloat(document.getElementById('precio-vivienda').value) || 0;
     var tipoVivienda = document.getElementById('tipo-vivienda').value;
+    var esHabitual = document.getElementById('es-habitual') ? document.getElementById('es-habitual').checked : true;
+    var esColectivo = document.getElementById('es-colectivo') ? document.getElementById('es-colectivo').checked : false;
     var comunidad   = document.getElementById('comunidad').value;
     var importeHip  = parseFloat(document.getElementById('importe-hipoteca').value) || 0;
     var tin         = parseFloat(document.getElementById('tipo-interes').value) || 3.5;
     var plazo       = parseInt(document.getElementById('plazo-hipoteca').value) || 25;
 
     // ── Gastos de compraventa ──
-    var gastos = calcGastos(precio, tipoVivienda, comunidad);
+    var gastos = calcGastos(precio, tipoVivienda, comunidad, esHabitual, esColectivo);
 
     // ── Liquidez mínima ──
     var entrada = precio - importeHip;
@@ -189,7 +328,7 @@
     if (precio > 0) {
       pctGastosReal = gastos.total / precio;
     } else {
-      var gastosEstimadosDefault = calcGastos(200000, tipoVivienda, comunidad);
+      var gastosEstimadosDefault = calcGastos(200000, tipoVivienda, comunidad, esHabitual, esColectivo);
       pctGastosReal = gastosEstimadosDefault.total / 200000;
     }
     var factorAhorrosTotal = 0.20 + pctGastosReal;
